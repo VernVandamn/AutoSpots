@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{cd317d1e-57cf-470f-9605-667a51102236}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>api.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+    <InterpreterVersion />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="1473545434.jpg" />
+    <Content Include="1473612446.jpg" />
+    <Content Include="1473660001.jpg" />
+    <Content Include="1473678601.jpg" />
+    <Content Include="1473681601.jpg" />
+    <Content Include="1473688802.jpg" />
+    <Content Include="1473696001.jpg" />
+    <Content Include="1473868801.jpg" />
+    <Content Include="1473955201.jpg" />
+    <Content Include="1474041601.jpg" />
+    <Content Include="1474128001.jpg" />
+    <Content Include="1474214401.jpg" />
+    <Content Include="1474300801.jpg" />
+    <Content Include="1474387201.jpg" />
+    <Content Include="api\1473696001.jpg" />
+    <Content Include="api\1473868801.jpg" />
+    <Content Include="api\1473955201.jpg" />
+    <Content Include="api\1474041601.jpg" />
+    <Content Include="api\1474128001.jpg" />
+    <Content Include="api\1474214401.jpg" />
+    <Content Include="api\1474300801.jpg" />
+    <Content Include="api\1474387201.jpg" />
+    <Content Include="api\1474473601.jpg" />
+    <Content Include="api\1474560001.jpg" />
+    <Content Include="api\1474646401.jpg" />
+    <Content Include="api\1474732801.jpg" />
+    <Content Include="api\1474819201.jpg" />
+    <Content Include="api\1474905601.jpg" />
+    <Content Include="api\1474992001.jpg" />
+    <Content Include="api\1475078401.jpg" />
+    <Content Include="api\1475164801.jpg" />
+    <Content Include="api\1475251201.jpg" />
+    <Content Include="api\1475337601.jpg" />
+    <Content Include="api\1475424001.jpg" />
+    <Content Include="api\1475510401.jpg" />
+    <Content Include="api\1475596801.jpg" />
+    <Content Include="api\1475683201.jpg" />
+    <Content Include="api\1475769601.jpg" />
+    <Content Include="api\1475856001.jpg" />
+    <Content Include="api\1475942401.jpg" />
+    <Content Include="api\1476028801.jpg" />
+    <Content Include="api\1476115201.jpg" />
+    <Content Include="api\1476201601.jpg" />
+    <Content Include="api\1476288001.jpg" />
+    <Content Include="api\1476374401.jpg" />
+    <Content Include="api\1476460802.jpg" />
+    <Content Include="api\1476547201.jpg" />
+    <Content Include="api\1476633601.jpg" />
+    <Content Include="api\1476720001.jpg" />
+    <Content Include="api\1476806401.jpg" />
+    <Content Include="api\1476892801.jpg" />
+    <Content Include="api\1476979201.jpg" />
+    <Content Include="api\1477065602.jpg" />
+    <Content Include="api\1477152001.jpg" />
+    <Content Include="api\1477238401.jpg" />
+    <Content Include="api\1477324801.jpg" />
+    <Content Include="api\1477411201.jpg" />
+    <Content Include="api\1477497601.jpg" />
+    <Content Include="api\1477584001.jpg" />
+    <Content Include="api\1477670401.jpg" />
+    <Content Include="api\1477756801.jpg" />
+    <Content Include="api\1477843201.jpg" />
+    <Content Include="api\1477929601.jpg" />
+    <Content Include="api\1478016001.jpg" />
+    <Content Include="api\1478102401.jpg" />
+    <Content Include="api\1478188801.jpg" />
+    <Content Include="api\1478275201.jpg" />
+    <Content Include="api\1478361601.jpg" />
+    <Content Include="api\1478451601.jpg" />
+    <Content Include="api\1478538001.jpg" />
+    <Content Include="api\1478624401.jpg" />
+    <Content Include="api\1478710801.jpg" />
+    <Content Include="api\1478797201.jpg" />
+    <Content Include="api\1478883601.jpg" />
+    <Content Include="api\1478970001.jpg" />
+    <Content Include="api\1479056401.jpg" />
+    <Content Include="api\1479142801.jpg" />
+    <Content Include="api\1479229201.jpg" />
+    <Content Include="canny edges\Row_1_Col_1Edge.png" />
+    <Content Include="canny edges\Row_1_Col_2Edge.png" />
+    <Content Include="canny edges\Row_1_Col_3Edge.png" />
+    <Content Include="canny edges\Row_1_Col_4Edge.png" />
+    <Content Include="canny edges\Row_1_Col_5Edge.png" />
+    <Content Include="canny edges\Row_2_Col_10Edge.png" />
+    <Content Include="canny edges\Row_2_Col_11Edge.png" />
+    <Content Include="canny edges\Row_2_Col_12Edge.png" />
+    <Content Include="canny edges\Row_2_Col_1Edge.png" />
+    <Content Include="canny edges\Row_2_Col_2Edge.png" />
+    <Content Include="canny edges\Row_2_Col_3Edge.png" />
+    <Content Include="canny edges\Row_2_Col_4Edge.png" />
+    <Content Include="canny edges\Row_2_Col_5Edge.png" />
+    <Content Include="canny edges\Row_2_Col_6Edge.png" />
+    <Content Include="canny edges\Row_2_Col_7Edge.png" />
+    <Content Include="canny edges\Row_2_Col_8Edge.png" />
+    <Content Include="canny edges\Row_2_Col_9Edge.png" />
+    <Content Include="canny edges\Row_3_Col_10Edge.png" />
+    <Content Include="canny edges\Row_3_Col_11Edge.png" />
+    <Content Include="canny edges\Row_3_Col_1Edge.png" />
+    <Content Include="canny edges\Row_3_Col_2Edge.png" />
+    <Content Include="canny edges\Row_3_Col_3Edge.png" />
+    <Content Include="canny edges\Row_3_Col_4Edge.png" />
+    <Content Include="canny edges\Row_3_Col_5Edge.png" />
+    <Content Include="canny edges\Row_3_Col_6Edge.png" />
+    <Content Include="canny edges\Row_3_Col_7Edge.png" />
+    <Content Include="canny edges\Row_3_Col_8Edge.png" />
+    <Content Include="canny edges\Row_3_Col_9Edge.png" />
+    <Content Include="Histograms\Hist_1_Gray_Spot.png" />
+    <Content Include="Histograms\Hist_Row_1_Col_1.png" />
+    <Content Include="Histograms\Hist_Row_1_Col_2.png" />
+    <Content Include="Histograms\Hist_Row_1_Col_3.png" />
+    <Content Include="Histograms\Hist_Row_1_Col_4.png" />
+    <Content Include="Histograms\Hist_Row_1_Col_5.png" />
+    <Content Include="Histograms\Hist_Row_2_Col_1.png" />
+    <Content Include="Histograms\Hist_Row_2_Col_10.png" />
+    <Content Include="Histograms\Hist_Row_2_Col_11.png" />
+    <Content Include="Histograms\Hist_Row_2_Col_12.png" />
+    <Content Include="Histograms\Hist_Row_2_Col_2.png" />
+    <Content Include="Histograms\Hist_Row_2_Col_3.png" />
+    <Content Include="Histograms\Hist_Row_2_Col_4.png" />
+    <Content Include="Histograms\Hist_Row_2_Col_5.png" />
+    <Content Include="Histograms\Hist_Row_2_Col_6.png" />
+    <Content Include="Histograms\Hist_Row_2_Col_7.png" />
+    <Content Include="Histograms\Hist_Row_2_Col_8.png" />
+    <Content Include="Histograms\Hist_Row_2_Col_9.png" />
+    <Content Include="Histograms\Hist_Row_3_Col_1.png" />
+    <Content Include="Histograms\Hist_Row_3_Col_10.png" />
+    <Content Include="Histograms\Hist_Row_3_Col_11.png" />
+    <Content Include="Histograms\Hist_Row_3_Col_2.png" />
+    <Content Include="Histograms\Hist_Row_3_Col_3.png" />
+    <Content Include="Histograms\Hist_Row_3_Col_4.png" />
+    <Content Include="Histograms\Hist_Row_3_Col_5.png" />
+    <Content Include="Histograms\Hist_Row_3_Col_6.png" />
+    <Content Include="Histograms\Hist_Row_3_Col_7.png" />
+    <Content Include="Histograms\Hist_Row_3_Col_8.png" />
+    <Content Include="Histograms\Hist_Row_3_Col_9.png" />
+    <Content Include="horz.jpg" />
+    <Content Include="img.jpg" />
+    <Content Include="inv.jpg" />
+    <Content Include="inv1.jpg" />
+    <Content Include="lot.jpg" />
+    <Content Include="oth.jpg" />
+    <Content Include="out.jpg" />
+    <Content Include="Spots\1_Gray_Spot.jpg" />
+    <Content Include="Spots\Row_1_Col_1.jpg" />
+    <Content Include="Spots\Row_1_Col_2.jpg" />
+    <Content Include="Spots\Row_1_Col_3.jpg" />
+    <Content Include="Spots\Row_1_Col_4.jpg" />
+    <Content Include="Spots\Row_1_Col_5.jpg" />
+    <Content Include="Spots\Row_2_Col_1.jpg" />
+    <Content Include="Spots\Row_2_Col_10.jpg" />
+    <Content Include="Spots\Row_2_Col_11.jpg" />
+    <Content Include="Spots\Row_2_Col_12.jpg" />
+    <Content Include="Spots\Row_2_Col_2.jpg" />
+    <Content Include="Spots\Row_2_Col_3.jpg" />
+    <Content Include="Spots\Row_2_Col_4.jpg" />
+    <Content Include="Spots\Row_2_Col_5.jpg" />
+    <Content Include="Spots\Row_2_Col_6.jpg" />
+    <Content Include="Spots\Row_2_Col_7.jpg" />
+    <Content Include="Spots\Row_2_Col_8.jpg" />
+    <Content Include="Spots\Row_2_Col_9.jpg" />
+    <Content Include="Spots\Row_3_Col_1.jpg" />
+    <Content Include="Spots\Row_3_Col_10.jpg" />
+    <Content Include="Spots\Row_3_Col_11.jpg" />
+    <Content Include="Spots\Row_3_Col_2.jpg" />
+    <Content Include="Spots\Row_3_Col_3.jpg" />
+    <Content Include="Spots\Row_3_Col_4.jpg" />
+    <Content Include="Spots\Row_3_Col_5.jpg" />
+    <Content Include="Spots\Row_3_Col_6.jpg" />
+    <Content Include="Spots\Row_3_Col_7.jpg" />
+    <Content Include="Spots\Row_3_Col_8.jpg" />
+    <Content Include="Spots\Row_3_Col_9.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="api.py" />
+    <Compile Include="api\api.py" />
+    <Compile Include="extract_spots.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="api" />
+    <Folder Include="canny edges" />
+    <Folder Include="Histograms" />
+    <Folder Include="Spots" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>
