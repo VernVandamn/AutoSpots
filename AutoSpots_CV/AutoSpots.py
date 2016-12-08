@@ -1,11 +1,23 @@
+﻿'''
+The computer vision code currently in use by the AutoSpots project originated from
+https://github.com/rugbyprof/Parking-Lot-Occupancy-Tracking
+
+This is being used as a proof of concept only
+AutoSpots seek to expand this implementation
+to use a Haar Cascade Classifier as well as
+refining and adding to the classical computer
+vision techniques employed by the current code 
+here
+'''
+
+
 import os
-#from matplotlib import pyplot as plt
 import numpy as np
 import cv2
 import json
 import sys
 import urllib2
-#from pylab import *
+import send_to_server as serv
 
 spot_dir = 'Spots'
 spots = {}
@@ -224,13 +236,6 @@ def cannyedgedetection(spotforcanny,parkingspacelocation): #Detects edges
     #print edges
     avg = averagePng(edges)
     print parkingspacelocation, avg
-    #plt.subplot(121),plt.imshow(spotforcanny,cmap = 'gray')
-    #plt.title('Original Image'), plt.xticks([]), plt.yticks([])
-    #plt.plot(122),plt.imshow(edges,cmap = 'gray')
-    #plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
-    #dirname = 'canny edges'
-    #plt.savefig(os.path.join(dirname, parkingspacelocation +  'Edge' + '.png'),transparent=True) #Saves the image to Edges folder
-    #plt.close()
 
     if avg > 400:
         return False,edges
@@ -294,19 +299,20 @@ with open('images.json') as images_file:
 #loop through all images
 for image in images['data']:
 
-    if numImgs > 10:
+    if numImgs > 0:
         break
     numImgs = numImgs + 1
 
-    url = image['shot_url']+image['camera']+'/'+image['name']
-
-    saveImgUrl(url)
+    #url = image['shot_url']+image['camera']+'/'+image['name']
+    #
+    #saveImgUrl(url)
 
     img = cv2.imread(image['name'])
 
-    cv2.imshow('image', img)
-    cv2.waitKey(0)
-    cv2.destroyWindow('image')
+    # Show the original image first
+    #cv2.imshow('image', img)
+    #cv2.waitKey(0)
+    #cv2.destroyWindow('image')
 
 
     p_lot = []
@@ -396,9 +402,10 @@ for image in images['data']:
                     img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, green_color)    
                     parkinglotbinaryarray.append(1); 
                    
-                    cv2.imshow('image', img)
-                    cv2.waitKey(0)
-                    cv2.destroyWindow('image')
+                # Comment these out to not step through step by step
+                cv2.imshow('image', img)
+                cv2.waitKey(0)
+                cv2.destroyWindow('image')
                 #cv2.imshow("edges", edgesResult[1])
 
                 # Do we need to save these?
@@ -408,6 +415,8 @@ for image in images['data']:
             p_lot[-1]['V'].append(v_line_obj)
             #draw_line(img, v_line_obj, black_color)
 
+    # Print the values to the string to send
     print parkinglotbinaryarray
+    #serv.sendDataToServer(parkinglotbinaryarray)
     cv2.imwrite('out1.jpg', img)
 

@@ -12,7 +12,7 @@ def save(url):
     #url = "http://download.thinkbroadband.com/10MB.zip"
     file_name = url.split('/')[-1]
     u = urllib2.urlopen(url)
-    in = open(file_name, 'wb')
+    input = open(file_name, 'wb')
     meta = u.info()
     file_size = int(meta.getheaders("Content-Length")[0])
     print "Downloading: %s Bytes: %s" % (file_name, file_size)
@@ -25,12 +25,12 @@ def save(url):
             break
 
         file_size_dl += len(buffer)
-        in.write(buffer)
+        input.write(buffer)
         status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
         status = status + chr(8)*(len(status)+1)
         print status,
 
-    in.close()
+    input.close()
 
 
 f = open("park.json", "w")
