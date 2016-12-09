@@ -2,37 +2,39 @@
 
 def sendDataToServer(input):
 
-    str = ','.join(str(s) for s in input)
+	host ="autospots.otzo.com"
+	port = 22032
+	message = ''.join(str(s) for s in input)
+	message = 'cv_' + message;
 
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host ="192.168.1.3"
-    port =8000
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    s.connect((host,port))
+	s.connect((host,port))
 
-    r = input(str)
+	#r = input(str)
 
-    s.send(r.encode())
+	s.send(message.encode('ascii'))
 
-    #We probably don't care about the response
-    #data = ''
-    #data = s.recv(1024).decode()
-    #print (data)
+	data = s.recv(1024)
+
+	s.close()
+
+	print 'received data:',  data
 
 '''
-    # Testing writing and reading to files
-    v = []
-    for x in range(1,10):
-        v.append(1)
+	# Testing writing and reading to files
+	v = []
+	for x in range(1,10):
+		v.append(1)
 
-    print v
+	print v
 
-    with open('otherSendData', 'w+') as file:
-        str = ','.join(str(e) for e in v)
-        print str
-        file.write(str)
+	with open('otherSendData', 'w+') as file:
+		str = ','.join(str(e) for e in v)
+		print str
+		file.write(str)
 
-    with open('otherSendData', 'r') as f:
-        read_data = f.read()
-        print read_data
+	with open('otherSendData', 'r') as f:
+		read_data = f.read()
+		print read_data
 '''

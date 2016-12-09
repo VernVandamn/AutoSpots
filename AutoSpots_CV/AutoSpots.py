@@ -177,8 +177,9 @@ def compareDiffs(avg1, avg2, spotName):
 	BR_diff = abs(BR1_diff - BR2_diff)
 	GR_diff = abs(GR1_diff - GR2_diff)
 
-	print avg2
-	print spotName, ":", "BG: ", BG_diff/255.0, "BR: ", BR_diff/255.0, "GR: ", GR_diff/255.0, "\n"
+	if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+		print avg2
+		print spotName, ":", "BG: ", BG_diff/255.0, "BR: ", BR_diff/255.0, "GR: ", GR_diff/255.0, "\n"
 	if BG_diff > max_diff:
 		fails = fails + 1
 	if BR_diff > max_diff:
@@ -200,7 +201,8 @@ def saveImgUrl(url):
 	infile = open(file_name, 'wb')
 	meta = u.info()
 	file_size = int(meta.getheaders("Content-Length")[0])
-	print "Downloading: %s Bytes: %s" % (file_name, file_size)
+	if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+		print "Downloading: %s Bytes: %s" % (file_name, file_size)
 
 	file_size_dl = 0
 	block_sz = 8192
@@ -213,7 +215,8 @@ def saveImgUrl(url):
 		infile.write(buffer)
 		status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
 		status = status + chr(8)*(len(status)+1)
-		print status,
+		if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+			print status,
 
 	infile.close()
 
@@ -237,7 +240,8 @@ def cannyedgedetection(spotforcanny,parkingspacelocation): #Detects edges
 	edges = cv2.Canny(spotforcanny,lower,upper)
 	#print edges
 	avg = averagePng(edges)
-	print parkingspacelocation, avg
+	if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+		print parkingspacelocation, avg
 
 	if avg > 400:
 		return False,edges
@@ -295,13 +299,15 @@ green_color = (0,255,0)
 #f.close()
 numImgs = 0
 
-with open('images.json') as images_file:
+#use the images.json for all the images demo is just the noice ones for demo day
+#with open('images.json') as images_file:
+with open('demo.json') as images_file:
 	images = json.load(images_file)
 
 #loop through all images
 for image in images['data']:
 
-	if numImgs > 0:
+	if numImgs > 20:
 		break
 	numImgs = numImgs + 1
 
@@ -336,10 +342,12 @@ for image in images['data']:
 			w,h = img.shape[:2]
 			pt = Point(row_data)
 			pt1 = Point([pt.x+h/10, pt.y+w/10])
-			print size, h/10, w/10
+			if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+				print size, h/10, w/10
 			gray_spot = cutParkingSpot(img, pt, pt1)
 			gray_spot_avg = averageColors(gray_spot)
-			print "Gray Spot", gray_spot_avg
+			if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+				print "Gray Spot", gray_spot_avg
 			#cv2.imshow("Grayspot", gray_spot)
 			#cv2.waitKey(0)
 			saveImg(gray_spot, spot_dir, "1_Gray_Spot")
@@ -408,10 +416,11 @@ for image in images['data']:
 					img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, green_color)	
 					parkinglotbinaryarray.append(1); 
 				   
-				# Comment these out to not step through step by step
-				cv2.imshow('image', img)
-				cv2.waitKey(0)
-				cv2.destroyWindow('image')
+				#takes you through each step as it updates
+				if len(sys.argv) > 1 and 's' in sys.argv[1]:
+					cv2.imshow('image', img)
+					cv2.waitKey(0)
+					cv2.destroyWindow('image')
 				#cv2.imshow("edges", edgesResult[1])
 
 				# Do we need to save these?
@@ -422,7 +431,13 @@ for image in images['data']:
 			#draw_line(img, v_line_obj, black_color)
 
 	# Print the values to the string to send
-	print parkinglotbinaryarray
-	#serv.sendDataToServer(parkinglotbinaryarray)
-	cv2.imwrite('out1.jpg', img)
-
+	if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+		print parkinglotbinaryarray
+	if len(sys.argv) > 1 and 'u' in sys.argv[1]:
+		serv.sendDataToServer(parkinglotbinaryarray)
+	#save the last output
+	#cv2.imwrite('out1.jpg', img)
+	if len(sys.argv) > 1 and 'f' in sys.argv[1]:
+		cv2.imshow('image', img)
+		cv2.waitKey(0)
+		cv2.destroyWindow('image')
