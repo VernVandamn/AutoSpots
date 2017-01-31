@@ -81,6 +81,15 @@ def averagePng(image):
 	
 	return count
 
+def notBlack(image):
+        count = 0
+        for row in image:
+                for col in row:
+                        if col[0] > 0:
+                                count = count + 1
+
+        return count
+
 def averageColors(image):
 	avg = [average(image, 0), average(image, 1), average(image, 2)]
 	return avg
@@ -276,6 +285,31 @@ def sharpen(spot): #Sharpens the image for better edge detection
 	custom = cv2.filter2D(spot, -1, kernel)
 	return custom
 
+def grayMask(spot):
+        boundries = [
+            ([103, 86, 65], [145, 133, 128]),
+        ]
+
+        # create NumPy arrays from the boundries
+        lower = np.array(boundries[0][0], dtype = "uint8")
+        upper = np.array(boundries[0][1], dtype = "uint8")
+
+        # find the colors within the specified boundries and apply
+        # the mask
+        mask = cv2.inRange(spot, lower, upper)
+        output = cv2.bitwise_and(spot, spot, mask = mask)
+        total_not_black_pixels = notBlack(output)
+        print total_not_black_pixels
+	# cv2.imshow('image', output)
+	# cv2.waitKey(0)
+
+
+        if total_not_black_pixels > 400:
+                return False
+
+        return True
+
+
 with open('newParking.json') as data_file:
 	data = json.load(data_file)
 
@@ -300,14 +334,16 @@ green_color = (0,255,0)
 numImgs = 0
 
 #use the images.json for all the images demo is just the noice ones for demo day
-#with open('images.json') as images_file:
-with open('demo.json') as images_file:
+with open('images.json') as images_file:
+# with open('demo.json') as images_file:
 	images = json.load(images_file)
 
 #loop through all images
 for image in images['data']:
 
-	if numImgs > 20:
+        # This is where you specify the number of images to scan
+	# if numImgs > 20:
+	if numImgs > 6:
 		break
 	numImgs = numImgs + 1
 
@@ -382,6 +418,8 @@ for image in images['data']:
 			if len(p_lot[-1]['V']) > 0:			
 				#mask image
 				maskedImg = maskImage(img, p_lot[-1]['V'][-1], v_line_obj)
+                                # cv2.imshow('image', maskedImg)
+                                # cv2.waitKey(0)
 
 				#get row and column of spot
 				spotName = "Row_" + str(len(p_lot)) + "_Col_" + str(len(p_lot[-1]['V']))
@@ -403,15 +441,51 @@ for image in images['data']:
 				sharp = sharpen(gray_image)
 				edgesResult = cannyedgedetection(sharp,spotName)
 
-				if colorResult == False:
+                                # run other tests here
+                                maskResult = grayMask(parking_spot)
+                                # cv2.imshow('image', maskedImg)
+                                # cv2.waitKey(0)
+
+
+
+                                # -- OLD METHOD -- IF ONE IS WRONG GO WITH IT
+				# if colorResult == False:
+					# drawBoundBox(parking_spot, red_color)
+					# img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, red_color)	  
+					# parkinglotbinaryarray.append(0)				   
+				# elif edgesResult[0] == False:
+					# drawBoundBox(parking_spot, red_color)
+					# img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, red_color)
+					# parkinglotbinaryarray.append(0)	   
+                                # elif maskResult == False:
+                                # if maskResult == False:
+					# drawBoundBox(parking_spot, red_color)
+					# img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, red_color)
+					# parkinglotbinaryarray.append(0)	   
+				# else:
+					# drawBoundBox(parking_spot, green_color)
+					# img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, green_color)	
+					# parkinglotbinaryarray.append(1); 
+
+                                vote = 0
+                                
+				# if colorResult == False:
+                                        # vote += 1
+                                # print vote
+				# if edgesResult[0] == False:
+                                        # vote += 2
+                                # print vote
+                                if maskResult == False:
+                                        vote += 1
+                                # print vote
+
+
+                                # if vote > 1:
+                                if vote == 1:
 					drawBoundBox(parking_spot, red_color)
 					img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, red_color)	  
 					parkinglotbinaryarray.append(0)				   
-				elif edgesResult[0] == False:
-					drawBoundBox(parking_spot, red_color)
-					img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, red_color)
-					parkinglotbinaryarray.append(0)	   
-				else:
+                                else:
 					drawBoundBox(parking_spot, green_color)
 					img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, green_color)	
 					parkinglotbinaryarray.append(1); 
