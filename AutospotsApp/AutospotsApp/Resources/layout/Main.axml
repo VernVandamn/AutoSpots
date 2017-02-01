@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:text="@string/MainTitleText"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/MainTitleTextView"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:editable="false"
+        android:focusable="false"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:textAllCaps="true"
+        android:textSize="50dp" />
+    <TextView
+        android:text="@string/SubTitleText"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/SubTitleTextView"
+        android:layout_gravity="center"
+        android:layout_marginBottom="150dp" />
+    <Button
+        android:text="@string/ParkMeButtonText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ParkMeButton"
+        android:gravity="center"
+        android:textSize="40dp"
+        android:elevation="10dp"
+        android:layout_gravity="center"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:layout_marginBottom="40dp" />
+    <ImageButton
+        android:src="@drawable/smallmenu2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/MainMenuButton"
+        android:layout_gravity="right" />
+</LinearLayout>
