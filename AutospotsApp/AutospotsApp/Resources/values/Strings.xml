@@ -7,6 +7,7 @@
   <string name="MenuText">Main Menu</string>
   <string name="NearestSpotButtonText">Find nearest parking spot</string>
   <string name="NearBuildingButtonText">Find spot near building</string>
+  <string name="InLotButtonText">Find spot in specific lot</string>
   <string name="PlanTripButtonText">Plan a trip to campus</string>
   <string name="StatisticsButtonText">Statistics</string>
   <string name="ViewLotsButtonText">View parking lot</string>
@@ -14,13 +15,18 @@
   <string name="StatisticsMenuText">Statistics</string>
   <string name="PlanTripMenuText">Plan a Trip</string>
   <string name="StatSpinnerPrompt">Choose Statistic</string>
+  <string name="NoLocationToastText">No Location available.</string>
+  <string name="WaitingForLocationText">Waiting for your location...</string>
+  <string name="WaitingForSpotText">Finding a parking space...</string>
+  <string name="LetsGoText">Spot found! Let\'s go!</string>
+  <string name="CantLocateText">Unable to determine your location. Try again in a short while.</string>
   <string name="SelectABuildingText">Select a building:</string>
   <string-array name="SelectBuildingArray">
     <item>MEB</item>
     <item>WEB</item>
     <item>Union</item>
     <item>Stadium</item>
-    <item>LCB</item>
+    <item>MEK</item>
   </string-array>
   <string name="or">OR</string>
   <string name="SelectAParkingLotText">Select a parking lot:</string>

@@ -51,7 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FindNearestActivity.cs" />
+    <Compile Include="InLotActivity.cs" />
     <Compile Include="MainMenuActivity.cs" />
+    <Compile Include="NearBuildingActivity.cs" />
     <Compile Include="PlanTripActivity.cs" />
     <Compile Include="PreferencesActivity.cs" />
     <Compile Include="StartActivity.cs" />
@@ -64,6 +67,9 @@
     <None Include="GettingStarted.Xamarin" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
+    <AndroidResource Include="Resources\layout\Main2.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
