@@ -94,8 +94,17 @@ namespace AutospotsApp
 			// aapt resource value: 0x7f060002
 			public const int ParkMeButton = 2131099650;
 			
+			// aapt resource value: 0x7f060005
+			public const int ParkMeTitleTextView = 2131099653;
+			
+			// aapt resource value: 0x7f060006
+			public const int ParkingStatusTextView = 2131099654;
+			
 			// aapt resource value: 0x7f060001
 			public const int SubTitleTextView = 2131099649;
+			
+			// aapt resource value: 0x7f060004
+			public const int TitleTextView = 2131099652;
 			
 			static Id()
 			{
@@ -113,6 +122,9 @@ namespace AutospotsApp
 			// aapt resource value: 0x7f030000
 			public const int Main = 2130903040;
 			
+			// aapt resource value: 0x7f030001
+			public const int Main2 = 2130903041;
+			
 			static Layout()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -129,6 +141,15 @@ namespace AutospotsApp
 			// aapt resource value: 0x7f040003
 			public const int ApplicationName = 2130968579;
 			
+			// aapt resource value: 0x7f040013
+			public const int CantLocateText = 2130968595;
+			
+			// aapt resource value: 0x7f040007
+			public const int InLotButtonText = 2130968583;
+			
+			// aapt resource value: 0x7f040012
+			public const int LetsGoText = 2130968594;
+			
 			// aapt resource value: 0x7f040000
 			public const int MainTitleText = 2130968576;
 			
@@ -141,41 +162,50 @@ namespace AutospotsApp
 			// aapt resource value: 0x7f040005
 			public const int NearestSpotButtonText = 2130968581;
 			
+			// aapt resource value: 0x7f04000f
+			public const int NoLocationToastText = 2130968591;
+			
 			// aapt resource value: 0x7f040002
 			public const int ParkMeButtonText = 2130968578;
 			
-			// aapt resource value: 0x7f040007
-			public const int PlanTripButtonText = 2130968583;
-			
-			// aapt resource value: 0x7f04000c
-			public const int PlanTripMenuText = 2130968588;
-			
-			// aapt resource value: 0x7f04000a
-			public const int PreferencesButtonText = 2130968586;
-			
-			// aapt resource value: 0x7f04000e
-			public const int SelectABuildingText = 2130968590;
-			
-			// aapt resource value: 0x7f040010
-			public const int SelectAParkingLotText = 2130968592;
+			// aapt resource value: 0x7f040008
+			public const int PlanTripButtonText = 2130968584;
 			
 			// aapt resource value: 0x7f04000d
-			public const int StatSpinnerPrompt = 2130968589;
-			
-			// aapt resource value: 0x7f040008
-			public const int StatisticsButtonText = 2130968584;
+			public const int PlanTripMenuText = 2130968589;
 			
 			// aapt resource value: 0x7f04000b
-			public const int StatisticsMenuText = 2130968587;
+			public const int PreferencesButtonText = 2130968587;
+			
+			// aapt resource value: 0x7f040014
+			public const int SelectABuildingText = 2130968596;
+			
+			// aapt resource value: 0x7f040016
+			public const int SelectAParkingLotText = 2130968598;
+			
+			// aapt resource value: 0x7f04000e
+			public const int StatSpinnerPrompt = 2130968590;
+			
+			// aapt resource value: 0x7f040009
+			public const int StatisticsButtonText = 2130968585;
+			
+			// aapt resource value: 0x7f04000c
+			public const int StatisticsMenuText = 2130968588;
 			
 			// aapt resource value: 0x7f040001
 			public const int SubTitleText = 2130968577;
 			
-			// aapt resource value: 0x7f040009
-			public const int ViewLotsButtonText = 2130968585;
+			// aapt resource value: 0x7f04000a
+			public const int ViewLotsButtonText = 2130968586;
 			
-			// aapt resource value: 0x7f04000f
-			public const int or = 2130968591;
+			// aapt resource value: 0x7f040010
+			public const int WaitingForLocationText = 2130968592;
+			
+			// aapt resource value: 0x7f040011
+			public const int WaitingForSpotText = 2130968593;
+			
+			// aapt resource value: 0x7f040015
+			public const int or = 2130968597;
 			
 			static String()
 			{

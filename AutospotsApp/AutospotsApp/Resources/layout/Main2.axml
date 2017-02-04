@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="20dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
+    <TextView
+        android:text="@string/ApplicationName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/TitleTextView" />
+    <TextView
+        android:text="@string/ParkMeButtonText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ParkMeTitleTextView"
+        android:layout_gravity="center"
+        android:paddingTop="20dp"
+        android:paddingBottom="35dp"
+        android:textSize="30dp" />
+    <TextView
+        android:text="@string/WaitingForLocationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ParkingStatusTextView"
+        android:layout_gravity="center" />
+</LinearLayout>
