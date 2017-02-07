@@ -3,10 +3,9 @@
 
 import numpy
 import cv2
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
+from PyQt5 import QtCore, QtGui
 
-class MyDialog(QDialog):
+class MyDialog(QtGui.QDialog):
     def __init__(self, parent=None):
         super(MyDialog, self).__init__(parent)
 
