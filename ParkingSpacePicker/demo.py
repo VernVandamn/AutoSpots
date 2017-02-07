@@ -4,12 +4,22 @@ from PIL import ImageTk
 from tkinter import filedialog
 import cv2
 import numpy as np
+import argparse
 
 app = Tk()
 
 frame=Frame(app,width=1310,height=1000)
 frame.grid(row=0,column=0)
-canvas=Canvas(frame,bg='#FFFFFF',width=1310,height=1000,scrollregion=(0,0,1300,1000))
+
+# construct the argument parse and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-b", "--big", help = "Display with a scroll bar or not")
+args = vars(ap.parse_args())
+
+if args["big"] is None:
+    canvas=Canvas(frame,bg='#FFFFFF',width=1310,height=500,scrollregion=(0,0,1300,1000))
+else:
+    canvas=Canvas(frame,bg='#FFFFFF',width=1310,height=1000,scrollregion=(0,0,1300,1000))
 
 vbar=Scrollbar(frame,orient=VERTICAL)
 vbar.pack(side=RIGHT,fill=Y)
