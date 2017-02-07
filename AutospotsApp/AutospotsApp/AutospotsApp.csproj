@@ -55,6 +55,8 @@
     <Compile Include="InLotActivity.cs" />
     <Compile Include="MainMenuActivity.cs" />
     <Compile Include="NearBuildingActivity.cs" />
+    <Compile Include="PickBuildingActivity.cs" />
+    <Compile Include="PickLotActivity.cs" />
     <Compile Include="PlanTripActivity.cs" />
     <Compile Include="PreferencesActivity.cs" />
     <Compile Include="StartActivity.cs" />

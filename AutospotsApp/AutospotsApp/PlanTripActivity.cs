@@ -15,6 +15,8 @@ namespace AutospotsApp
     [Activity(Label = "PlanTripActivity")]
     public class PlanTripActivity : Activity
     {
+        int bpos;
+        int lpos;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -44,6 +46,12 @@ namespace AutospotsApp
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             buildingChooser.Adapter = adapter;
             mainlayout.AddView(buildingChooser);
+            Button bOkButton = new Button(this);
+            bOkButton.Text = "OK";
+            bOkButton.Click += delegate {
+                bClickOk();
+            };
+            mainlayout.AddView(bOkButton);
             TextView orLabel = new TextView(this);
             orLabel.Text = GetString(Resource.String.or);
             orLabel.SetPadding(0, (int)(30 * dps), 0, (int)(30 * dps));
@@ -60,23 +68,36 @@ namespace AutospotsApp
             adapter2.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             parkingLotChooser.Adapter = adapter2;
             mainlayout.AddView(parkingLotChooser);
+            Button lOkButton = new Button(this);
+            lOkButton.Text = "OK";
+            lOkButton.Click += delegate {
+                lClickOk();
+            };
+            mainlayout.AddView(lOkButton);
             SetContentView(mainlayout);
         }
 
         private void buildingChooser_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            Spinner spinner = (Spinner)sender;
-
-            //string toast = string.Format("The planet is {0}", spinner.GetItemAtPosition(e.Position));
-            //Toast.MakeText(this, toast, ToastLength.Long).Show();
+            bpos = e.Position;
         }
 
         private void parkingLotChooser_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            Spinner spinner = (Spinner)sender;
+            lpos = e.Position;
+        }
 
-            //string toast = string.Format("The planet is {0}", spinner.GetItemAtPosition(e.Position));
-            //Toast.MakeText(this, toast, ToastLength.Long).Show();
+        private void bClickOk()
+        {
+            var nbActivity = new Intent(this, typeof(NearBuildingActivity));
+            nbActivity.PutExtra("TargetBuilding", bpos);
+            StartActivity(nbActivity);
+        }
+        private void lClickOk()
+        {
+            var nbActivity = new Intent(this, typeof(InLotActivity));
+            nbActivity.PutExtra("TargetLot", lpos);
+            StartActivity(nbActivity);
         }
     }
 }
