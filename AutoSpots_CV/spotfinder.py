@@ -18,6 +18,7 @@ import send_to_server as serv
 import platform
 import AutoSpotsComputerVision as cv
 import pllines as pll
+import cv2
 
 
 spot_dir = 'Spots'
@@ -67,7 +68,7 @@ for image in images['data']:
 
     #url = image['shot_url']+image['camera']+'/'+image['name']
     #
-    #saveImgUrl(url)
+    #cv.saveImgUrl(url)
 
     img = cv2.imread(image['name'])
 
@@ -89,41 +90,41 @@ for image in images['data']:
         size = sys.getsizeof(row_data[0])
 
         if platform.system() == 'Darwin':
-                intLength = 24
+            intLength = 24
         else:
-                intLength = 12
+            intLength = 12
         if size == intLength: #check for gray spot
             w,h = img.shape[:2]
             pt = pll.Point(row_data)
             pt1 = pll.Point([pt.x+h/10, pt.y+w/10])
             if len(sys.argv) > 1 and 'p' in sys.argv[1]:
-                    print size, h/10, w/10
+                print size, h/10, w/10
             gray_spot = pll.cutParkingSpot(img, pt, pt1)
             gray_spot_avg = cv.averageColors(gray_spot)
             if len(sys.argv) > 1 and 'p' in sys.argv[1]:
-                    print "Gray Spot", gray_spot_avg
+                print "Gray Spot", gray_spot_avg
             #cv2.imshow("Grayspot", gray_spot)
             #cv2.waitKey(0)
-            saveImg(gray_spot, spot_dir, "1_Gray_Spot")
+            cv.saveImg(gray_spot, spot_dir, "1_Gray_Spot")
             spots["1_Gray_Spot"] = gray_spot
             continue #break out
 
-            p_lot.append(
-                {
-                    'H': [], #list of horizontals
-                    'V': [] #list of verticals
-                }
-            )
+        p_lot.append(
+            {
+                'H': [], #list of horizontals
+                'V': [] #list of verticals
+            }
+        )
 
-            #process horizontal lines  
-            for h_line in row_data[0]:
-                h_line_obj = pll.Line(h_line[0], h_line[1]) #get new Line object
-                p_lot[-1]['H'].append(h_line_obj) #add new object to p_lot
+        #process horizontal lines  
+        for h_line in row_data[0]:
+            h_line_obj = pll.Line(h_line[0], h_line[1]) #get new Line object
+            p_lot[-1]['H'].append(h_line_obj) #add new object to p_lot
 
-            top_h_line = p_lot[-1]['H'][0]
-            bot_h_line = p_lot[-1]['H'][1]
+        top_h_line = p_lot[-1]['H'][0]
+        bot_h_line = p_lot[-1]['H'][1]
 
-            #process vertical lines
+        #process vertical lines
         for v_line in row_data[1]:
             #create Line object for vertical line
             v_line_obj = pll.Line(
@@ -178,13 +179,13 @@ for image in images['data']:
 
                 # if vote > 1:
                 if vote == 1:
-                    pll.drawBoundBox(parking_spot, red_color)
-                    img = pll.boxemup(img, p_lot[-1]['V'][-1], v_line_obj, red_color)	  
-                    parkinglotbinaryarray.append(0)				   
-                else:
                     pll.drawBoundBox(parking_spot, green_color)
                     img = pll.boxemup(img, p_lot[-1]['V'][-1], v_line_obj, green_color)	
                     parkinglotbinaryarray.append(1); 
+                else:
+                    pll.drawBoundBox(parking_spot, red_color)
+                    img = pll.boxemup(img, p_lot[-1]['V'][-1], v_line_obj, red_color)	  
+                    parkinglotbinaryarray.append(0)				   
 
                 #takes you through each step as it updates
                 if len(sys.argv) > 1 and 's' in sys.argv[1]:
@@ -196,8 +197,8 @@ for image in images['data']:
                 # Do we need to save these?
                 cv.saveImg(parking_spot, spot_dir, spotName)
 
-                #add line object to p_lot
-                p_lot[-1]['V'].append(v_line_obj)
+            #add line object to p_lot
+            p_lot[-1]['V'].append(v_line_obj)
 
     # Print the values to the string to send
     if len(sys.argv) > 1 and 'p' in sys.argv[1]:

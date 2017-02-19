@@ -1,4 +1,6 @@
 import cv2
+import os
+import sys
 import numpy as np
 
 def grayImg(parking_spot):
@@ -12,12 +14,12 @@ def saveImg(img, dir, name):
 def average(image, index):
     sum = 0
     count = 0
-        for row in image:
-            for col in row:
-                if col[index] != 0:
-                    sum += col[index]
-                    count = count+1
-        return float(sum) / count
+    for row in image:
+        for col in row:
+            if col[index] != 0:
+                sum += col[index]
+                count = count+1
+    return float(sum) / count
 
 def averageColors(image):
     avg = [average(image, 0), average(image, 1), average(image, 2)]
@@ -73,7 +75,7 @@ def grayMask(spot):
     mask = cv2.inRange(spot, lower, upper)
     output = cv2.bitwise_and(spot, spot, mask = mask)
     total_not_black_pixels = notBlack(output)
-    print total_not_black_pixels
+    # print total_not_black_pixels
     # cv2.imshow('image', output)
     # cv2.waitKey(0)
 
