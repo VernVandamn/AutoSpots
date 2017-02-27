@@ -5,7 +5,7 @@
         [
             //top horizontal line with 2 points from left to right
            [
-                [ 415, 79 ], [585, 83]
+							 [ 415, 79 ], [585, 83]
            ],
            //bottom horizontal line with 2 points from left to right
            [

@@ -2,7 +2,12 @@
   "count": 86,
   "data": [
     {
-      "name": "Parking-Lot.jpg"
+			"name": "Parking-Lot2.jpg",
+			"json": "Parking-Lot2.json"
+    },
+    {
+			"name": "Parking-Lot.jpg",
+			"json": "Parking-Lot.json"
     },
     {
       "_id": "1473696001.west_virginia",

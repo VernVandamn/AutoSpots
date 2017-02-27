@@ -19,11 +19,14 @@ import sys
 import urllib2
 import send_to_server as serv
 import platform
+from matplotlib import pyplot as plt
 # import crfasrnn
 
 
 spot_dir = 'Spots'
 spots = {}
+pltimages = []
+titles = ['Canny Edge Detection', 'Gray Mask', 'CRF as RNN']
 
 #class definition for a Point
 class Point:
@@ -250,8 +253,12 @@ def cannyedgedetection(spotforcanny,parkingspacelocation): #Detects edges
     edges = cv2.Canny(spotforcanny,lower,upper)
     #print edges
     avg = averagePng(edges)
+    # if we select print show the edges found in that parking spot
     if len(sys.argv) > 1 and 'p' in sys.argv[1]:
-        print parkingspacelocation, avg
+        print 'Canny results: ', parkingspacelocation, avg
+        pltimages.append(edges)
+        # cv2.imshow('CV Results', edges)
+        # cv2.waitKey(0)
 
     if avg > 400:
         return False,edges
@@ -300,9 +307,12 @@ def grayMask(spot):
     mask = cv2.inRange(spot, lower, upper)
     output = cv2.bitwise_and(spot, spot, mask = mask)
     total_not_black_pixels = notBlack(output)
-    print total_not_black_pixels
-    # cv2.imshow('image', output)
-    # cv2.waitKey(0)
+
+    if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+        print 'Gray mask results: ', total_not_black_pixels
+        pltimages.append(output)
+        # cv2.imshow('CV Results', output)
+        # cv2.waitKey(0)
 
 
     if total_not_black_pixels > 400:
@@ -316,12 +326,9 @@ def grayMask(spot):
 ################################################################################
 ################################################################################
 
-if len(sys.argv) > 1 and 'm' in sys.argv[1]:
-    print 'found it hahahahahahha'
-
 # with open('newParking.json') as data_file:
-with open('Parking-Lot.json') as data_file:
-    data = json.load(data_file)
+# with open('Parking-Lot2.json') as data_file:
+    # data = json.load(data_file)
 
 black_color = (0,0,0)
 red_color = (0,0,255)
@@ -353,7 +360,7 @@ with open('images.json') as images_file:
 for image in images['data']:
     # This is where you specify the number of images to scan
     # if numImgs > 20:
-    if numImgs > 0:
+    if numImgs > 1:
             break
     numImgs = numImgs + 1
 
@@ -363,12 +370,15 @@ for image in images['data']:
 
     img = cv2.imread(image['name'])
 
+    with open(image['json']) as data_file:
+        data = json.load(data_file)
+
     # Save the image as input.jpg so crfasrnn will read it
     # run crfasrnn before the big loop so we only have to run it once for each picture
-    if len(sys.argv) > 1 and 'm' in sys.argv[1]:
+    if len(sys.argv) > 1 and 'm' not in sys.argv[1]:
         cv2.imwrite('input.jpg', img)
         height, width, channels = img.shape
-        print width, height
+        # print width, height
         os.system("python crfasrnn.py -g 0")
         # crfasrnn.main('1')
         crfrnn_output = cv2.imread('output.png')
@@ -437,6 +447,9 @@ for image in images['data']:
 
             #Start extracting spots after first vertical line
             if len(p_lot[-1]['V']) > 0:
+                # reset the image list
+                pltimages = []
+                
                 #mask image
                 maskedImg = maskImage(img, p_lot[-1]['V'][-1], v_line_obj)
 
@@ -455,9 +468,11 @@ for image in images['data']:
 
                 #averaging values of red, green and blue colors in parking spot image
                 #print spotName, np.average(np.mean(parking_spot, 0), 0)
+
                 avg = averageColors(parking_spot)
                 spots[spotName] = parking_spot
                 colorResult = withinRange(gray_spot_avg, avg, spotName)
+
 
                 gray_image = cv2.cvtColor(parking_spot, cv2.COLOR_BGR2GRAY)
                 sharp = sharpen(gray_image)
@@ -467,21 +482,41 @@ for image in images['data']:
                 maskResult = grayMask(parking_spot)
 
                 # analyze the crfasrnn output for that spot
-                if len(sys.argv) > 1 and 'm' in sys.argv[1]:
+                if len(sys.argv) > 1 and 'm' not in sys.argv[1]:
                     # TODO: Masked images not coming out right
 
                     crfrnn_maskedImg = maskImage(crfrnn_output, p_lot[-1]['V'][-1], v_line_obj)
-                    # cv2.imshow('image', crfrnn_maskedImg)
-                    # cv2.waitKey(0)
                     crfrnn_parking_spot = cutParkingSpot(
                             crfrnn_maskedImg,
                             find_min_point(p_lot[-1]['V'][-1], v_line_obj),
                             find_max_point(p_lot[-1]['V'][-1], v_line_obj)
                     )
+                    height, width, channels = crfrnn_parking_spot.shape
+                    h = height/2
+                    w = width/2
+                    # cv2.imshow('image', crfrnn_parking_spot[h-5:h+5, w-5:w+5])
+                    # cv2.waitKey(0)
                     machine_learning = False
-                    detected_pixels = notBlack(crfrnn_parking_spot)
-                    if detected_pixels == 0:
+                    # detect in the middle of the spot
+                    # detected_pixels = notBlack(crfrnn_parking_spot[h-5:h+5, w-5:w+5])
+
+                    # detect more towards the top of the spot which might be more accurate
+                    # because camera angle will make closer things bleed into the spots above them
+                    detected_pixels = notBlack(crfrnn_parking_spot[h-10:h, w-5:w+5])
+                    if detected_pixels < 70:
                         machine_learning = True
+                    if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+                        print 'Detected pixels in center of spot: ', detected_pixels
+                        # cv2.imshow('CV Results', crfrnn_parking_spot)
+                        pltimages.append(crfrnn_parking_spot)
+                        # cv2.waitKey(0)
+                        # cv2.destroyWindow('CV Results')
+
+                        for i in range(len(pltimages)):
+                            plt.subplot(2,2,i+1),plt.imshow(pltimages[i])
+                            plt.title(titles[i])
+                            plt.xticks([]),plt.yticks([])
+                        plt.show()
                 
                 
                 # -- OLD METHOD -- IF ONE IS WRONG GO WITH IT
@@ -513,13 +548,13 @@ for image in images['data']:
                     # print vote
                 if maskResult == False:
                     vote += 1
-                if len(sys.argv) > 1 and 'm' in sys.argv[1]:
+                if len(sys.argv) > 1 and 'm' not in sys.argv[1]:
                     if machine_learning == False:
                         vote += 3
                     # print vote
 
 
-                if vote > 1:
+                if vote > 2:
                 # if vote == 1:
                     drawBoundBox(parking_spot, red_color)
                     img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, red_color)
