@@ -384,6 +384,14 @@ for image in images['data']:
         crfrnn_output = cv2.imread('output.png')
         crfrnn_output = cv2.resize(crfrnn_output, (width, height))
 
+        # darknet machine learning
+        # create image to save bounding box locations to
+        os.system("./darknet detect cfg/yolo.cfg yolo.weights input.jpg")
+        
+        img = np.zeros((width,height,3), np.uint8)
+
+
+
     # Show the original image first
     #cv2.imshow('image', img)
     #cv2.waitKey(0)

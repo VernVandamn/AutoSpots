@@ -16,6 +16,14 @@ build/
 [Oo]bj/
 AutoSpots_CV/caffe/
 AutoSpots_CV/caffe/*
+AutoSpots_CV/data/
+AutoSpots_CV/data/*
+AutoSpots_CV/src/
+AutoSpots_CV/src/*
+AutoSpots_CV/cfg/
+AutoSpots_CV/cfg/*
+
+
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
@@ -160,3 +168,4 @@ $RECYCLE.BIN/
 # Machine learning files (too big)
 *.caffemodel
 *.prototxt
+*.weights
