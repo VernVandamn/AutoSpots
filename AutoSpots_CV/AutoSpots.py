@@ -14,6 +14,7 @@ here
 import os
 import numpy as np
 import cv2
+import csv
 import json
 import sys
 import urllib2
@@ -26,7 +27,7 @@ from matplotlib import pyplot as plt
 spot_dir = 'Spots'
 spots = {}
 pltimages = []
-titles = ['Canny Edge Detection', 'Gray Mask', 'CRF as RNN']
+titles = ['Canny Edge Detection', 'Gray Mask', 'CRF as RNN', 'Darknet']
 
 #class definition for a Point
 class Point:
@@ -356,11 +357,17 @@ with open('images.json') as images_file:
     # with open('demo.json') as images_file:
     images = json.load(images_file)
 
+# clear out spot_results folder
+filelist = [ f for f in os.listdir("./spot_results") if f.endswith(".png") ]
+for f in filelist:
+    os.remove('./spot_results/' + f)
+
 #loop through all images
 for image in images['data']:
     # This is where you specify the number of images to scan
+    # 0 = only one image
     # if numImgs > 20:
-    if numImgs > 1:
+    if numImgs > 0:
             break
     numImgs = numImgs + 1
 
@@ -373,12 +380,14 @@ for image in images['data']:
     with open(image['json']) as data_file:
         data = json.load(data_file)
 
+    # Create blank file for darknet incase we use it
+    blank_darknet = np.zeros(shape=(1,1))
     # Save the image as input.jpg so crfasrnn will read it
     # run crfasrnn before the big loop so we only have to run it once for each picture
     if len(sys.argv) > 1 and 'm' not in sys.argv[1]:
         cv2.imwrite('input.jpg', img)
         height, width, channels = img.shape
-        # print width, height
+
         os.system("python crfasrnn.py -g 0")
         # crfasrnn.main('1')
         crfrnn_output = cv2.imread('output.png')
@@ -386,9 +395,18 @@ for image in images['data']:
 
         # darknet machine learning
         # create image to save bounding box locations to
-        os.system("./darknet detect cfg/yolo.cfg yolo.weights input.jpg")
-        
-        img = np.zeros((width,height,3), np.uint8)
+        os.system("./darknet detect cfg/yolo.cfg yolo.weights input.jpg -thresh .15")
+
+        blank_darknet = np.zeros((height,width,3), np.uint8)
+
+        with open('darknet_results.csv', 'r') as f:
+            reader = csv.reader(f, delimiter=',')
+            for line in reader:
+                # line[0]=x1, line[1]=y1, line[2]=x2, line[3]=y2
+                cv2.rectangle(blank_darknet,(int(line[0]),int(line[1])),(int(line[2]),int(line[3])),(255,255,255),-1)
+        os.remove('darknet_results.csv')
+
+
 
 
 
@@ -425,7 +443,7 @@ for image in images['data']:
                 print "Gray Spot", gray_spot_avg
             #cv2.imshow("Grayspot", gray_spot)
             #cv2.waitKey(0)
-            saveImg(gray_spot, spot_dir, "1_Gray_Spot")
+            # saveImg(gray_spot, spot_dir, "1_Gray_Spot")
             spots["1_Gray_Spot"] = gray_spot
             continue #break out
 
@@ -499,12 +517,21 @@ for image in images['data']:
                             find_min_point(p_lot[-1]['V'][-1], v_line_obj),
                             find_max_point(p_lot[-1]['V'][-1], v_line_obj)
                     )
+                    # cv2.imshow('image', blank_darknet)
+                    # cv2.waitKey(0)
+                    darknet_maskedImg = maskImage(blank_darknet, p_lot[-1]['V'][-1], v_line_obj)
+                    darknet_parking_spot = cutParkingSpot(
+                            darknet_maskedImg,
+                            find_min_point(p_lot[-1]['V'][-1], v_line_obj),
+                            find_max_point(p_lot[-1]['V'][-1], v_line_obj)
+                    )
                     height, width, channels = crfrnn_parking_spot.shape
                     h = height/2
                     w = width/2
                     # cv2.imshow('image', crfrnn_parking_spot[h-5:h+5, w-5:w+5])
                     # cv2.waitKey(0)
                     machine_learning = False
+                    darknet = False
                     # detect in the middle of the spot
                     # detected_pixels = notBlack(crfrnn_parking_spot[h-5:h+5, w-5:w+5])
 
@@ -513,10 +540,18 @@ for image in images['data']:
                     detected_pixels = notBlack(crfrnn_parking_spot[h-10:h, w-5:w+5])
                     if detected_pixels < 70:
                         machine_learning = True
+
+
+                    detected_darknet_pixels = notBlack(darknet_parking_spot[h-10:h, w-5:w+5])
+                    if detected_darknet_pixels < 75:
+                        darknet = True
+
                     if len(sys.argv) > 1 and 'p' in sys.argv[1]:
-                        print 'Detected pixels in center of spot: ', detected_pixels
+                        print 'Detected pixels in center of spot(crfrnn): ', detected_pixels
+                        print 'Detected pixels in center of spot(darknet): ', detected_darknet_pixels
                         # cv2.imshow('CV Results', crfrnn_parking_spot)
                         pltimages.append(crfrnn_parking_spot)
+                        pltimages.append(darknet_parking_spot)
                         # cv2.waitKey(0)
                         # cv2.destroyWindow('CV Results')
 
@@ -524,7 +559,9 @@ for image in images['data']:
                             plt.subplot(2,2,i+1),plt.imshow(pltimages[i])
                             plt.title(titles[i])
                             plt.xticks([]),plt.yticks([])
-                        plt.show()
+
+                        plt.savefig('./spot_results/' + spotName)
+                        # plt.show()
                 
                 
                 # -- OLD METHOD -- IF ONE IS WRONG GO WITH IT
@@ -559,9 +596,12 @@ for image in images['data']:
                 if len(sys.argv) > 1 and 'm' not in sys.argv[1]:
                     if machine_learning == False:
                         vote += 3
+                    if darknet == False:
+                        vote += 3
                     # print vote
 
 
+                # if vote > 2:
                 if vote > 2:
                 # if vote == 1:
                     drawBoundBox(parking_spot, red_color)
@@ -580,7 +620,7 @@ for image in images['data']:
                     #cv2.imshow("edges", edgesResult[1])
 
                 # Do we need to save these?
-                saveImg(parking_spot, spot_dir, spotName)
+                # saveImg(parking_spot, spot_dir, spotName)
 
             #add line object to p_lot
             p_lot[-1]['V'].append(v_line_obj)
@@ -594,6 +634,8 @@ for image in images['data']:
         #save the last output
         #cv2.imwrite('out1.jpg', img)
     if len(sys.argv) > 1 and 'f' in sys.argv[1]:
-        cv2.imshow('image', img)
-        cv2.waitKey(0)
-        cv2.destroyWindow('image')
+        cv2.imwrite('final.png', img)
+        cv2.imwrite('output.png', crfrnn_output)
+        # cv2.imshow('image', img)
+        # cv2.waitKey(0)
+        # cv2.destroyWindow('image')
