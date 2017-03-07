@@ -1,0 +1,34 @@
+{:uriI"Œfile://app/assets/images/lots/caffe/tools/CMakeLists.txt?type=text/plain&id=5fe73f3a706f6930641b5cc9571162175b18a1274855b5462e0bfce02e46f640:ET:load_pathI"app/assets/images;T:filenameI"6app/assets/images/lots/caffe/tools/CMakeLists.txt;T:	nameI" lots/caffe/tools/CMakeLists;T:logical_pathI"$lots/caffe/tools/CMakeLists.txt;T:content_typeI"text/plain;T:sourceI"# Collect source files
+file(GLOB_RECURSE srcs ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+
+# Build each source file independently
+foreach(source ${srcs})
+  get_filename_component(name ${source} NAME_WE)
+
+  # caffe target already exits
+  if(name MATCHES "caffe")
+    set(name ${name}.bin)
+  endif()
+
+  # target
+  add_executable(${name} ${source})
+  target_link_libraries(${name} ${Caffe_LINK})
+  caffe_default_properties(${name})
+
+  # set back RUNTIME_OUTPUT_DIRECTORY
+  caffe_set_runtime_directory(${name} "${PROJECT_BINARY_DIR}/tools")
+  caffe_set_solution_folder(${name} tools)
+
+  # restore output name without suffix
+  if(name MATCHES "caffe.bin")
+    set_target_properties(${name} PROPERTIES OUTPUT_NAME caffe)
+  endif()
+
+  # Install
+  install(TARGETS ${name} DESTINATION bin)
+endforeach(source)
+;T:metadata{	:dependencieso:Set:
+@hash}
+I"environment-version;TTI"environment-paths;TTI"rails-env;TTI"4processors:type=text/plain&file_type=text/plain;TTI"Dfile-digest://app/assets/images/lots/caffe/tools/CMakeLists.txt;TTF:charsetI"
+utf-8;F:digest"%²’¿ 4TY"¹ÎÈ¯ä{S$÷vjŒ²Ä3Ïª	%–‚M:lengthi:dependencies_digest"%¿L¼Íœ7X^(8Æ’10=ô¶=´ˆ,Ì’'¬¶¹:idI"E5fe73f3a706f6930641b5cc9571162175b18a1274855b5462e0bfce02e46f640;F:
+mtimel+_ç¼X

@@ -1,0 +1,28 @@
+{:uriI"àfile://app/assets/images/lots/Parking-Lot.json?type=application/json&id=a9ac971182f201c4ba1e6016d1a4907418f34dac43c69a4eaa8065259e9c91b4:ET:load_pathI"app/assets/images;T:filenameI",app/assets/images/lots/Parking-Lot.json;T:	nameI"lots/Parking-Lot;T:logical_pathI"lots/Parking-Lot.json;T:content_typeI"application/json;T:sourceI"5[
+		[442, 464],
+		
+    [
+        [
+           [
+							 [467, 283], [719, 338]
+           ],
+           [
+							 [408, 321], [679, 411]
+           ]
+        ],
+
+        [
+            [467, 408],
+            [528, 452],
+            [587, 520],
+            [651, 592],
+            [718, 679]
+        ]
+    ]
+]
+;T:metadata{	:dependencieso:Set:
+@hash}
+I"environment-version;TTI"environment-paths;TTI"rails-env;TTI"@processors:type=application/json&file_type=application/json;TTI":file-digest://app/assets/images/lots/Parking-Lot.json;TTF:charsetI"
+utf-8;F:digest"%(Ú∫RZÒ`Å£Vj¢ÓØ[IY¥‰`ôî*BBÆ≠W<>":lengthi5:dependencies_digest"%+Ÿ*©Ó∆”ãí∞Öu¡„…˛'
+xH÷2ZãoàHãÇÍ:idI"Ea9ac971182f201c4ba1e6016d1a4907418f34dac43c69a4eaa8065259e9c91b4;F:
+mtimel+ÌºX

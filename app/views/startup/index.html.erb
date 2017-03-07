@@ -1,0 +1,63 @@
+<!-- Page Content -->
+<pre>
+<%= Cowsay.say("Hello", "Cow") %>
+</pre>
+<div class="container">
+  <div class="row" id="main">
+      <h1>Bootstrap 3 Lightbox image gallery using Modal</h1>
+      <div class="col-lg-12 col-sm-12 col-xs-12" ><a title="Image 1" href="#" id="mainimg"><%= image_tag('lots/final.png', :class => "thumbnail img-responsive") %></a></div>
+          
+  </div>
+  <hr>
+  <div class="row">
+    <% @images.each do |image| %>
+      <div class="col-lg-4 col-sm-5 col-xs-6">
+        <a title="<% image.split('/').last %>" href="#">
+          <%= image_tag("spots/#{image.split('/').last}", :class => "thumbnail img-responsive") %>
+        </a>
+      </div>
+    <% end %>
+    <hr>
+  </div>
+  <hr>
+  <div class="row" id="main">
+    <h3>Machine Learning Responses</h3>
+    <div class="col-lg-12 col-sm-12 col-xs-12" >
+      <a title="Image 1" href="#" id="mainimg">
+        <%= image_tag('lots/output.png', :class => "thumbnail img-responsive") %>
+      </a>
+    </div>
+    <div class="col-lg-12 col-sm-12 col-xs-12" >
+      <a title="Image 1" href="#" id="mainimg">
+        <%= image_tag('lots/predictions.jpg', :class => "thumbnail img-responsive") %>
+      </a>
+    </div>
+  </div>
+</div>
+<div tabindex="-1" class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+                                <button class="close" type="button" data-dismiss="modal">×</button>
+                                <h3 class="modal-title">Heading</h3>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                                <button class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+   </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+$('.thumbnail').click(function(){
+      $('.modal-body').empty();
+            var title = $(this).parent('a').attr("title");
+            $('.modal-title').html(title);
+            $($(this).parents('div').html()).appendTo('.modal-body');
+            $('#myModal').modal({show:true});
+});
+});
+</script>

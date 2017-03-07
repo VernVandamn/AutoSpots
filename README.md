@@ -1,12 +1,24 @@
-# AutoSpots
+# README
 
-While running the code you can pass arguments to see more of what it is doing.
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
--f will show you a final picture of the output
--s will take you step by step as each space is analized
--u will send the information to the server 
--p will print values for each locaiton to the console
+Things you may want to cover:
 
-any combination will do multiple things
--sup will take you step by step through the process, update the server 
-and print to the console
+* Ruby version
+
+* System dependencies
+
+* Configuration
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...

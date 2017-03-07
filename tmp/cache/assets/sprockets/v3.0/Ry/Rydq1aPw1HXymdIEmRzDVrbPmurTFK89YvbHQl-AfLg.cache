@@ -1,0 +1,10 @@
+{:uriI"file://app/assets/images/lots/caffe/src/gtest/CMakeLists.txt?type=text/plain&id=b8395b385810b497b2788b5eb1634039efd19ed9a04c3c646bf3dd4623d895b8:ET:load_pathI"app/assets/images;T:filenameI":app/assets/images/lots/caffe/src/gtest/CMakeLists.txt;T:	nameI"$lots/caffe/src/gtest/CMakeLists;T:logical_pathI"(lots/caffe/src/gtest/CMakeLists.txt;T:content_typeI"text/plain;T:sourceI"²add_library(gtest STATIC EXCLUDE_FROM_ALL gtest.h gtest-all.cpp)
+caffe_default_properties(gtest)
+
+#add_library(gtest_main gtest_main.cc)
+#target_link_libraries(gtest_main gtest)
+;T:metadata{	:dependencieso:Set:
+@hash}
+I"environment-version;TTI"environment-paths;TTI"rails-env;TTI"4processors:type=text/plain&file_type=text/plain;TTI"Hfile-digest://app/assets/images/lots/caffe/src/gtest/CMakeLists.txt;TTF:charsetI"
+utf-8;F:digest"%…-hª-H•İ€[ş‡yÚãÜ,Šm‚ªéİŒË:lengthi²:dependencies_digest"%æ³,ğ]¶ĞZÕq´©3À/w¡öô/:BE:idI"Eb8395b385810b497b2788b5eb1634039efd19ed9a04c3c646bf3dd4623d895b8;F:
+mtimel+_ç¼X

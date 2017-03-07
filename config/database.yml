@@ -1,0 +1,27 @@
+development:
+  host: localhost
+  adapter: postgresql
+  encoding: utf8
+  database: cvdisplay_development
+  pool: 5
+  username: postgres
+  password: Char1ot5
+
+test: &TEST
+  adapter: postgresql
+  encoding: utf8
+  database: cvdisplay_test
+  pool: 5
+  username: postgres
+  password: Char1ot5
+
+production:
+  adapter: postgresql
+  encoding: utf8
+  database: cvdisplay_production
+  pool: 5
+  username: postgres
+  password: Char1ot5
+
+cucumber:
+  <<: *TEST
