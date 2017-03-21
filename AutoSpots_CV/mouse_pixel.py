@@ -11,7 +11,7 @@ def draw_circle(event,x,y,flags,param):
 
 # Create a black image, a window and bind the function to window
 # img = np.zeros((512,512,3), np.uint8)
-img = cv2.imread('Parking-Lot2.jpg')
+img = cv2.imread('plot3.jpg')
 cv2.namedWindow('image')
 cv2.setMouseCallback('image',draw_circle)
 

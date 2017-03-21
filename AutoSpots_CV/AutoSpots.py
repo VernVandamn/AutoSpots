@@ -11,6 +11,7 @@ here
 '''
 
 
+import argparse
 import os
 import numpy as np
 import cv2
@@ -191,9 +192,9 @@ def compareDiffs(avg1, avg2, spotName):
     BR_diff = abs(BR1_diff - BR2_diff)
     GR_diff = abs(GR1_diff - GR2_diff)
 
-    if len(sys.argv) > 1 and 'p' in sys.argv[1]:
-        print avg2
-        print spotName, ":", "BG: ", BG_diff/255.0, "BR: ", BR_diff/255.0, "GR: ", GR_diff/255.0, "\n"
+    # if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+    print avg2
+    print spotName, ":", "BG: ", BG_diff/255.0, "BR: ", BR_diff/255.0, "GR: ", GR_diff/255.0, "\n"
     if BG_diff > max_diff:
         fails = fails + 1
     if BR_diff > max_diff:
@@ -255,11 +256,11 @@ def cannyedgedetection(spotforcanny,parkingspacelocation): #Detects edges
     #print edges
     avg = averagePng(edges)
     # if we select print show the edges found in that parking spot
-    if len(sys.argv) > 1 and 'p' in sys.argv[1]:
-        print 'Canny results: ', parkingspacelocation, avg
-        pltimages.append(edges)
-        # cv2.imshow('CV Results', edges)
-        # cv2.waitKey(0)
+    # if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+    print 'Canny results: ', parkingspacelocation, avg
+    pltimages.append(edges)
+    # cv2.imshow('CV Results', edges)
+    # cv2.waitKey(0)
 
     if avg > 400:
         return False,edges
@@ -309,11 +310,11 @@ def grayMask(spot):
     output = cv2.bitwise_and(spot, spot, mask = mask)
     total_not_black_pixels = notBlack(output)
 
-    if len(sys.argv) > 1 and 'p' in sys.argv[1]:
-        print 'Gray mask results: ', total_not_black_pixels
-        pltimages.append(output)
-        # cv2.imshow('CV Results', output)
-        # cv2.waitKey(0)
+    # if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+    print 'Gray mask results: ', total_not_black_pixels
+    pltimages.append(output)
+    # cv2.imshow('CV Results', output)
+    # cv2.waitKey(0)
 
 
     if total_not_black_pixels > 400:
@@ -353,21 +354,26 @@ green_color = (0,255,0)
 numImgs = 0
 
 #use the images.json for all the images demo is just the noice ones for demo day
-with open('images.json') as images_file:
-    # with open('demo.json') as images_file:
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", "--images", help = "path to the images file")
+args = vars(ap.parse_args())
+# with open('demo.json') as images_file:
+# with open('images.json') as images_file:
+# with open('demo3.json') as images_file:
+with open(args["images"]) as images_file:
     images = json.load(images_file)
 
 # clear out spot_results folder
-filelist = [ f for f in os.listdir("./spot_results") if f.endswith(".png") ]
+filelist = [ f for f in os.listdir("../app/assets/images/spots") if f.endswith(".png") ]
 for f in filelist:
-    os.remove('./spot_results/' + f)
+    os.remove('../app/assets/images/spots/' + f)
 
 #loop through all images
 for image in images['data']:
     # This is where you specify the number of images to scan
     # 0 = only one image
     # if numImgs > 20:
-    if numImgs > 0:
+    if numImgs > 1:
             break
     numImgs = numImgs + 1
 
@@ -395,7 +401,7 @@ for image in images['data']:
 
         # darknet machine learning
         # create image to save bounding box locations to
-        os.system("./darknet detect cfg/yolo.cfg yolo.weights input.jpg -thresh .15")
+        os.system("./darknet detect cfg/yolo.cfg yolo.weights input.jpg -thresh .11")
 
         blank_darknet = np.zeros((height,width,3), np.uint8)
 
@@ -435,12 +441,16 @@ for image in images['data']:
             w,h = img.shape[:2]
             pt = Point(row_data)
             pt1 = Point([pt.x+h/10, pt.y+w/10])
-            if len(sys.argv) > 1 and 'p' in sys.argv[1]:
-                print size, h/10, w/10
+
+            # if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+            print size, h/10, w/10
+
             gray_spot = cutParkingSpot(img, pt, pt1)
             gray_spot_avg = averageColors(gray_spot)
-            if len(sys.argv) > 1 and 'p' in sys.argv[1]:
-                print "Gray Spot", gray_spot_avg
+
+            # if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+            print "Gray Spot", gray_spot_avg
+
             #cv2.imshow("Grayspot", gray_spot)
             #cv2.waitKey(0)
             # saveImg(gray_spot, spot_dir, "1_Gray_Spot")
@@ -543,25 +553,25 @@ for image in images['data']:
 
 
                     detected_darknet_pixels = notBlack(darknet_parking_spot[h-10:h, w-5:w+5])
-                    if detected_darknet_pixels < 75:
+                    if detected_darknet_pixels < 70:
                         darknet = True
 
-                    if len(sys.argv) > 1 and 'p' in sys.argv[1]:
-                        print 'Detected pixels in center of spot(crfrnn): ', detected_pixels
-                        print 'Detected pixels in center of spot(darknet): ', detected_darknet_pixels
-                        # cv2.imshow('CV Results', crfrnn_parking_spot)
-                        pltimages.append(crfrnn_parking_spot)
-                        pltimages.append(darknet_parking_spot)
-                        # cv2.waitKey(0)
-                        # cv2.destroyWindow('CV Results')
+                    # if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+                    print 'Detected pixels in center of spot(crfrnn): ', detected_pixels
+                    print 'Detected pixels in center of spot(darknet): ', detected_darknet_pixels
+                    # cv2.imshow('CV Results', crfrnn_parking_spot)
+                    pltimages.append(crfrnn_parking_spot)
+                    pltimages.append(darknet_parking_spot)
+                    # cv2.waitKey(0)
+                    # cv2.destroyWindow('CV Results')
 
-                        for i in range(len(pltimages)):
-                            plt.subplot(2,2,i+1),plt.imshow(pltimages[i])
-                            plt.title(titles[i])
-                            plt.xticks([]),plt.yticks([])
+                    for i in range(len(pltimages)):
+                        plt.subplot(2,2,i+1),plt.imshow(pltimages[i])
+                        plt.title(titles[i])
+                        plt.xticks([]),plt.yticks([])
 
-                        plt.savefig('./spot_results/' + spotName)
-                        # plt.show()
+                    plt.savefig('../app/assets/images/spots/' + spotName)
+                    # plt.show()
                 
                 
                 # -- OLD METHOD -- IF ONE IS WRONG GO WITH IT
@@ -606,11 +616,11 @@ for image in images['data']:
                 # if vote == 1:
                     drawBoundBox(parking_spot, red_color)
                     img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, red_color)
-                    parkinglotbinaryarray.append(0)
+                    parkinglotbinaryarray.append(1)
                 else:
                     drawBoundBox(parking_spot, green_color)
                     img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, green_color)
-                    parkinglotbinaryarray.append(1);
+                    parkinglotbinaryarray.append(0);
 
                 #takes you through each step as it updates
                 if len(sys.argv) > 1 and 's' in sys.argv[1]:
@@ -627,15 +637,17 @@ for image in images['data']:
             #draw_line(img, v_line_obj, black_color)
 
     # Print the values to the string to send
-    if len(sys.argv) > 1 and 'p' in sys.argv[1]:
-        print parkinglotbinaryarray
-    if len(sys.argv) > 1 and 'u' in sys.argv[1]:
-        serv.sendDataToServer(parkinglotbinaryarray)
+    # if len(sys.argv) > 1 and 'p' in sys.argv[1]:
+    print parkinglotbinaryarray
+    # if len(sys.argv) > 1 and 'u' in sys.argv[1]:
+    serv.sendDataToServer(parkinglotbinaryarray)
         #save the last output
         #cv2.imwrite('out1.jpg', img)
-    if len(sys.argv) > 1 and 'f' in sys.argv[1]:
-        cv2.imwrite('final.png', img)
-        cv2.imwrite('output.png', crfrnn_output)
-        # cv2.imshow('image', img)
-        # cv2.waitKey(0)
-        # cv2.destroyWindow('image')
+    # if len(sys.argv) > 1 and 'f' in sys.argv[1]:
+    cv2.imwrite('../app/assets/images/final.png', img)
+    cv2.imwrite('../app/assets/images/output.png', crfrnn_output)
+    predict = cv2.imread('predictions.jpg')
+    cv2.imwrite('../app/assets/images/predictions.jpg', predict)
+    # cv2.imshow('image', img)
+    # cv2.waitKey(0)
+    # cv2.destroyWindow('image')

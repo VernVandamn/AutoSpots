@@ -1,6 +1,0 @@
-{:uriI"Ãfile://app/assets/images/lots/caffe/build/cuda/src/caffe/layers/sigmoid_cross_entropy_loss_layer.o.warnings.txt?type=text/plain&id=d306316912028416efa491d29281b20071a7d94cbd94ac6bb2ab5547166f343a:ET:load_pathI"app/assets/images;T:filenameI"mapp/assets/images/lots/caffe/build/cuda/src/caffe/layers/sigmoid_cross_entropy_loss_layer.o.warnings.txt;T:	nameI"Wlots/caffe/build/cuda/src/caffe/layers/sigmoid_cross_entropy_loss_layer.o.warnings;T:logical_pathI"[lots/caffe/build/cuda/src/caffe/layers/sigmoid_cross_entropy_loss_layer.o.warnings.txt;T:content_typeI"text/plain;T:sourceI"²nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
-;T:metadata{	:dependencieso:Set:
-@hash}
-I"environment-version;TTI"environment-paths;TTI"rails-env;TTI"4processors:type=text/plain&file_type=text/plain;TTI"{file-digest://app/assets/images/lots/caffe/build/cuda/src/caffe/layers/sigmoid_cross_entropy_loss_layer.o.warnings.txt;TTF:charsetI"
-utf-8;F:digest"%ê`N©»¬¤ÿJ´pšäcqf1»Èq¡ñ/U_M:lengthi²:dependencies_digest"%I~;>†iíVõËF:‚ÀrO.f†lH‹½d~:idI"Ed306316912028416efa491d29281b20071a7d94cbd94ac6bb2ab5547166f343a;F:
-mtimel+’é¼X

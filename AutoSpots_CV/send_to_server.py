@@ -1,7 +1,19 @@
-﻿import socket
+﻿# import socket
+import requests
 
 def sendDataToServer(input):
+	baseurl = "http://jamesljenk.pythonanywhere.com/"
+	response = requests.get(baseurl+"/lots/")
+	data = response.json()
+	lots = data
+	openspots = ''.join(str(s) for s in input)
+	print 'openspots: ', openspots
+	lotID = 1
 
+	requests.get(baseurl+'update/'+str(lotID)+'/'+openspots+'/')
+
+'''
+    # OLD SERVER
 	host ="autospots.otzo.com"
 	port = 22032
 	message = ''.join(str(s) for s in input)
@@ -20,6 +32,7 @@ def sendDataToServer(input):
 	s.close()
 
 	print 'received data:',  data
+'''
 
 '''
 	# Testing writing and reading to files

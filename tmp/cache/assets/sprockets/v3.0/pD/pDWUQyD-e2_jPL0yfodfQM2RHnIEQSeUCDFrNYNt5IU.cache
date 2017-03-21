@@ -1,36 +1,0 @@
-{:uriI"èfile://app/assets/images/lots/caffe/examples/CMakeLists.txt?type=text/plain&id=4ee4a07b5c18331adb713cc698f8b89a9c6fe8a49b521b71dc28e1e35f2cb936:ET:load_pathI"app/assets/images;T:filenameI"9app/assets/images/lots/caffe/examples/CMakeLists.txt;T:	nameI"#lots/caffe/examples/CMakeLists;T:logical_pathI"'lots/caffe/examples/CMakeLists.txt;T:content_typeI"text/plain;T:sourceI"'file(GLOB_RECURSE examples_srcs "${PROJECT_SOURCE_DIR}/examples/*.cpp")
-
-foreach(source_file ${examples_srcs})
-  # get file name
-  get_filename_component(name ${source_file} NAME_WE)
-    
-  # get folder name
-  get_filename_component(path ${source_file} PATH)
-  get_filename_component(folder ${path} NAME_WE)
-    
-  add_executable(${name} ${source_file})
-  target_link_libraries(${name} ${Caffe_LINK})
-  caffe_default_properties(${name})
-
-  # set back RUNTIME_OUTPUT_DIRECTORY
-  set_target_properties(${name} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/examples/${folder}")
-
-  caffe_set_solution_folder(${name} examples)
-
-  # install
-  install(TARGETS ${name} DESTINATION bin)
-
-  if(UNIX OR APPLE)
-    # Funny command to make tutorials work
-    # TODO: remove in future as soon as naming is standartaized everywhere
-    set(__outname ${PROJECT_BINARY_DIR}/examples/${folder}/${name}${CAffe_POSTFIX})
-    add_custom_command(TARGET ${name} POST_BUILD
-                       COMMAND ln -sf "${__outname}" "${__outname}.bin")
-  endif()
-endforeach()
-;T:metadata{	:dependencieso:Set:
-@hash}
-I"environment-version;TTI"environment-paths;TTI"rails-env;TTI"4processors:type=text/plain&file_type=text/plain;TTI"Gfile-digest://app/assets/images/lots/caffe/examples/CMakeLists.txt;TTF:charsetI"
-utf-8;F:digest"%Ω¸ì“t0œkT#7øàYdî©›^Éê›Íz,˝B£jèˆ:lengthi':dependencies_digest"%x[¡°éÎJ∞Ñ]≥y8‹É©e¶`6c9ŒÓ√Õtí:idI"E4ee4a07b5c18331adb713cc698f8b89a9c6fe8a49b521b71dc28e1e35f2cb936;F:
-mtimel+_ÁºX

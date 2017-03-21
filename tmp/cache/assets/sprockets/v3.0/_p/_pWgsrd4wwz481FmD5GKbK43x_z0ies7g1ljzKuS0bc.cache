@@ -1,6 +1,0 @@
-{:uriI"®file://app/assets/images/lots/caffe/build/cuda/src/caffe/layers/embed_layer.o.warnings.txt?type=text/plain&id=4a9b7b58ebd8427908af6aa320859b5e1c24c1814e79c8b0302ea28225dc1210:ET:load_pathI"app/assets/images;T:filenameI"Xapp/assets/images/lots/caffe/build/cuda/src/caffe/layers/embed_layer.o.warnings.txt;T:	nameI"Blots/caffe/build/cuda/src/caffe/layers/embed_layer.o.warnings;T:logical_pathI"Flots/caffe/build/cuda/src/caffe/layers/embed_layer.o.warnings.txt;T:content_typeI"text/plain;T:sourceI"²nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
-;T:metadata{	:dependencieso:Set:
-@hash}
-I"environment-version;TTI"environment-paths;TTI"rails-env;TTI"4processors:type=text/plain&file_type=text/plain;TTI"ffile-digest://app/assets/images/lots/caffe/build/cuda/src/caffe/layers/embed_layer.o.warnings.txt;TTF:charsetI"
-utf-8;F:digest"%ê`N©»¬¤ÿJ´pšäcqf1»Èq¡ñ/U_M:lengthi²:dependencies_digest"%I~;>†iíVõËF:‚ÀrO.f†lH‹½d~:idI"E4a9b7b58ebd8427908af6aa320859b5e1c24c1814e79c8b0302ea28225dc1210;F:
-mtimel+é¼X
