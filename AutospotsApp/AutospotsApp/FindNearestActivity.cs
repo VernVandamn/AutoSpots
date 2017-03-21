@@ -14,6 +14,9 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using Android.Util;
 using System.Threading;
+using System.Net;
+using Java.Util;
+using Newtonsoft.Json;
 
 namespace AutospotsApp
 {
@@ -26,23 +29,57 @@ namespace AutospotsApp
         Location _currentLocation;
         LocationManager _locationManager;
         string _locationProvider;
+        int userToken;
+        int lotIndex;
+        LocationDirective response;
+        SpotRequest request;
         //-----------------------
-        TcpClient client;
-        NetworkStream stream; //Creats a NetworkStream (used for sending and receiving data)
-        byte[] datalength = new byte[16]; // creates a new byte with length 4 ( used for receivng data's length)
+        //TcpClient client;
+        //NetworkStream stream; //Creats a NetworkStream (used for sending and receiving data)
+        //byte[] datalength = new byte[16]; // creates a new byte with length 4 ( used for receivng data's length)
         bool spotReceived;
+
+        WebClient mclient;
+        WebClient mClient1;
+        Uri requestUrl;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             RequestWindowFeature(WindowFeatures.NoTitle);
             SetContentView(Resource.Layout.Main2);
+            mClient1 = new WebClient();
+            mClient1.DownloadDataAsync(new Uri("http://jamesljenk.pythonanywhere.com/getid/"));
+            mClient1.DownloadDataCompleted += MClient_DownloadIdDataCompleted;
             statusText = FindViewById<TextView>(Resource.Id.ParkingStatusTextView);
-            spotReceived = false;
-            //_locationText = FindViewById<TextView>(Resource.Id.location_text);
-            //FindViewById<TextView>(Resource.Id.get_address_button).Click += AddressButton_OnClick;
+            lotIndex = Intent.GetIntExtra("lotIndex",-1);
+            //lotIndex = savedInstanceState.GetInt("lotIndex");
+            if (lotIndex == -1)
+            {
+                statusText.Text = "You have not chosen a default lot. Please go back to the main menu and plan a trip or specify a default lot.";
+                //Toast.MakeText(this, "You have not chosen a default lot. Please go back to the main menu and plan a trip or specify a default lot.",ToastLength.Long);
+            }
+            else
+            { 
+                spotReceived = false;
+                mclient = new WebClient();
+                InitializeLocationManager();
+            }
+        }
 
-            InitializeLocationManager();
+        private void MClient_DownloadIdDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        {
+            try
+            {
+                string json = Encoding.UTF8.GetString(e.Result);
+                Log.Debug("GETID", "GETID json = " + json);
+                UserId resp = JsonConvert.DeserializeObject<UserId>(json);
+                userToken = resp.userID;
+            }
+            catch (System.Reflection.TargetInvocationException)
+            {
+                Toast.MakeText(this, "There was an error retrieving data from the server. Please close the app and try again later.", ToastLength.Long).Show();
+            }
         }
 
         void InitializeLocationManager()
@@ -68,36 +105,33 @@ namespace AutospotsApp
         protected override void OnResume()
         {
             base.OnResume();
-            _locationManager.RequestLocationUpdates(_locationProvider, 0, 0, this);
+            if (_locationManager != null && _locationProvider != null)
+            {
+                _locationManager.RequestLocationUpdates(_locationProvider, 5000, 10, this);//(_locationProvider, 0, 0, this);
+            }
         }
 
         protected override void OnPause()
         {
             base.OnPause();
-            _locationManager.RemoveUpdates(this);
-        }
-
-        async void AddressButton_OnClick(object sender, EventArgs eventArgs)
-        {
-            if (_currentLocation == null)
+            if (!spotReceived)
             {
-                //_addressText.Text = "Can't determine the current address. Try again in a few minutes.";
-                return;
+                if (_locationManager != null)
+                    _locationManager.RemoveUpdates(this);
+                StopService(new Intent(this, typeof(NavUpdateService)));
             }
-
-            Address address = await ReverseGeocodeCurrentLocation();
-            //DisplayAddress(address);
         }
 
-        async Task<Address> ReverseGeocodeCurrentLocation()
+        protected override void OnDestroy()
         {
-            Geocoder geocoder = new Geocoder(this);
-            IList<Address> addressList =
-                await geocoder.GetFromLocationAsync(_currentLocation.Latitude, _currentLocation.Longitude, 10);
-
-            Address address = addressList.FirstOrDefault();
-            return address;
+            base.OnDestroy();
+            Log.Debug("FindNearestActivity", "Destroying this activity");
+            if (_locationManager != null)
+                _locationManager.RemoveUpdates(this);
+            StopService(new Intent(this,typeof(NavUpdateService)));
         }
+
+
 
         public void OnLocationChanged(Location location)
         {
@@ -106,7 +140,7 @@ namespace AutospotsApp
                 _currentLocation = location;
                 if (_currentLocation == null)
                 {
-                    //_locationText.Text = "Unable to determine your location. Try again in a short while.";
+                    statusText.Text = "Unable to determine your location. Ensure your location service is enabled and try again in a short while.";
                 }
                 else
                 {
@@ -114,35 +148,88 @@ namespace AutospotsApp
                     //_locationText.Text = string.Format("{0:f6},{1:f6}", _currentLocation.Latitude, _currentLocation.Longitude);
                     //Address address = await ReverseGeocodeCurrentLocation();
                     //DisplayAddress(address);
-                    string lat = _currentLocation.Latitude.ToString();
-                    string lon = _currentLocation.Longitude.ToString();
+                    double lat = _currentLocation.Latitude;
+                    double lon = _currentLocation.Longitude;
                     Log.Debug(TAG, "Got lat=" + lat + ", long=" + lon);
                     SendCurLocToServer(lat, lon);
 
                 }
             }
+            else //I have received a spot and the location has updated
+            {
+                //Do I do anything? I don't think so. The service should take care of this
+            }
         }
 
-        void SendCurLocToServer(string lat,string lon)
+        void SendCurLocToServer(double lat,double lon)
         {
-            try
-            {
-                client = new TcpClient("autospots.otzo.com", 22032);
-            }
-            catch (SocketException)
-            {
-                Toast.MakeText(this, "Connection Timed out. Returning to main menu.", ToastLength.Short).Show();
-                base.OnBackPressed();
-            }
             //Toast.MakeText(this, "Connected", ToastLength.Short).Show();
             //Send lat,long to server
-            String s = String.Format("NEAREST_{0}_{1}", lat, lon);
-            clientSend(s);
-            //textReceive.Text = null;
-            ThreadPool.QueueUserWorkItem(o => clientReceive()); //Starts Receiving When Connected
+            //String s = String.Format("NEAREST_{0}_{1}", lat, lon);
+            //clientSend(s);
+            request = new SpotRequest();
+            request.latitude = lat;
+            request.longitude = lon;
+            request.userID = userToken;
+            request.lotID = lotIndex;
+            //string json = request.ToString();
+            //byte[] data = Encoding.ASCII.GetBytes(json);
+            requestUrl = new Uri(request.ToString());
+            while (mclient.IsBusy)
+            {
+                Thread.Sleep(1000);
+            }
+            Log.Debug("SpotRequest", "Sending SpotRequest: " + request.ToString());
+            mclient.DownloadDataAsync(requestUrl);
+            mclient.DownloadDataCompleted += Mclient_DownloadDataCompleted;
         }
 
-        private void clientReceive()
+        private void Mclient_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e) //Received LocationDirective
+        {
+            try { 
+                string json = Encoding.UTF8.GetString(e.Result);
+                //string json = "{{\"latitude\": 40.769817, \"longitude\": -111.846035, \"lotID\": 0, \"userID\": 1}}";
+                Log.Debug("ReceiveLocationDirective", "Received json: "+json);
+                response = JsonConvert.DeserializeObject<LocationDirective>(json);
+                Log.Debug("JsonConvertResponse", "Convert json: " + response);
+                //if (response.userID != userToken)
+                //{
+                //    Toast.MakeText(this, "Response from server was not meant for this user! Go back and try again.", ToastLength.Long).Show();
+                //    return;
+                //}
+                //else if (response.lotID != lotIndex) // WE ARE ASSUMING LOTINDEX == LocationDirective.lotID
+                //{
+                //    Toast.MakeText(this, "Response from server was for wrong lot! Go back and try again.", ToastLength.Long).Show();
+                //    return;
+                //}
+                //else
+                //{
+                    spotReceived = true;
+                    statusText.Text = GetString(Resource.String.LetsGoText);
+                    StartNavService(response.latitude, response.longitude);
+                    Log.Debug("StartMapIntent", "Starting map intent with lat:" + response.latitude + ", long:" + response.longitude);
+                    var geoUri = Android.Net.Uri.Parse("geo:" + response.latitude + "," + response.longitude + "?z=21");
+                    var mapIntent = new Intent(Intent.ActionView, geoUri);
+                    StartActivity(mapIntent);
+                //}
+            }
+            catch (System.Reflection.TargetInvocationException)
+            {
+                Toast.MakeText(this, "There was an error retrieving data from the server. Please close the app and try again later.", ToastLength.Long).Show();
+            }
+        }
+
+        private void StartNavService(double startLat, double startLon)
+        {
+            Intent navUpIntent = new Intent(this, typeof(NavUpdateService));
+            navUpIntent.PutExtra("startLat", startLat);
+            navUpIntent.PutExtra("startLon", startLon);
+            navUpIntent.PutExtra("userID", userToken);
+            navUpIntent.PutExtra("lotID", lotIndex);
+            StartService(navUpIntent);
+        }
+
+        /*private void clientReceive()
         {
             try
             {
@@ -163,6 +250,7 @@ namespace AutospotsApp
 
                     Application.SynchronizationContext.Post(_ => {
                         statusText.SetText(GetString(Resource.String.LetsGoText), TextView.BufferType.Normal);
+                        this.StartNavService();
                     }, null);
 
                     //Start GPS navigation
@@ -215,11 +303,13 @@ namespace AutospotsApp
             {
                 Toast.MakeText(this, ex.Message, ToastLength.Short).Show();
             }
-        }
+        }*/
 
         public void OnProviderDisabled(string provider)
         {
-            
+            Toast.MakeText(this, GetString(Resource.String.LocationDisabledToastText), ToastLength.Long).Show();
+            Intent i = new Intent(Android.Provider.Settings.ActionLocationSourceSettings);
+            StartActivity(i);
         }
 
         public void OnProviderEnabled(string provider)

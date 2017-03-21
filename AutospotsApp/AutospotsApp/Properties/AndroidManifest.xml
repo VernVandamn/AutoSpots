@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="AutospotsApp.AutospotsApp" android:versionCode="1" android:versionName="1.0">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="AutospotsApp.AutospotsApp" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="16" />
-	<application android:label="AutospotsApp"></application>
-  <uses-feature android:name="android.hardware.location.gps" />
-  <uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION" />
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<application android:label="AutospotsApp" android:icon="@drawable/AutospotsIcon"></application>
+	<uses-feature android:name="android.hardware.location.gps" />
+	<uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<service android:exported="true" android:name="AutospotsApp.AutospotsApp.NavUpdateService" />
 </manifest>

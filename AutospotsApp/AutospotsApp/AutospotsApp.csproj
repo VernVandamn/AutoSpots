@@ -45,6 +45,18 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OxyPlot, Version=2015.1.744.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
+      <HintPath>..\packages\OxyPlot.Core.2015.1.744-alpha\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1+Xamarin.iOS10\OxyPlot.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OxyPlot.Xamarin.Android, Version=2015.1.741.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OxyPlot.Mobile.2015.1.744-alpha\lib\MonoAndroid\OxyPlot.Xamarin.Android.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -53,20 +65,30 @@
   <ItemGroup>
     <Compile Include="FindNearestActivity.cs" />
     <Compile Include="InLotActivity.cs" />
+    <Compile Include="LocationDirective.cs" />
+    <Compile Include="LocationUpdate.cs" />
+    <Compile Include="Lot.cs" />
+    <Compile Include="LotImageResponse.cs" />
     <Compile Include="MainMenuActivity.cs" />
+    <Compile Include="NavUpdateService.cs" />
+    <Compile Include="NavUpdateServiceBinder.cs" />
     <Compile Include="NearBuildingActivity.cs" />
     <Compile Include="PickBuildingActivity.cs" />
     <Compile Include="PickLotActivity.cs" />
     <Compile Include="PlanTripActivity.cs" />
     <Compile Include="PreferencesActivity.cs" />
+    <Compile Include="SpotRequest.cs" />
     <Compile Include="StartActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatsActivity.cs" />
+    <Compile Include="UserId.cs" />
     <Compile Include="ViewLotActivity.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="GettingStarted.Xamarin" />
+    <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\Main2.axml">
@@ -91,6 +113,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\smallmenu2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\AutospotsIcon24x24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\AutospotsIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\streets1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="oxyplot">
+      <Visible>False</Visible>
+      <Version>2015.1.744</Version>
+    </XamarinComponentReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
