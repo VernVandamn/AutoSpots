@@ -1,6 +1,11 @@
 # Autospots Computer Vision
 
-to run style a json file like demo.json. It should reference a json file of the parking lot layout as well as the image file to analyse. 
+To run: style a json file like demo.json. It should reference a json file of the parking lot layout as well as the image file to analyse. 
+
+Then run python script like so...
+```
+pthon Autospots.py -i 'input.json'
+```
 
 ## How it works
 
