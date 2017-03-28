@@ -4,7 +4,7 @@ To run: style a json file like demo.json. It should reference a json file of the
 
 Then run python script like so...
 ```
-pthon Autospots.py -i 'input.json'
+python Autospots.py -i 'input.json'
 ```
 
 ## How it works
