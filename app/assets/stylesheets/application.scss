@@ -1,0 +1,36 @@
+@import "bootstrap";
+@import "lightbox-bootstrap";
+
+h1 {
+	text-align: "center"
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+body {
+  padding-top: 70px; /* Required padding for .navbar-fixed-top. Change if height of navigation changes. */
+}
+
+.thumb {
+  margin-bottom: 30px;
+}
+
+footer {
+  margin: 50px 0;
+}
+
+.modal-dialog {width:600px;}
+.thumbnail {margin-bottom:6px;}
+#main {
+    text-align: center;
+    margin: auto;
+    width: 100%;
+}
+#mainimg {
+    display: inline-block;
+    *display:inline; /* ie7 fix */
+    float: none;
+}
