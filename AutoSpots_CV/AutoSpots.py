@@ -364,9 +364,9 @@ with open(args["images"]) as images_file:
     images = json.load(images_file)
 
 # clear out spot_results folder
-filelist = [ f for f in os.listdir("../app/assets/images/spots") if f.endswith(".png") ]
+filelist = [ f for f in os.listdir("../AutospotsCVDisplay/app/assets/images/spots") if f.endswith(".png") ]
 for f in filelist:
-    os.remove('../app/assets/images/spots/' + f)
+    os.remove('../AutospotsCVDisplay/app/assets/images/spots/' + f)
 
 #loop through all images
 for image in images['data']:
@@ -570,7 +570,7 @@ for image in images['data']:
                         plt.title(titles[i])
                         plt.xticks([]),plt.yticks([])
 
-                    plt.savefig('../app/assets/images/spots/' + spotName)
+                    plt.savefig('../AutospotsCVDisplay/app/assets/images/spots/' + spotName)
                     # plt.show()
                 
                 
@@ -644,10 +644,10 @@ for image in images['data']:
         #save the last output
         #cv2.imwrite('out1.jpg', img)
     # if len(sys.argv) > 1 and 'f' in sys.argv[1]:
-    cv2.imwrite('../app/assets/images/final.png', img)
-    cv2.imwrite('../app/assets/images/output.png', crfrnn_output)
+    cv2.imwrite('../AutospotsCVDisplay/app/assets/images/final.png', img)
+    cv2.imwrite('../AutospotsCVDisplay/app/assets/images/output.png', crfrnn_output)
     predict = cv2.imread('predictions.jpg')
-    cv2.imwrite('../app/assets/images/predictions.jpg', predict)
+    cv2.imwrite('../AutospotsCVDisplay/app/assets/images/predictions.jpg', predict)
     # cv2.imshow('image', img)
     # cv2.waitKey(0)
     # cv2.destroyWindow('image')
