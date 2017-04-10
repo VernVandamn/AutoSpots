@@ -1,0 +1,1 @@
+json.partial! "parking_space_selectors/parking_space_selector", parking_space_selector: @parking_space_selector

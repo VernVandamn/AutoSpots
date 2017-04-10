@@ -1,5 +1,24 @@
 @import "bootstrap";
 @import "lightbox-bootstrap";
+@import "bootstrap-sprockets";
+
+/* header */
+
+#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  padding-top: 10px;
+  font-weight: bold;
+}
+
+#logo:hover {
+  color: #fff;
+  text-decoration: none;
+}
 
 h1 {
 	text-align: "center"
@@ -33,4 +52,18 @@ footer {
     display: inline-block;
     *display:inline; /* ie7 fix */
     float: none;
+}
+
+
+/* center fabric canvas */
+
+.canvas-container {
+  margin: 0 auto;
+}
+
+.strip-text {
+  float: left;
+}
+#parking_space_selectors_content {
+  width: 100%;
 }

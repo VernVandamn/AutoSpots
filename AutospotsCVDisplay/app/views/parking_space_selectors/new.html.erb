@@ -1,0 +1,406 @@
+<div class="page-header">
+	<h1>New Parking Space Setup</h1>
+</div>
+<div class="selector-tool">
+	<div align="center" style="padding-bottom: .5cm;">
+		<button id="btnAddStrip" class="btn btn-primary btn-md" type="button">Add Parking Strip</button>
+		<button id="btnStartOver" class="btn btn-danger btn-md" type="button">Start Over</button>
+		<span>Input image:</span><input id="newImageURL" type="text" placeholder="Enter url here">
+		<button id="getImage" class="btn btn-default" type="button">Go</button>
+	</div>
+	<div id='display-parking-lot' style="display: inline; padding-bottom: .5cm;">
+		<canvas id="c" width="500" height="500" style="border:1px solid #ccc"></canvas>
+	</div>
+	<div id='buttons'></div>
+</div>
+<hr>
+<!-- <canvas id="c" width="500" height="500" style="border:1px solid #ccc"></canvas> -->
+<!-- <p id="json"></p> -->
+
+<%= render 'form', parking_space_selector: @parking_space_selector %>
+
+<hr>
+
+<%= link_to 'Back', parking_space_selectors_path, class: 'btn btn-link' %>
+
+
+
+
+<%= javascript_tag do %>
+$('#btnAddStrip').on('click', function(){
+  $('#buttons').append(''+
+    '<div id="'+parkinglots+'" class="well" align="center"><h3><span style="display:inline-block; width: 55%" class="strip-text">Parking strip '+(parkinglots+1)+'</span></h3><button id="btnAddSpot" class="btn btn-success" type="button" style="width: 20%">Add Spot</button><button id="btnRemoveSpot" class="btn btn-danger" type="button" style="width: 20%">Remove Spot</button></div>');
+  parking_lot.push(new Strip());
+  document.getElementById("parking_space_selector_content").value = outputJSON();
+});
+
+$('#getImage').on('click', function(){
+  debugger;
+  if(document.getElementById('newImageURL').value != '') {
+  	canvas.clear();
+	fabric.Image.fromURL(document.getElementById('newImageURL').value, function (oImg) {
+	  oImg.set({ 'left': oImg.left + (oImg.width / 2), 'top': oImg.top + (oImg.height / 2)});
+	  oImg.selectable = false;
+	  canvas.setWidth( oImg.width );
+	  canvas.setHeight( oImg.height );
+	  canvas.calcOffset();
+	  canvas.add(oImg);
+	  oImg.sendToBack();
+	});
+  } 
+});
+
+$('#buttons').on('click', '#btnAddSpot', function(){
+  parking_lot[Number($(this).parent().attr('id'))].addSpace();
+});
+$('#buttons').on('click', '#btnRemoveSpot', function(){
+  parking_lot[Number($(this).parent().attr('id'))].removeSpace();
+});
+$('#btnStartOver').on('click', function(){
+  // Reset everything
+  $('#buttons').html('');
+  canvas.clear();
+  parking_lot = [];
+  parkinglots = 0;
+  $('#parking_space_selector_content').val('');
+  fabric.Image.fromURL('https://cdn.arstechnica.net/wp-content/uploads/2016/02/5718897981_10faa45ac3_b-640x624.jpg', function (oImg) {
+      oImg.set({ 'left': oImg.left + (oImg.width / 2), 'top': oImg.top + (oImg.height / 2)});
+      oImg.selectable = false;
+      canvas.setWidth( oImg.width );
+      canvas.setHeight( oImg.height );
+      canvas.calcOffset();
+      canvas.add(oImg);
+      oImg.sendToBack();
+      for(i = 0; i < images_loaded; i++) {
+      	canvas.bringForward(oImg);
+      }
+  });
+  images_loaded++;
+});
+
+// Create the canvas element
+var canvas = this.__canvas = new fabric.Canvas('c', {
+  selection: false
+});
+
+// Set origins to center
+fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
+
+// Create the background image
+fabric.Image.fromURL('https://worldcam.live/img/webcams/540/wolbrom3.jpg', function (oImg) {
+    oImg.set({ 'left': oImg.left + (oImg.width / 2), 'top': oImg.top + (oImg.height / 2)});
+    oImg.selectable = false;
+    canvas.setWidth( oImg.width );
+    canvas.setHeight( oImg.height );
+    canvas.calcOffset();
+    canvas.add(oImg);
+    oImg.sendToBack();
+});
+
+// Global list of parking strips and number of total strips
+var parking_lot = [];
+var parkinglots = 0;
+var images_loaded = 1;
+
+// Output the json file we need in the Autospots.py file
+function outputJSON(){
+  var output = [];
+  // For each row add in the horizontal and vertical 
+  parking_lot.forEach(function(strip){
+    // Add horizontal lines
+    output.push([]);
+    var hlines = [];
+    var vlines = [];
+    // Top hline
+    hlines.push([ [Math.round(strip.top.get('x1')),
+                   Math.round(strip.top.get('y1'))],
+                  [Math.round(strip.top.get('x2')),
+                   Math.round(strip.top.get('y2'))] ]);
+    // Bot hline
+    hlines.push([ [Math.round(strip.bot.get('x2')),
+                   Math.round(strip.bot.get('y2'))],
+                  [Math.round(strip.bot.get('x1')),
+                   Math.round(strip.bot.get('y1'))] ]);
+    // Vertical lines array of length 2 arrays
+    // There are always 2 vertical lines, each end, plus 
+    //   the dividers inside
+    vlines.push([Math.round(strip.top.get('x1')), Math.round(strip.bot.get('x2'))]);
+    strip.dividers.forEach(function(div){
+      vlines.push([Math.round(div.top.left), Math.round(div.bot.left)]); 
+    });
+    vlines.push([Math.round(strip.top.get('x2')), Math.round(strip.bot.get('x1'))]);
+    // Add this stuff to output
+    output[output.length-1].push(hlines, vlines);
+  });
+  return JSON.stringify(output);
+}
+
+// Get the intersection of 2 lines one vertical and the other at any angle
+function getIntersection(line, xval) {
+  var denominator = (line.get('x1') - line.get('x2')) * (canvas.height);
+  var numerator = ((line.get('x1') * line.get('y2') - line.get('y1') * line.get('x2')) * 
+    (canvas.height) - (line.get('y1') - line.get('y2')) * (-canvas.height * xval));
+
+  var intercept = numerator / denominator;
+  return intercept;
+}
+
+// Create a circle and also attach 2 connecting lines to the circle
+function makeCircle(pl_index, left, top, line1, line2) {
+  var c = new fabric.Circle({
+    left: left,
+    top: top,
+    strokeWidth: 3,
+    radius: 10,
+    fill: '#fff',
+    stroke: '#666'
+  });
+  c.setCoords();
+  c.lot = pl_index;
+  c.hasControls = c.hasBorders = false;
+  c.lines = [line1, line2];
+  c.line1 = line1;
+  c.line2 = line2;
+
+  return c;
+}
+
+// Function to create a line element
+function makeLine(coords, top) {
+  return new fabric.Line(coords, {
+    fill: 'red',
+    stroke: ((top) ? 'blue' : 'red'),
+    strokeWidth: 3,
+    selectable: false
+  });
+}
+
+function Strip() {
+  // # Number of parking spaces in the parking strip
+  this.spaces = 1;
+  // dividers holds the circles and line that make up the divider
+  this.dividers = [];
+  // Create the boundry lines for the parking strip
+  this.top = makeLine([12, 12, 200, 12], true).setCoords(), //top
+  this.right = makeLine([200, 12, 200, 200]).setCoords(), // right
+  this.bot = makeLine([200, 200, 12, 200]).setCoords(), //bot
+  this.left = makeLine([12, 200, 12, 12]).setCoords(); //left
+  this.corners = [];
+  // pl_index is the index of this lot in the parking_lot array
+  this.pl_index = parkinglots++;
+  // from top left clockwise create the corner circles for the parking space
+  this.corners[0] = makeCircle(this.pl_index, this.left.get('x2'), this.left.get('y2'), this.left, this.top);
+  this.corners[1] = makeCircle(this.pl_index, this.top.get('x2'), this.top.get('y2'), this.top, this.right);
+  this.corners[2] = makeCircle(this.pl_index, this.right.get('x2'), this.right.get('y2'), this.right, this.bot);
+  this.corners[3] = makeCircle(this.pl_index, this.left.get('x1'), this.left.get('y1'), this.bot, this.left);
+  
+  // Add the elements of this strip to the canvas
+  this.addStrip = function() {
+    canvas.add(this.top, this.right, this.bot, this.left);
+    this.corners.forEach(function(c) {
+      canvas.add(c);
+    });
+  }
+  
+  this.addStrip();
+  
+  // This method adds a new divider to the parking strip
+  this.addSpace = function() {
+    function innerDiv(strip, coords) {
+      // Inner lines go from top to bottom
+      this.line = makeLine(coords);
+      this.top = makeCircle(strip.pl_index, this.line.get('x1'), this.line.get('y1'), this.line);
+      this.bot = makeCircle(strip.pl_index, this.line.get('x2'), this.line.get('y2'), this.line);
+
+      strip.dividers.push(this);
+      strip.spaces += 1;
+    }
+    var newCoords;
+    if (this.spaces == 1) {
+      var top_y_inter = getIntersection(this.top, this.left.get('x2') + 50);
+      var bot_y_inter = getIntersection(this.bot, this.left.get('x1') + 50);
+      newCoords = [this.left.get('x2') + (50),
+        top_y_inter,
+        this.left.get('x1') + (50),
+        bot_y_inter
+      ];
+    } else {
+      var last_line = this.dividers[this.dividers.length - 1].line
+      var top_y_inter = getIntersection(this.top, last_line.get('x1') + 50);
+      var bot_y_inter = getIntersection(this.bot, last_line.get('x2') + 50);
+      newCoords = [last_line.get('x1') + (50),
+        top_y_inter,
+        last_line.get('x2') + (50),
+        bot_y_inter
+      ];
+    }
+    var i_d = new innerDiv(this, newCoords)
+    canvas.add(i_d.line, i_d.top, i_d.bot);
+    
+    document.getElementById("parking_space_selector_content").value = outputJSON();
+  }
+  
+  // Used to remove a parking space or divider
+  this.removeSpace = function() {
+    if (this.dividers.length > 0) {
+      var last_div = this.dividers[this.dividers.length-1];
+      canvas.remove(last_div.top);
+      canvas.remove(last_div.bot);
+      canvas.remove(last_div.line);
+      this.dividers.pop();
+      this.spaces--;
+    }
+  }
+}
+
+// Use to adjust dividers after a corner or divider move
+function adjustDividers(obj) {
+  lot_index = obj.lot;
+  var t = parking_lot[lot_index].top;
+  var b = parking_lot[lot_index].bot;
+
+  // This is used to find if we are moving a top or bottom divider and then
+  // adjusting the values accordingly
+  for (l = 0; l < parking_lot[lot_index].dividers.length; l += 1) {
+    var div = parking_lot[lot_index].dividers[l];
+    //debugger;
+    if (obj == div.top) {
+      if (obj.left > (t.get('x1') + 5) && obj.left < (t.get('x2') - 5)) {
+        div.line.set({
+          'x1': obj.left
+        })
+        div.line.setCoords();
+      } else if (obj.left <= t.get('x1') + 5) {
+        obj.set({
+          'left': t.get('x1') + 5
+        })
+      } else if (obj.left >= t.get('x2') - 5) {
+        obj.set({
+          'left': t.get('x2') - 5
+        })
+      }
+    } else if (obj == div.bot) {
+      if (obj.left > (b.get('x2') + 5) && obj.left < (b.get('x1') - 5)) {
+        div.line.set({
+          'x2': obj.left
+        })
+        div.line.setCoords();
+      } else if (obj.left <= b.get('x2') + 5) {
+        obj.set({
+          'left': b.get('x2') + 5
+        })
+      } else if (obj.left >= b.get('x1') - 5) {
+        obj.set({
+          'left': b.get('x1') - 5
+        })
+      }
+    }
+
+    // X values are adjusted above now the y values get moved to 
+    // where they intercept with the horizontal lines
+    var top_y_inter = getIntersection(t, div.line.get('x1'));
+    var bot_y_inter = getIntersection(b, div.line.get('x2'));
+    div.line.set({
+      'y1': top_y_inter
+    });
+    div.top.set({
+      'top': top_y_inter
+    });
+    div.line.set({
+      'y2': bot_y_inter
+    });
+    div.bot.set({
+      'top': bot_y_inter
+    });
+    div.line.setCoords();
+    div.top.setCoords();
+    div.bot.setCoords();
+  }
+}
+
+// Restricts the elements to the visable canvas
+function restrictToEdges(obj) {
+  obj.setCoords();        
+        // top-left  corner
+        if(obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0){
+            obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top);
+            obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left);
+        }
+        // bot-right corner
+        if(obj.getBoundingRect().top+obj.getBoundingRect().height  > obj.canvas.height || obj.getBoundingRect().left+obj.getBoundingRect().width  > obj.canvas.width){
+            obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top);
+            obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
+        }
+}
+
+// This function ensures the corners aren't allowed to be ahead of the inner
+// dividers.
+function restrictCornerMovement(p) {
+  var div = parking_lot[p.lot].dividers;
+  var corns = parking_lot[p.lot].corners;
+  var t = parking_lot[p.lot].top;
+  var b = parking_lot[p.lot].bot;
+  var x1_val, x2_val;
+  //debugger;
+  for (i = 0; i < 4; i++) {
+    if (p == corns[i]) {
+      if (p == corns[0] && p.left > div[0].top.get('left') - 12) {
+        p.left = div[0].top.get('left') - 12;
+        x1_val = div[0].top.get('left') - 12;
+        x2_val = p.left;
+      } else if (p == corns[1] && p.left <= div[div.length - 1].top.get('left') + 12) {
+        p.left = div[div.length - 1].top.get('left') + 12;
+        x1_val = div[div.length - 1].top.get('left') + 12;
+        x2_val = p.left;
+      } else if (p == corns[2] && p.left <= div[div.length - 1].bot.get('left') + 12) {
+        p.left = div[div.length - 1].bot.get('left') + 12;
+        x1_val = div[div.length - 1].bot.get('left') + 12;
+        x2_val = p.left;
+      } else if (p == corns[3] && p.left >= div[0].bot.get('left') - 12) {
+        p.left = div[0].bot.get('left') - 12;
+        x1_val = div[0].bot.get('left') - 12;
+        x2_val = p.left;
+      } else {
+        x1_val = p.left;
+        x2_val = p.left;
+      }
+      p.line1 && p.line1.set({
+        'x2': x1_val,
+        'y2': p.top
+      });
+      p.line2 && p.line2.set({
+        'x1': x2_val,
+        'y1': p.top
+      });
+      p.line1.setCoords();
+      p.line2.setCoords();
+      p.setCoords();
+      break;
+    }
+  }
+}
+
+canvas.on('object:moving', function(e) {
+  var p = e.target;
+  restrictToEdges(p);
+  if(parking_lot[p.lot].dividers.length > 0){
+    restrictCornerMovement(p)
+  } else {
+    p.line1 && p.line1.set({
+      'x2': p.left,
+      'y2': p.top
+    });
+    p.line2 && p.line2.set({
+      'x1': p.left,
+      'y1': p.top
+    });
+  }
+  // Move all dividers
+  //debugger;
+  if (p) {
+    adjustDividers(p);
+  }
+  canvas.renderAll();
+  document.getElementById("parking_space_selector_content").value = outputJSON();
+});
+<% end %>

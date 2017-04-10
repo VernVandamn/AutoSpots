@@ -1,0 +1,17 @@
+<p id="notice"><%= notice %></p>
+
+<canvas id="c" width="500" height="500" style="border:1px solid #ccc"></canvas>
+<p id="json"></p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @parking_space_selector.content %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @parking_space_selector.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_parking_space_selector_path(@parking_space_selector) %> |
+<%= link_to 'Back', parking_space_selectors_path %>
