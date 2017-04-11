@@ -8,6 +8,8 @@ end
 # gem 'lightbox-bootstrap-rails', path: '../'
 gem 'lightbox-bootstrap-rails', '5.1.0.1'
 
+gem 'puma'
+
 # bootstrap for styling
 gem 'bootstrap-sass'
 
