@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
 
+  resources :parking_spaces
   get 'about/tutorial'
 
   get 'about/team'
 
-  resources :parking_space_selectors
   get 'parking_space_selector/selector_tool'
 
   root "welcome#index"

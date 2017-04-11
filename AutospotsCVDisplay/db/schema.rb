@@ -10,13 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170403213616) do
+ActiveRecord::Schema.define(version: 20170410232239) do
 
   create_table "parking_space_selectors", force: :cascade do |t|
     t.text     "content"
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "parking_spaces", force: :cascade do |t|
+    t.text     "parking_coords"
+    t.text     "image_url"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
 end

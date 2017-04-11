@@ -2,6 +2,12 @@
 @import "lightbox-bootstrap";
 @import "bootstrap-sprockets";
 
+@font-face {
+  font-family: 'TransformersMovie';    
+  src: url('/assets/TransformersMovie.ttf') format('truetype');
+  font-weight: normal;  
+  font-style: normal;
+}
 /* header */
 
 #logo {
@@ -13,6 +19,8 @@
   letter-spacing: -1px;
   padding-top: 10px;
   font-weight: bold;
+  font-family: TransformersMovie;
+  font-size: 2em;
 }
 
 #logo:hover {
@@ -64,6 +72,4 @@ footer {
 .strip-text {
   float: left;
 }
-#parking_space_selectors_content {
-  width: 100%;
-}
+

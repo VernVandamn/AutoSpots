@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ParkingSpaceSelectorTest < ActiveSupport::TestCase
+class ParkingSpaceTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -1,0 +1,29 @@
+<%= form_for(parking_space) do |f| %>
+  <% if parking_space.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(parking_space.errors.count, "error") %> prohibited this parking_space from being saved:</h2>
+
+      <ul>
+      <% parking_space.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class='form-horizontal'>
+    <div class="form-group field">
+      <%= f.label :parking_coords, 'Output', class: 'col-sm-2' %>
+      <%= f.text_area :parking_coords, :rows => "3", :readonly => true, class: 'form-control' %>
+    </div>
+
+    <div class="form-group field">
+      <%= f.label :image_url, 'Image URL', class: 'col-sm-2' %>
+      <%= f.text_field :image_url, :readonly => true, class: 'form-control' %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit class: 'btn btn-secondary' %>
+    </div>
+  </div>
+<% end %>

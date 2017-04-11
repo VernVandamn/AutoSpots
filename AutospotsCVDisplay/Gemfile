@@ -4,8 +4,9 @@ source 'https://rubygems.org'
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'
 end
-gem 'lightbox-bootstrap-rails', github: 'luciuschoi/lightbox-bootstrap-rails'
+# gem 'lightbox-bootstrap-rails', github: 'luciuschoi/lightbox-bootstrap-rails'
 # gem 'lightbox-bootstrap-rails', path: '../'
+gem 'lightbox-bootstrap-rails', '5.1.0.1'
 
 # bootstrap for styling
 gem 'bootstrap-sass'

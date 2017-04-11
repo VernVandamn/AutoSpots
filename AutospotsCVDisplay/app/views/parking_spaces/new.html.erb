@@ -1,6 +1,7 @@
 <div class="page-header">
-	<h1>New Parking Space Setup</h1>
+	<h1>New Parking Space</h1>
 </div>
+
 <div class="selector-tool">
 	<div align="center" style="padding-bottom: .5cm;">
 		<button id="btnAddStrip" class="btn btn-primary btn-md" type="button">Add Parking Strip</button>
@@ -14,14 +15,13 @@
 	<div id='buttons'></div>
 </div>
 <hr>
-<!-- <canvas id="c" width="500" height="500" style="border:1px solid #ccc"></canvas> -->
-<!-- <p id="json"></p> -->
 
-<%= render 'form', parking_space_selector: @parking_space_selector %>
+<%= render 'form', parking_space: @parking_space %>
 
 <hr>
 
-<%= link_to 'Back', parking_space_selectors_path, class: 'btn btn-link' %>
+<%= link_to 'Back', parking_spaces_path, class: 'btn btn-link' %>
+
 
 
 
@@ -31,11 +31,11 @@ $('#btnAddStrip').on('click', function(){
   $('#buttons').append(''+
     '<div id="'+parkinglots+'" class="well" align="center"><h3><span style="display:inline-block; width: 55%" class="strip-text">Parking strip '+(parkinglots+1)+'</span></h3><button id="btnAddSpot" class="btn btn-success" type="button" style="width: 20%">Add Spot</button><button id="btnRemoveSpot" class="btn btn-danger" type="button" style="width: 20%">Remove Spot</button></div>');
   parking_lot.push(new Strip());
-  document.getElementById("parking_space_selector_content").value = outputJSON();
+  document.getElementById("parking_space_parking_coords").value = outputJSON();
 });
 
 $('#getImage').on('click', function(){
-  debugger;
+  //debugger;
   if(document.getElementById('newImageURL').value != '') {
   	canvas.clear();
 	fabric.Image.fromURL(document.getElementById('newImageURL').value, function (oImg) {
@@ -47,6 +47,7 @@ $('#getImage').on('click', function(){
 	  canvas.add(oImg);
 	  oImg.sendToBack();
 	});
+	updateUrlOutput();
   } 
 });
 
@@ -62,8 +63,16 @@ $('#btnStartOver').on('click', function(){
   canvas.clear();
   parking_lot = [];
   parkinglots = 0;
-  $('#parking_space_selector_content').val('');
-  fabric.Image.fromURL('https://cdn.arstechnica.net/wp-content/uploads/2016/02/5718897981_10faa45ac3_b-640x624.jpg', function (oImg) {
+  $('#parking_space_parking_coords').val('');
+
+  var newurl = document.getElementById("newImageURL").value;
+  if( newurl == "" ) {
+    newurl = 'https://worldcam.live/img/webcams/540/wolbrom3.jpg'
+  } 
+
+  console.log(newurl);
+
+  fabric.Image.fromURL(newurl, function (oImg) {
       oImg.set({ 'left': oImg.left + (oImg.width / 2), 'top': oImg.top + (oImg.height / 2)});
       oImg.selectable = false;
       canvas.setWidth( oImg.width );
@@ -75,6 +84,7 @@ $('#btnStartOver').on('click', function(){
       	canvas.bringForward(oImg);
       }
   });
+  updateUrlOutput();
   images_loaded++;
 });
 
@@ -97,10 +107,21 @@ fabric.Image.fromURL('https://worldcam.live/img/webcams/540/wolbrom3.jpg', funct
     oImg.sendToBack();
 });
 
+updateUrlOutput();
+
 // Global list of parking strips and number of total strips
 var parking_lot = [];
 var parkinglots = 0;
 var images_loaded = 1;
+
+function updateUrlOutput() {
+	var newurl = document.getElementById("newImageURL").value;
+	if( newurl == "" ) {
+	    document.getElementById("parking_space_image_url").value = 'https://worldcam.live/img/webcams/540/wolbrom3.jpg'
+	} else {
+	    document.getElementById("parking_space_image_url").value = newurl;
+	}
+}
 
 // Output the json file we need in the Autospots.py file
 function outputJSON(){
@@ -237,7 +258,7 @@ function Strip() {
     var i_d = new innerDiv(this, newCoords)
     canvas.add(i_d.line, i_d.top, i_d.bot);
     
-    document.getElementById("parking_space_selector_content").value = outputJSON();
+    document.getElementById("parking_space_parking_coords").value = outputJSON();
   }
   
   // Used to remove a parking space or divider
@@ -401,6 +422,6 @@ canvas.on('object:moving', function(e) {
     adjustDividers(p);
   }
   canvas.renderAll();
-  document.getElementById("parking_space_selector_content").value = outputJSON();
+  document.getElementById("parking_space_parking_coords").value = outputJSON();
 });
 <% end %>
