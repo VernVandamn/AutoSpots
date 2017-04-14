@@ -336,50 +336,30 @@ black_color = (0,0,0)
 red_color = (0,0,255)
 green_color = (0,255,0)
 
-#all images taken at timeOfDay
-
-# This pulls the updated images.json file from their server but the
-# ''.join(req) thing makes it not work
-# The current images.json file works well enough
-
-#timeOfDay = '1100'
-#req = urllib2.urlopen('http://cs.mwsu.edu/~griffin/p-lot/apiproxy.php?time=' + timeOfDay)
-#req = ''.join(req)
-
-#f = open("images.json", "w")
-
-#p_json = json.loads(req)
-#f.write(p_json)
-#f.close()
-numImgs = 0
-
 #use the images.json for all the images demo is just the noice ones for demo day
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--images", help = "path to the images file")
 args = vars(ap.parse_args())
-# with open('demo.json') as images_file:
-# with open('images.json') as images_file:
-# with open('demo3.json') as images_file:
 with open(args["images"]) as images_file:
     images = json.load(images_file)
 
+# This is where you specify the number of images to scan
+# 0 = only one image
+# numImgs = 0
+numImgs = images['count']
+
 # clear out spot_results folder
-filelist = [ f for f in os.listdir("../AutospotsCVDisplay/app/assets/images/spots") if f.endswith(".png") ]
-for f in filelist:
-    os.remove('../AutospotsCVDisplay/app/assets/images/spots/' + f)
+# filelist = [ f for f in os.listdir("../AutospotsCVDisplay/app/assets/images/spots") if f.endswith(".png") ]
+# for f in filelist:
+    # os.remove('../AutospotsCVDisplay/app/assets/images/spots/' + f)
 
 #loop through all images
 for image in images['data']:
     # This is where you specify the number of images to scan
     # 0 = only one image
-    # if numImgs > 20:
-    if numImgs > 1:
-            break
-    numImgs = numImgs + 1
-
-    #url = image['shot_url']+image['camera']+'/'+image['name']
-    #
-    #saveImgUrl(url)
+    # if numImgs > 1:
+            # break
+    # numImgs = numImgs + 1
 
     img = cv2.imread(image['name'])
 
@@ -390,6 +370,8 @@ for image in images['data']:
     blank_darknet = np.zeros(shape=(1,1))
     # Save the image as input.jpg so crfasrnn will read it
     # run crfasrnn before the big loop so we only have to run it once for each picture
+
+    # This will run the machine learning algorithms on the images
     if len(sys.argv) > 1 and 'm' not in sys.argv[1]:
         cv2.imwrite('input.jpg', img)
         height, width, channels = img.shape
@@ -411,9 +393,6 @@ for image in images['data']:
                 # line[0]=x1, line[1]=y1, line[2]=x2, line[3]=y2
                 cv2.rectangle(blank_darknet,(int(line[0]),int(line[1])),(int(line[2]),int(line[3])),(255,255,255),-1)
         os.remove('darknet_results.csv')
-
-
-
 
 
     # Show the original image first
