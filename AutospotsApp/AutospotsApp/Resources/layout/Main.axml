@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/streets1">
+    android:layout_height="match_parent">
     <TextView
         android:text="@string/MainTitleText"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -17,8 +16,7 @@
         android:clickable="false"
         android:cursorVisible="false"
         android:textAllCaps="true"
-        android:textSize="50dp"
-        android:textColor="@android:color/black" />
+        android:textSize="50dp" />
     <TextView
         android:text="@string/SubTitleText"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -26,16 +24,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/SubTitleTextView"
         android:layout_gravity="center"
-        android:layout_marginBottom="40dp"
-        android:textColor="@android:color/black" />
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/LotPickSpinner"
-        android:layout_marginBottom="50dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:backgroundTint="#ffa9a9a9" />
+        android:layout_marginBottom="150dp" />
     <Button
         android:text="@string/ParkMeButtonText"
         android:layout_width="wrap_content"

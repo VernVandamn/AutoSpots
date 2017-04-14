@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="MainTitleText">Autospots</string>
-  <string name="SubTitleText">wherever you park</string>
+  <string name="SubTitleText">at the University of Utah</string>
   <string name="ParkMeButtonText">Park Me</string>
   <string name="ApplicationName">Autospots</string>
   <string name="MenuText">Main Menu</string>
@@ -20,13 +20,25 @@
   <string name="WaitingForSpotText">Finding a parking space...</string>
   <string name="LetsGoText">Spot found! Let\'s go!</string>
   <string name="CantLocateText">Unable to determine your location. Try again in a short while.</string>
-  <string name="LocationDisabledToastText">Location service must be enabled to park you.</string>
-  <string name="ForeNotificationText">Follow the navigation. We\'ll find you a spot when you get closer.</string>
   <string name="SelectABuildingText">Select a building:</string>
+  <string-array name="SelectBuildingArray">
+    <item>MEB</item>
+    <item>WEB</item>
+    <item>Union</item>
+    <item>Stadium</item>
+    <item>MEK</item>
+  </string-array>
   <string name="or">OR</string>
   <string name="SelectAParkingLotText">Select a parking lot:</string>
+  <string-array name="SelectParkingLotArray">
+    <item>MEB North</item>
+    <item>MEB North East</item>
+    <item>WEB East</item>
+    <item>MEK North</item>
+    <item>Stadium</item>
+  </string-array>
   
-  <string-array name="StatsDayArray">
+  <string-array name="StatsArray">
     <item>Monday Capacity vs time</item>
     <item>Tuesday Capacity vs time</item>
     <item>Wednesday Capacity vs time</item>
