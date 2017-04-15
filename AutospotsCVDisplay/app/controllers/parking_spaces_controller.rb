@@ -10,7 +10,8 @@ class ParkingSpacesController < ApplicationController
   # GET /parking_spaces/1
   # GET /parking_spaces/1.json
   def show
-    @images = Cloudinary::Api.resources_by_tag("#{@parking_space.id}spot")['resources']
+    @spots = Cloudinary::Api.resources_by_tag("#{@parking_space.id}spot")['resources']
+    @images = Cloudinary::Api.resources(:type => 'upload', :prefix => "#{@parking_space.id}/", :max_results => '3')['resources']
   end
 
   # GET /parking_spaces/new

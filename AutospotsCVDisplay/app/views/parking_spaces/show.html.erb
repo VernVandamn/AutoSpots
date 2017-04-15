@@ -17,13 +17,13 @@
   	<div class="col-lg-12 col-sm-12 col-xs-12" >
     	<h1>Autospots Computer Vision</h1>
   		<a title="Results" href="#" id="mainimg">
-        <%= cl_image_tag("#{@parking_space.id}/final.png", :class => "thumbnail img-responsive") %>
+        <%= cl_image_tag(@images.first['url'], :class => "thumbnail img-responsive") %>
   		</a>
   	</div>
 	</div>
 	<hr>
 
-	<% @images.each do |image| %>
+	<% @spots.each do |image| %>
     <%= link_to cl_image_tag(image['url'], height:'100px'), image['url'], data:{ title:"#{image['url'].split('/').last}" , toggle:'lightbox', gallery:'multiimages' }%> -->
 	<% end %>
 
@@ -31,10 +31,10 @@
 		<div class="row" id="main">
 	    	<div class="col-lg-12 col-sm-12 col-xs-12" >
 		    	<h3>Machine Learning Responses</h3>
-      		<%= cl_image_tag("#{@parking_space.id}/output.png", :id => "mainimg", :class => "thumbnail img-responsive") %>
+      		<%= cl_image_tag(@images.second['url'], :id => "mainimg", :class => "thumbnail img-responsive") %>
 	    	</div>
 	    	<div class="col-lg-12 col-sm-12 col-xs-12" >
-      		<%= cl_image_tag("#{@parking_space.id}/predictions.jpg", :id => "mainimg", :class => "thumbnail img-responsive") %>
+      		<%= cl_image_tag(@images.third['url'], :id => "mainimg", :class => "thumbnail img-responsive") %>
 	    	</div>
   	</div>
 </div>
