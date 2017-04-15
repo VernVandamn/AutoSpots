@@ -24,9 +24,7 @@
 	<hr>
 
 	<% @images.each do |image| %>
-		<!-- # <%= link_to image_tag("spots/#{image.split('/').last}", height:'100px'), "/assets/spots/#{image.split('/').last}", data:{ title:"#{image.split('/').last}" , toggle:'lightbox', gallery:'multiimages' }%> -->
-    <!-- # <%= link_to cl_image_tag("2/2predictions", height:'100px'), Cloudinary::Utils.cloudinary_url('2/2predictions'), data:{ title:"title" , toggle:'lightbox', gallery:'multiimages' }%> -->
-    <%= link_to cl_image_tag(image['url'], height:'100px'), image['url'], data:{ title:"#{image.split('/').last}" , toggle:'lightbox', gallery:'multiimages' }%> -->
+    <%= link_to cl_image_tag(image['url'], height:'100px'), image['url'], data:{ title:"#{image['url'].split('/').last}" , toggle:'lightbox', gallery:'multiimages' }%> -->
 	<% end %>
 
 	<hr>
