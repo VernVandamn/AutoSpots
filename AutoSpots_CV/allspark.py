@@ -95,19 +95,19 @@ def uploadResults():
 			space['output']+'final.png', 
 			tags=space['id']+'final',
 			folder=space['id'],
-			use_filename=True
+			public_id='final.png'
 		)
 		# Upload crfrnn image
 		respose = up.upload(
 			space['output']+'output.png', 
 			folder=space['id'],
-			use_filename=True
+			public_id='output.png'
 		)
 		# Upload darknet image
 		respose = up.upload(
 			space['output']+'predictions.jpg', 
 			folder=space['id'],
-			use_filename=True
+			public_id='predictions.jpg'
 		)
 		spotsDir = space['output']+'spots/'
 		for spot in os.listdir(output_base+space['id']+'/spots'):
@@ -115,7 +115,7 @@ def uploadResults():
 				spotsDir+spot, 
 				tags=space['id']+'spot',
 				folder=space['id']+'/spots',
-				use_filename=True
+				public_id=spot
 			)
 
 
