@@ -23,6 +23,7 @@ AutoSpots_CV/src/*
 AutoSpots_CV/cfg/
 AutoSpots_CV/cfg/*
 AutoSpots_CV/output/*
+AutospotsCVDisplay/tmp/*
 
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets

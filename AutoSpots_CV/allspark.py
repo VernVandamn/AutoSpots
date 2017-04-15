@@ -3,6 +3,7 @@ import json
 import cloudinary
 from cloudinary import uploader as up
 import os, shutil
+import sched, time
 
 cloudinary.config(
 	cloud_name= "ddzdneuxe",
@@ -10,18 +11,20 @@ cloudinary.config(
 	api_secret= "6PjnLcArSUuziXJyz65DyDnWzls"
 )
 
-# import sched, time
-# s = sched.scheduler(time.time, time.sleep)
-# def do_something(sc): 
-    # print "Doing stuff..."
-    # do your stuff
-    # s.enter(60, 1, do_something, (sc,))
-
-# s.enter(60, 1, do_something, (s,))
-# s.run()
-
 output_base = './output/'
 jsonInput = { 'data': [] };
+
+s = sched.scheduler(time.time, time.sleep)
+def do_something(sc): 
+    # print "Doing stuff..."
+		getParkingInfo()
+		runCV()
+		uploadResults()
+		print jsonInput
+    s.enter(120, 1, do_something)
+
+s.enter(120, 1, do_something)
+s.run()
 
 def getParkingInfo():
 	# This will return a json object of all the parking spaces set up on the website
@@ -118,8 +121,3 @@ def uploadResults():
 				public_id=spot[:-4]
 			)
 
-
-getParkingInfo()
-runCV()
-uploadResults()
-print jsonInput
