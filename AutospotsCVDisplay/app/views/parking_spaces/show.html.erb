@@ -17,7 +17,7 @@
   	<div class="col-lg-12 col-sm-12 col-xs-12" >
     	<h1>Autospots Computer Vision</h1>
   		<a title="Results" href="#" id="mainimg">
-        <%= cl_image_tag("#{@parking_space.id}/final.png", :version => '9', :class => "thumbnail img-responsive") %>
+        <%= cl_image_tag("#{@parking_space.id}/final.png", :class => "thumbnail img-responsive") %>
   		</a>
   	</div>
 	</div>
@@ -31,10 +31,10 @@
 		<div class="row" id="main">
 	    	<div class="col-lg-12 col-sm-12 col-xs-12" >
 		    	<h3>Machine Learning Responses</h3>
-      		<%= cl_image_tag("#{@parking_space.id}/output.png", :version => '9', :id => "mainimg", :class => "thumbnail img-responsive") %>
+      		<%= cl_image_tag("#{@parking_space.id}/output.png", :id => "mainimg", :class => "thumbnail img-responsive") %>
 	    	</div>
 	    	<div class="col-lg-12 col-sm-12 col-xs-12" >
-      		<%= cl_image_tag("#{@parking_space.id}/predictions.jpg", :version => '9', :id => "mainimg", :class => "thumbnail img-responsive") %>
+      		<%= cl_image_tag("#{@parking_space.id}/predictions.jpg", :id => "mainimg", :class => "thumbnail img-responsive") %>
 	    	</div>
   	</div>
 </div>
