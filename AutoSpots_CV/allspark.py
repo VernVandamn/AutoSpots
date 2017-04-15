@@ -1,7 +1,13 @@
 import requests
 import json
-import cloudinary
+import uploader
 import os, shutil
+
+cloudinary.config(
+	cloud_name= "ddzdneuxe",
+	api_key= "555971697581325",
+	api_secret= "6PjnLcArSUuziXJyz65DyDnWzls"
+)
 
 # import sched, time
 # s = sched.scheduler(time.time, time.sleep)
@@ -63,7 +69,8 @@ def getParkingInfo():
 		spaceOutput = { 
 			'output':	picDir,
 			'json': 	jsonLoc,
-			'name': 	imgLoc
+			'name': 	imgLoc,
+			'id':			pid
 		}
 		jsonInput['data'].append(spaceOutput)
 
@@ -76,6 +83,39 @@ def runCV():
 
 def cleanup():
 	shutil.rmtree('./output/')
+
+def uploadResults():
+	data = jsonInput['data']
+	for space in data:
+		# Upload final image
+		respose = cloudinary.uploader.upload(
+			space['output']+'/final.png', 
+			tags=space['id']+'final',
+			folder=space['id'],
+			public_id='final'
+		)
+		# Upload crfrnn image
+		respose = cloudinary.uploader.upload(
+			space['output']+'/output.png', 
+			folder=space['id'],
+			public_id='output'
+		)
+		# Upload darknet image
+		respose = cloudinary.uploader.upload(
+			space['output']+'/predictions.jpg', 
+			folder=space['id'],
+			public_id='predictions'
+		)
+		spotsDir = space['output']+'spots/'
+		for spot in os.listdir(output_base+space['id']+'/spots'):
+			respose = cloudinary.uploader.upload(
+				spotsDir+spot, 
+				tags=space['id']+'spot',
+				folder=space['id']+'/spots',
+				public_id=spot[:-4]
+			)
+
+
 
 
 getParkingInfo()

@@ -361,6 +361,8 @@ for image in images['data']:
             # break
     # numImgs = numImgs + 1
 
+    outputDir = image['output']
+
     img = cv2.imread(image['name'])
 
     with open(image['json']) as data_file:
@@ -549,7 +551,7 @@ for image in images['data']:
                         plt.title(titles[i])
                         plt.xticks([]),plt.yticks([])
 
-                    plt.savefig('../AutospotsCVDisplay/app/assets/images/spots/' + spotName)
+                    plt.savefig(outputDir+'spots/' + spotName)
                     # plt.show()
                 
                 
@@ -623,10 +625,10 @@ for image in images['data']:
         #save the last output
         #cv2.imwrite('out1.jpg', img)
     # if len(sys.argv) > 1 and 'f' in sys.argv[1]:
-    cv2.imwrite('../AutospotsCVDisplay/app/assets/images/final.png', img)
-    cv2.imwrite('../AutospotsCVDisplay/app/assets/images/output.png', crfrnn_output)
+    cv2.imwrite(outputDir+'final.png', img)
+    cv2.imwrite(outputDir+'output.png', crfrnn_output)
     predict = cv2.imread('predictions.jpg')
-    cv2.imwrite('../AutospotsCVDisplay/app/assets/images/predictions.jpg', predict)
+    cv2.imwrite(outputDir+'predictions.jpg', predict)
     # cv2.imshow('image', img)
     # cv2.waitKey(0)
     # cv2.destroyWindow('image')

@@ -83,6 +83,8 @@ $('#btnStartOver').on('click', function(){
       for(i = 0; i < images_loaded; i++) {
       	canvas.bringForward(oImg);
       }
+      // Add the gray spot selector after the image has loaded
+      graySpot();
   });
   updateUrlOutput();
   images_loaded++;
@@ -105,6 +107,8 @@ fabric.Image.fromURL('https://worldcam.live/img/webcams/540/wolbrom3.jpg', funct
     canvas.calcOffset();
     canvas.add(oImg);
     oImg.sendToBack();
+    // Add the gray spot selector after the image has loaded
+    graySpot();
 });
 
 updateUrlOutput();
@@ -126,6 +130,12 @@ function updateUrlOutput() {
 // Output the json file we need in the Autospots.py file
 function outputJSON(){
   var output = [];
+  canvas.getObjects().forEach(function(obj){
+    if(obj.__proto__.type == 'group') {
+      //console.log('coords:', obj.left, obj.top);
+      output.push([Math.round(obj.left), Math.round(obj.top)]);
+    } 
+  });
   // For each row add in the horizontal and vertical 
   parking_lot.forEach(function(strip){
     // Add horizontal lines
@@ -404,24 +414,67 @@ function restrictCornerMovement(p) {
 canvas.on('object:moving', function(e) {
   var p = e.target;
   restrictToEdges(p);
-  if(parking_lot[p.lot].dividers.length > 0){
-    restrictCornerMovement(p)
-  } else {
-    p.line1 && p.line1.set({
-      'x2': p.left,
-      'y2': p.top
-    });
-    p.line2 && p.line2.set({
-      'x1': p.left,
-      'y1': p.top
-    });
-  }
-  // Move all dividers
-  //debugger;
-  if (p) {
-    adjustDividers(p);
-  }
+
+  if (p.__proto__.type != 'group') {
+    if(parking_lot[p.lot].dividers.length > 0){
+      restrictCornerMovement(p)
+    } else {
+      p.line1 && p.line1.set({
+        'x2': p.left,
+        'y2': p.top
+      });
+      p.line2 && p.line2.set({
+        'x1': p.left,
+        'y1': p.top
+      });
+    }
+    // Move all dividers
+    //debugger;
+    if (p) {
+      adjustDividers(p);
+    }
+  } 
   canvas.renderAll();
   document.getElementById("parking_space_parking_coords").value = outputJSON();
 });
+
+function graySpot() {
+  var circle = new fabric.Circle({
+    radius: 5,
+    strokeWidth: 3,
+    stroke: 'yellow',
+    fill: 'rgba(0,0,0,0)',
+    originX: 'center',
+    originY: 'center'
+  });
+
+  var l1 = new fabric.Line([0, -20, 0, -5], {
+    fill: 'red',
+    stroke: 'yellow',
+    strokeWidth: 3,
+  });
+  var l2 = new fabric.Line([5, 0, 20, 0], {
+    fill: 'red',
+    stroke: 'yellow',
+    strokeWidth: 3,
+  });
+  var l3 = new fabric.Line([0, 20, 0, 5], {
+    fill: 'red',
+    stroke: 'yellow',
+    strokeWidth: 3,
+  });
+  var l4 = new fabric.Line([-20, 0, -5, 0], {
+    fill: 'red',
+    stroke: 'yellow',
+    strokeWidth: 3,
+  });
+  var group = new fabric.Group([ circle, l1, l2, l3, l4 ], {
+    left: canvas.width/2,
+    top: canvas.height/2,
+    hasControls: false,
+    hasBorders: false
+  });
+
+  canvas.add(group);
+}
 <% end %>
