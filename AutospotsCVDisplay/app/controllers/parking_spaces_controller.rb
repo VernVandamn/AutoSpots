@@ -30,7 +30,7 @@ class ParkingSpacesController < ApplicationController
 
     respond_to do |format|
       if @parking_space.save
-        format.html { redirect_to parking_spaces, notice: 'Parking space was successfully created.' }
+        format.html { redirect_to parking_spaces_url, notice: 'Parking space was successfully created.' }
         format.json { render :show, status: :created, location: @parking_space }
       else
         format.html { render :new }
