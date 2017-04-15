@@ -1,6 +1,7 @@
 import requests
 import json
-import uploader
+import cloudinary
+from cloudinary import uploader as up
 import os, shutil
 
 cloudinary.config(
@@ -79,36 +80,38 @@ def getParkingInfo():
 		json.dump(jsonInput, fp)
 
 def runCV():
-	stuff
+	os.system("python ./AutoSpots.py -i images.json")
+	print 'Parking has been analyzed'
 
 def cleanup():
 	shutil.rmtree('./output/')
 
 def uploadResults():
+	print 'Uploading images to server'
 	data = jsonInput['data']
 	for space in data:
 		# Upload final image
-		respose = cloudinary.uploader.upload(
-			space['output']+'/final.png', 
+		respose = up.upload(
+			space['output']+'final.png', 
 			tags=space['id']+'final',
 			folder=space['id'],
 			public_id='final'
 		)
 		# Upload crfrnn image
-		respose = cloudinary.uploader.upload(
-			space['output']+'/output.png', 
+		respose = up.upload(
+			space['output']+'output.png', 
 			folder=space['id'],
 			public_id='output'
 		)
 		# Upload darknet image
-		respose = cloudinary.uploader.upload(
-			space['output']+'/predictions.jpg', 
+		respose = up.upload(
+			space['output']+'predictions.jpg', 
 			folder=space['id'],
 			public_id='predictions'
 		)
 		spotsDir = space['output']+'spots/'
 		for spot in os.listdir(output_base+space['id']+'/spots'):
-			respose = cloudinary.uploader.upload(
+			respose = up.upload(
 				spotsDir+spot, 
 				tags=space['id']+'spot',
 				folder=space['id']+'/spots',
@@ -116,7 +119,7 @@ def uploadResults():
 			)
 
 
-
-
 getParkingInfo()
+runCV()
+uploadResults()
 print jsonInput

@@ -10,7 +10,7 @@ class ParkingSpacesController < ApplicationController
   # GET /parking_spaces/1
   # GET /parking_spaces/1.json
   def show
-    @images = Cloudinary::Api.resources_by_tag("#{@parking_space.id}spot")
+    @images = Cloudinary::Api.resources_by_tag("#{@parking_space.id}spot")['resources']
   end
 
   # GET /parking_spaces/new
