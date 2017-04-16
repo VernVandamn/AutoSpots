@@ -17,6 +17,10 @@
       <%= f.text_field :image_url, :readonly => true, class: 'form-control' %>
     </div>
 
+    <div id='linktogps'>
+      <%= link_to 'Find latitude and longitude for your address', 'https://www.gps-coordinates.net/gps-coordinates-converter', target: :_blank, class: 'btn btn-default' %>
+    </div>
+
     <div class="form-group field">
       <%= f.label :latitude, 'Latitude', class: 'col-sm-2' %>
       <%= f.text_field :latitude, class: 'form-control' %>
