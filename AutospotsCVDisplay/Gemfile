@@ -10,6 +10,8 @@ gem 'lightbox-bootstrap-rails', '5.1.0.1'
 
 gem 'puma'
 
+# Add annotation gem for database
+gem 'annotate'
 # bootstrap for styling
 gem 'bootstrap-sass'
 # cloudinary for linking to images

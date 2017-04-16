@@ -13,13 +13,23 @@
 
   <div class='form-horizontal'>
     <div class="form-group field">
-      <%= f.label :parking_coords, 'Output', class: 'col-sm-2' %>
-      <%= f.text_area :parking_coords, :rows => "3", :readonly => true, class: 'form-control' %>
+      <%= f.label :image_url, 'Image URL', class: 'col-sm-2' %>
+      <%= f.text_field :image_url, :readonly => true, class: 'form-control' %>
     </div>
 
     <div class="form-group field">
-      <%= f.label :image_url, 'Image URL', class: 'col-sm-2' %>
-      <%= f.text_field :image_url, :readonly => true, class: 'form-control' %>
+      <%= f.label :latitude, 'Latitude', class: 'col-sm-2' %>
+      <%= f.text_field :latitude, class: 'form-control' %>
+    </div>
+
+    <div class="form-group field">
+      <%= f.label :longitude, 'Logitude', class: 'col-sm-2' %>
+      <%= f.text_field :longitude, class: 'form-control' %>
+    </div>
+
+    <div class="form-group field">
+      <%= f.label :parking_coords, 'Output', class: 'col-sm-2' %>
+      <%= f.text_area :parking_coords, :rows => "3", :readonly => true, class: 'form-control' %>
     </div>
 
     <div class="actions">
