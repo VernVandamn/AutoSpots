@@ -21,14 +21,17 @@
       <%= link_to 'Find latitude and longitude for your address', 'https://www.gps-coordinates.net/gps-coordinates-converter', target: :_blank, class: 'btn btn-default' %>
     </div>
 
-    <div class="form-group field">
-      <%= f.label :latitude, 'Latitude', class: 'col-sm-2' %>
-      <%= f.text_field :latitude, class: 'form-control' %>
-    </div>
+    <div class="addPadding">
+      <div class="form-group field makeHorizontal">
+        <%= f.label :latitude, 'Latitude', class: 'col-sm-6' %>
+        <%= f.text_field :latitude, class: 'form-control' %>
+      </div>
 
-    <div class="form-group field">
-      <%= f.label :longitude, 'Logitude', class: 'col-sm-2' %>
-      <%= f.text_field :longitude, class: 'form-control' %>
+      <div class="form-group field makeHorizontal">
+        <%= f.label :longitude, 'Longitude', class: 'col-sm-6' %>
+        <%= f.text_field :longitude, class: 'form-control' %>
+      </div>
+      <br>
     </div>
 
     <div class="form-group field">

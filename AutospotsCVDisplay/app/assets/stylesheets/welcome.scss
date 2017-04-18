@@ -32,6 +32,14 @@ div.full-width {
   width: 100%;
   left: 0;
 }
+.makeHorizontal {
+  float: left;
+  padding-bottom: 20px;
+  padding-right: 60px;
+}
+.addPadding {
+  padding-bottom: 70px;
+}
 
 body {
   padding-top: 70px; /* Required padding for .navbar-fixed-top. Change if height of navigation changes. */

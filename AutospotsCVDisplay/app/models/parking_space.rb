@@ -13,6 +13,6 @@
 
 class ParkingSpace < ApplicationRecord
 	validates :image_url, presence: true
-	validates :latitude, presence: true
-	validates :longitude, presence: true
+	validates :latitude, presence: true, numericality: {only_float: true}
+	validates :longitude, presence: true, numericality: {only_float: true}
 end

@@ -71,6 +71,6 @@ class ParkingSpacesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def parking_space_params
-      params.require(:parking_space).permit(:parking_coords, :image_url)
+      params.require(:parking_space).permit(:parking_coords, :image_url, :longitude, :latitude)
     end
 end
