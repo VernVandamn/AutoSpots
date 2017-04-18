@@ -1,6 +1,7 @@
 import requests
 import json
 import cloudinary
+import argparse
 from cloudinary import uploader as up
 import os, shutil
 import sched, time
@@ -14,18 +15,41 @@ cloudinary.config(
 output_base = './output/'
 jsonInput = { 'data': [] };
 
-s = sched.scheduler(time.time, time.sleep)
-def do_something(sc): 
-    # print "Doing stuff..."
+if __name__ == "__main__":
+  main()
+
+def main():
+	# Set up to force an update with a input argument
+	# construct the argument parse and parse the arguments
+	ap = argparse.ArgumentParser()
+	ap.add_argument("-f", "--force", help = "Force update to server")
+	args = vars(ap.parse_args())
+
+	# load the image
+	if args.force is not None:
 		getParkingInfo()
 		runCV()
 		uploadResults()
-		print jsonInput
-    s.enter(120, 1, do_something)
+	else:
+		#######################################################################
+		# Scheduler
+		#######################################################################
+		s = sched.scheduler(time.time, time.sleep)
+		def do_something(sc): 
+	    # print "Doing stuff..."
+			getParkingInfo()
+			runCV()
+			uploadResults()
+			print jsonInput
+	    s.enter(300, 1, do_something)
 
-s.enter(120, 1, do_something)
-s.run()
+		s.enter(300, 1, do_something)
+		s.run()
 
+
+#######################################################################
+# Functions
+#######################################################################
 def getParkingInfo():
 	# This will return a json object of all the parking spaces set up on the website
 	parkingSpaces = requests.get('http://www.autospots.org/parking_spaces.json').json()
