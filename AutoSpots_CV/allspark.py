@@ -15,38 +15,6 @@ cloudinary.config(
 output_base = './output/'
 jsonInput = { 'data': [] };
 
-if __name__ == "__main__":
-  main()
-
-def main():
-	# Set up to force an update with a input argument
-	# construct the argument parse and parse the arguments
-	ap = argparse.ArgumentParser()
-	ap.add_argument("-f", "--force", help = "Force update to server")
-	args = vars(ap.parse_args())
-
-	# load the image
-	if args.force is not None:
-		getParkingInfo()
-		runCV()
-		uploadResults()
-	else:
-		#######################################################################
-		# Scheduler
-		#######################################################################
-		s = sched.scheduler(time.time, time.sleep)
-		def do_something(sc): 
-	    # print "Doing stuff..."
-			getParkingInfo()
-			runCV()
-			uploadResults()
-			print jsonInput
-	    s.enter(300, 1, do_something)
-
-		s.enter(300, 1, do_something)
-		s.run()
-
-
 #######################################################################
 # Functions
 #######################################################################
@@ -145,3 +113,33 @@ def uploadResults():
 				public_id=spot[:-4]
 			)
 
+def do_something(sc): 
+	# print "Doing stuff..."
+	getParkingInfo()
+	runCV()
+	uploadResults()
+	print jsonInput
+	s.enter(300, 1, do_something)
+
+def main():
+	# Set up to force an update with a input argument
+	# construct the argument parse and parse the arguments
+	ap = argparse.ArgumentParser()
+	ap.add_argument("-f", "--force", help="Force update to server", action="store_true")
+	args = ap.parse_args()
+
+	# load the image
+	if args.force:
+		print 'Forcing update to server'
+		getParkingInfo()
+		runCV()
+		uploadResults()
+	else:
+		# Run Scheduler
+		s = sched.scheduler(time.time, time.sleep)
+
+		s.enter(300, 1, do_something)
+		s.run()
+
+if __name__ == "__main__":
+  main()

@@ -555,32 +555,13 @@ for image in images['data']:
                     # plt.show()
                 
                 
-                # -- OLD METHOD -- IF ONE IS WRONG GO WITH IT
-                # if colorResult == False:
-                # drawBoundBox(parking_spot, red_color)
-                # img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, red_color)
-                # parkinglotbinaryarray.append(0)
-                # elif edgesResult[0] == False:
-                # drawBoundBox(parking_spot, red_color)
-                # img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, red_color)
-                # parkinglotbinaryarray.append(0)
-                # elif maskResult == False:
-                # if maskResult == False:
-                # drawBoundBox(parking_spot, red_color)
-                # img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, red_color)
-                # parkinglotbinaryarray.append(0)
-                # else:
-                # drawBoundBox(parking_spot, green_color)
-                # img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, green_color)
-                # parkinglotbinaryarray.append(1);
-
                 vote = 0
 
                 if colorResult == False:
                     vote += 1
                     # print vote
                 if edgesResult[0] == False:
-                    vote += 2
+                    vote += 1
                     # print vote
                 if maskResult == False:
                     vote += 1
@@ -609,9 +590,6 @@ for image in images['data']:
                     cv2.waitKey(0)
                     cv2.destroyWindow('image')
                     #cv2.imshow("edges", edgesResult[1])
-
-                # Do we need to save these?
-                # saveImg(parking_spot, spot_dir, spotName)
 
             #add line object to p_lot
             p_lot[-1]['V'].append(v_line_obj)
