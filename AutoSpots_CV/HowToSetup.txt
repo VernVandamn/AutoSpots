@@ -1,0 +1,11 @@
+List of files to move into folder from machine learning installs
+
+Darknet
+- data folder
+- cfg folder
+- maybe darknet binary file
+- yolo.weights 
+
+CRFRNN
+- put TVG files in AutoSpots_CV
+- copy caffe folder

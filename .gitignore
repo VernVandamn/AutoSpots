@@ -18,8 +18,9 @@ AutoSpots_CV/caffe/
 AutoSpots_CV/caffe/*
 AutoSpots_CV/data/
 AutoSpots_CV/data/*
-AutoSpots_CV/src/
-AutoSpots_CV/src/*
+# We modified the files in image.c so we need to upload those changes
+# AutoSpots_CV/src/
+# AutoSpots_CV/src/*
 AutoSpots_CV/cfg/
 AutoSpots_CV/cfg/*
 AutoSpots_CV/output/*
