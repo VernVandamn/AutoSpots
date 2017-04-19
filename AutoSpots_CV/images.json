@@ -1,1 +1,1 @@
-{"count": 1, "data": [{"output": "./output/1/", "json": "./output/1/parkingSpots.json", "name": "./output/1/orig.jpg", "id": "1"}]}
+{"count": 1, "data": [{"name": "Poland", "longitude": "19.7595779", "json": "./output/1/parkingSpots.json", "imgLoc": "./output/1/orig.jpg", "latitude": "50.3876919", "output": "./output/1/", "id": "1"}]}

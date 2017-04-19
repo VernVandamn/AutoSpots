@@ -6,6 +6,7 @@ from cloudinary import uploader as up
 import os, shutil
 import sched, time
 import requests
+import base64
 
 cloudinary.config(
 	cloud_name= "ddzdneuxe",
@@ -71,8 +72,9 @@ def getParkingInfo():
 			'output':		picDir,
 			'json': 		jsonLoc,
 			'name': 		name,
-			'id':				pid
-			'latitude':	lat
+			'imgLoc':		imgLoc,
+			'id':				pid,
+			'latitude':	lat,
 			'longitude':longi
 		}
 		jsonInput['data'].append(spaceOutput)
@@ -82,7 +84,7 @@ def getParkingInfo():
 		json.dump(jsonInput, fp)
 
 def runCV():
-	os.system("python ./AutoSpots.py -i images.json")
+	os.system("python AutoSpots.py -i images.json")
 	print 'Parking has been analyzed'
 
 def cleanup():
@@ -102,7 +104,7 @@ def uploadResults():
 			spots = pldata.readline()
 		with open(space['output']+'final.png', "rb") as image_file:
 		    encoded_string = base64.encodestring(image_file.read())
-		response = requests.post(baseurl+'newlot/', json={'name': name, 'lat': latitude, 'long': longitude, spots: spots, image: encoded_string.decode()})
+		response = requests.post(baseurl+'newlot/', json={'name': name, 'lat': latitude, 'long': longitude, 'spots': spots, 'image': encoded_string.decode()})
 
 
 

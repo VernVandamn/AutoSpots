@@ -363,7 +363,7 @@ for image in images['data']:
 
     outputDir = image['output']
 
-    img = cv2.imread(image['name'])
+    img = cv2.imread(image['imgLoc'])
 
     with open(image['json']) as data_file:
         data = json.load(data_file)
@@ -599,7 +599,7 @@ for image in images['data']:
     # if len(sys.argv) > 1 and 'p' in sys.argv[1]:
     print parkinglotbinaryarray
     with open(outputDir+'parkinglotbinaryarray.data', 'w') as plba:
-        plba.write(parkinglotbinaryarray)
+        plba.write(''.join(str(s) for s in parkinglotbinaryarray))
     # if len(sys.argv) > 1 and 'u' in sys.argv[1]:
     # serv.sendDataToServer(parkinglotbinaryarray)
         #save the last output
