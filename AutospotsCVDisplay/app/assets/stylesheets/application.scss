@@ -31,6 +31,30 @@
   padding-bottom: 20px;
 }
 
+// For table on Parking spaces index
+
+.table-name {
+  font-size: 2em;
+  font-family: 'Rubik Mono One';
+}
+
+.table-data {
+  font-size: 1.2em;
+}
+
+.table-image {
+  width: 100px
+}
+
+.table th {
+  text-align: center;
+}
+
+.table > tbody > tr > td {
+  text-align: center;
+  vertical-align: middle;
+}
+
 /* header */
 
 .nav-link {
@@ -60,7 +84,7 @@
 h1 {
   text-align: "center";
   font-family: TransformersMovie;
-  font-size: 4.5em;
+  font-size: 5em;
 }
 
 img {
