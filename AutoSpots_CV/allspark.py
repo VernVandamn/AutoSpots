@@ -5,6 +5,7 @@ import argparse
 from cloudinary import uploader as up
 import os, shutil
 import sched, time
+import requests
 
 cloudinary.config(
 	cloud_name= "ddzdneuxe",
@@ -14,6 +15,7 @@ cloudinary.config(
 
 output_base = './output/'
 jsonInput = { 'data': [] };
+baseurl = "http://jamesljenk.pythonanywhere.com/"
 
 #######################################################################
 # Functions
@@ -27,6 +29,9 @@ def getParkingInfo():
 	# Do the following for every set up parking lot
 	for space in parkingSpaces:
 		pid = str(space['id'])
+		name = str(space['name'])
+		lat = str(space['latitude'])
+		longi = str(space['longitude'])
 		# print pid
 		coords = json.loads(space['parking_coords'])
 		imgUrl = str(space['image_url'])
@@ -63,10 +68,12 @@ def getParkingInfo():
 
 		# Then we need to add the info the the inner object
 		spaceOutput = { 
-			'output':	picDir,
-			'json': 	jsonLoc,
-			'name': 	imgLoc,
-			'id':			pid
+			'output':		picDir,
+			'json': 		jsonLoc,
+			'name': 		name,
+			'id':				pid
+			'latitude':	lat
+			'longitude':longi
 		}
 		jsonInput['data'].append(spaceOutput)
 
@@ -85,6 +92,26 @@ def uploadResults():
 	print 'Uploading images to server'
 	data = jsonInput['data']
 	for space in data:
+		# Send final image to the python server and lot string
+		name = space['name']
+		longitude = space['longitude']
+		latitude = space['latitude']
+		encoded_string = ""
+		spots = ""
+		with open(space['output']+'parkinglotbinaryarray.data', 'rb') as pldata:
+			spots = pldata.readline()
+		with open(space['output']+'final.png', "rb") as image_file:
+		    encoded_string = base64.encodestring(image_file.read())
+		response = requests.post(baseurl+'newlot/', json={'name': name, 'lat': latitude, 'long': longitude, spots: spots, image: encoded_string.decode()})
+
+
+
+		print name, longitude, latitude, spots
+		exit()
+
+
+
+		# Upload images to Cloudinary
 		# Upload final image
 		respose = up.upload(
 			space['output']+'final.png', 

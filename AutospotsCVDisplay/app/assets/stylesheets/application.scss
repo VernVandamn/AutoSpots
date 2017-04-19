@@ -17,7 +17,7 @@
 @import "bootstrap";
 @import "lightbox-bootstrap";
 @import "bootstrap-sprockets";
-@import url('https://fonts.googleapis.com/css?family=Cormorant+SC');
+@import url('https://fonts.googleapis.com/css?family=Rubik+Mono+One|Cormorant+SC');
 
 @font-face {
   font-family: 'TransformersMovie';    
@@ -33,6 +33,12 @@
 
 /* header */
 
+.nav-link {
+  padding-top: 12px;
+  font-size: 1.15em;
+  font-family: 'Rubik Mono One';
+}
+
 #logo {
   float: left;
   margin-right: 10px;
@@ -43,7 +49,7 @@
   padding-top: 10px;
   font-weight: bold;
   font-family: TransformersMovie;
-  font-size: 2em;
+  font-size: 3em;
 }
 
 #logo:hover {
@@ -52,7 +58,9 @@
 }
 
 h1 {
-	text-align: "center"
+  text-align: "center";
+  font-family: TransformersMovie;
+  font-size: 4.5em;
 }
 
 img {
@@ -96,3 +104,7 @@ footer {
   float: left;
 }
 
+
+.actions {
+  padding-top: 20px;
+}

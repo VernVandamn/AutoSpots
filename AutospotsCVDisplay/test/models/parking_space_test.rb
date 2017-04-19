@@ -9,6 +9,7 @@
 #  updated_at     :datetime         not null
 #  latitude       :float
 #  longitude      :float
+#  name           :text
 #
 
 require 'test_helper'

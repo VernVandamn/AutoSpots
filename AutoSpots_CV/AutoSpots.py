@@ -598,8 +598,10 @@ for image in images['data']:
     # Print the values to the string to send
     # if len(sys.argv) > 1 and 'p' in sys.argv[1]:
     print parkinglotbinaryarray
+    with open(outputDir+'parkinglotbinaryarray.data', 'w') as plba:
+        plba.write(parkinglotbinaryarray)
     # if len(sys.argv) > 1 and 'u' in sys.argv[1]:
-    serv.sendDataToServer(parkinglotbinaryarray)
+    # serv.sendDataToServer(parkinglotbinaryarray)
         #save the last output
         #cv2.imwrite('out1.jpg', img)
     # if len(sys.argv) > 1 and 'f' in sys.argv[1]:

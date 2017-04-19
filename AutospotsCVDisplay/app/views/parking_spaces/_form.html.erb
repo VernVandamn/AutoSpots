@@ -13,8 +13,8 @@
 
   <div class='form-horizontal'>
     <div class="form-group field">
-      <%= f.label :image_url, 'Image URL', class: 'col-sm-2' %>
-      <%= f.text_field :image_url, :readonly => true, class: 'form-control' %>
+      <%= f.label :name, 'Parking Lot Name', class: 'col-sm-2' %>
+      <%= f.text_field :name, class: 'form-control' %>
     </div>
 
     <div id='linktogps'>
@@ -35,12 +35,17 @@
     </div>
 
     <div class="form-group field">
+      <%= f.label :image_url, 'Image URL', class: 'col-sm-2' %>
+      <%= f.text_field :image_url, :readonly => true, class: 'form-control' %>
+    </div>
+
+    <div class="form-group field">
       <%= f.label :parking_coords, 'Output', class: 'col-sm-2' %>
       <%= f.text_area :parking_coords, :rows => "3", :readonly => true, class: 'form-control' %>
     </div>
 
     <div class="actions">
-      <%= f.submit class: 'btn btn-secondary' %>
+      <%= f.submit class: 'btn btn-success' %>
     </div>
   </div>
 <% end %>
