@@ -90,14 +90,31 @@ def runCV():
 def cleanup():
 	shutil.rmtree('./output/')
 
+def update_lot(image, lotID, spots):
+    response = requests.post(baseurl+'update/image/'+str(lotID)+"/", json={'data': image})
+    response = requests.get(baseurl+'update/'+str(lotID)+"/"+str(spots)+"/")
+
+def newLot(name,image, spots, lat, long):
+    response = requests.post(baseurl+'newlot/', json={'name': name, 'lat': lat, 'long': long, 'spots': spots, 'image': image})
+
 def uploadResults():
 	print 'Uploading images to server'
 	data = jsonInput['data']
+
+	# Get the names and id's of the current list of lots to either update or create new
+	response = requests.get(baseurl+'/lots/')
+	plots = response.json()
+
 	for space in data:
 		# Send final image to the python server and lot string
-		name = space['name']
-		longitude = space['longitude']
-		latitude = space['latitude']
+		new = True
+		lotID = ''
+		for lot_tuple in plots:
+			if lot_tuple[0] == space['name']:
+				new = False
+				lotID = lot_tuple[1]
+				break;
+
 		encoded_string = ""
 		spots = ""
 		with open(space['output']+'parkinglotbinaryarray.data', 'rb') as pldata:
@@ -105,8 +122,13 @@ def uploadResults():
 		with open(space['output']+'final.png', "rb") as image_file:
 		    encoded_string = base64.encodestring(image_file.read())
 
-		
-		response = requests.post(baseurl+'newlot/', json={'name': name, 'lat': latitude, 'long': longitude, 'spots': spots, 'image': encoded_string.decode()})
+		if new:
+			name = space['name']
+			longitude = space['longitude']
+			latitude = space['latitude']
+			newLot(name, encoded_string.decode(), spots, latitude, longitude)
+		else:
+			update_lot(encoded_string.decode(), lotID, spots)
 
 		# Upload images to Cloudinary
 		# Upload final image
