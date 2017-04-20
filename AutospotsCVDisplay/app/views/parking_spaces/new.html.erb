@@ -29,7 +29,7 @@
 <%= javascript_tag do %>
 $('#btnAddStrip').on('click', function(){
   $('#buttons').append(''+
-    '<div id="'+parkinglots+'" class="well" align="center"><h3><span style="display:inline-block; width: 55%" class="strip-text">Parking strip '+(parkinglots+1)+'</span></h3><button id="btnAddSpot" class="btn btn-success" type="button" style="width: 20%">Add Spot</button><button id="btnRemoveSpot" class="btn btn-danger" type="button" style="width: 20%">Remove Spot</button></div>');
+    '<div id="'+parkinglots+'" class="well well-sm"><h3><span style="display:inline-block; width: 55%" class="strip-text">Parking strip '+(parkinglots+1)+'</span></h3><button id="btnAddSpot" class="btn btn-success" type="button" style="width: 15%">Add Spot</button><button id="btnRemoveSpot" class="btn btn-danger" type="button" style="width: 15%">Remove Spot</button></div>');
   parking_lot.push(new Strip());
   document.getElementById("parking_space_parking_coords").value = outputJSON();
 });
@@ -46,6 +46,9 @@ $('#getImage').on('click', function(){
 	  canvas.calcOffset();
 	  canvas.add(oImg);
 	  oImg.sendToBack();
+
+    // Add the gray spot selector after the image has loaded
+    graySpot();
 	});
 	updateUrlOutput();
   } 
@@ -476,6 +479,5 @@ function graySpot() {
   });
 
   canvas.add(group);
-  canvas.bringToFront(group);
 }
 <% end %>

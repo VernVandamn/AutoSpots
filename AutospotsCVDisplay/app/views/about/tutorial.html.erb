@@ -2,9 +2,9 @@
 	<div class="col-md-10">
 		<h1>Tutorial</h1>
 
-		<h2>Parking lot setup</h2>
+		<h3>Parking lot setup</h3>
 
-		<br><h4>Aquire image url from parking lot stream</h4>
+		<h4>Aquire image url from parking lot stream</h4>
 		<p>
 			A lot of parking web streams have a static image url you can input that will get the current 
 			state of the parking lot. That is what we need to link to in order to continually update what
@@ -13,17 +13,48 @@
 		<p>
 			A raspberry pi can easily be configured to serve a image from a camera every so often and the
 			url of that image you are updating on the server is the one we need to link to on the setup
-			page.
+			page. <%= link_to("Here is a link to how to take pictures with a camera using fswebcam", "https://www.raspberrypi.org/documentation/usage/webcams/") %>
 		</p>
 
-		<br><h4>Select a gray spot</h4>
+		<h4>Select a gray spot</h4>
 		<p>
-		Move the yellow target to hover over a gray spot that is a good representation of the gray
-		color of the parking lot. Parking lots depending on the materials used to create them can have
-		different
+			Using the setup tool move the yellow target to hover over a gray spot that is a good representation of the gray
+			color of the parking lot. Parking lots depending on the materials used to create them can have
+			different hues. Doing this will calibrate the computer vision to this parking lot.
+		</p>
+		<div class="tutorial-image">
+			<%= cl_image_tag("Selection_004_k98qa4.png") %>
+		</div>
+		<h4>Add a parking strip</h4>
+		<p>
+			Above the image the blue button will add a parking strip to the image. This is the bounding box for a whole set of parking spots.	Drag
+			the circles in the corners to the edges of the parking strip you want to create.
 		</p>
 
-		<h2>App</h2>
+		<div class="tutorial-image">
+			<%= cl_image_tag("Selection_005_qbvgc2.png") %>
+		</div>
+		<h4>Add parking spaces</h4>
+		<p>
+			Below the image you can add or remove parking spaces to add additional spots to the parking strip. You can slide the circles along the top and
+			the bottom to adjust the bounds of the parking spot.
+		</p>
+
+		<div class="tutorial-image">
+			<%= cl_image_tag("Selection_006_hgkxq8.png") %>
+		</div>
+		<h4>Enter in name and location</h4>
+		<p>
+			Enter in a unique name and the latitude and longitude of the parking location. You can find the latitude and longitude for your parking spot
+			by clicking the button above those fields. That will take you to a site you can get those coordinates from Google's Maps. 
+		</p>
+
+		<h4>Click create</h4>
+		<p>
+			Once all the information is entered and the parking lot is set up to your liking hit the create button to add the lot to the list of parking lots.
+		</p>
+
+		<h3>App</h3>
 		<p>
 			Open the app, choose a lot and hit Park Me! 
 		</p>
