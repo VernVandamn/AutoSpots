@@ -2,3 +2,26 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.strip-text {
+	font-family: 'Rubik Mono One';
+	font-size: 1.2em;
+}
+
+#btnAddSpot {
+	margin-right: 5px;
+	margin-top: -3px;
+	margin-bottom: 20px;
+}
+#btnRemoveSpot {
+	margin-top: -3px;
+	margin-bottom: 20px;
+}
+
+#buttons {
+	padding: 10px
+
+}
+
+.well {
+	text-align: center;
+}

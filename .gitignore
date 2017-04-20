@@ -26,6 +26,10 @@ AutoSpots_CV/cfg/*
 AutoSpots_CV/output/*
 AutospotsCVDisplay/tmp/*
 AutoSpots_CV/cvlog.txt
+<<<<<<< HEAD
+=======
+AutospotsCVDisplay/config/puma.rb
+>>>>>>> pumaProbs
 
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
