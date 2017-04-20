@@ -1,2 +1,22 @@
-<h1>About#team</h1>
-<p>Find me in app/views/about/team.html.erb</p>
+<div class="container">
+	<h1>Team</h1>
+
+	<div class="col-md-4">
+		<h3>Geoff Lodder</h3>	
+		<div class="team-icon">
+			<%= cl_image_tag("Screen_Shot_2017-01-21_at_12.13.08_AM_a9tycv.png")%>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<h3>James Jenkins</h3>	
+		<div class="team-icon">
+			<%= cl_image_tag("Screen_Shot_2017-01-21_at_12.13.21_AM_wyourx.png", :width=>145, :x=>2, :y=>2, :crop=>"crop")%>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<h3>Robert Corbett</h3>	
+		<div class="team-icon">
+			<%= cl_image_tag("Screen_Shot_2017-01-21_at_12.12.57_AM_2_idjcfo.png")%>
+		</div>
+	</div>
+</div>

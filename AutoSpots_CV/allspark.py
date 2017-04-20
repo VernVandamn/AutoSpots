@@ -104,14 +104,9 @@ def uploadResults():
 			spots = pldata.readline()
 		with open(space['output']+'final.png', "rb") as image_file:
 		    encoded_string = base64.encodestring(image_file.read())
+
+		
 		response = requests.post(baseurl+'newlot/', json={'name': name, 'lat': latitude, 'long': longitude, 'spots': spots, 'image': encoded_string.decode()})
-
-
-
-		print name, longitude, latitude, spots
-		exit()
-
-
 
 		# Upload images to Cloudinary
 		# Upload final image

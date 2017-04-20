@@ -10,6 +10,8 @@ gem 'lightbox-bootstrap-rails', '5.1.0.1'
 
 gem 'puma'
 
+# Mysql database
+gem 'mysql2'
 # Add annotation gem for database
 gem 'annotate'
 # bootstrap for styling

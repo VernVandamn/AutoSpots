@@ -432,11 +432,13 @@ for image in images['data']:
             # if len(sys.argv) > 1 and 'p' in sys.argv[1]:
             print "Gray Spot", gray_spot_avg
 
-            #cv2.imshow("Grayspot", gray_spot)
-            #cv2.waitKey(0)
+            # cv2.imshow("Grayspot", gray_spot)
+            # cv2.waitKey(0)
             # saveImg(gray_spot, spot_dir, "1_Gray_Spot")
             spots["1_Gray_Spot"] = gray_spot
             continue #break out
+        else:
+            gray_spot_avg = [130, 130, 130]
 
         p_lot.append(
             {
@@ -486,6 +488,9 @@ for image in images['data']:
                 #averaging values of red, green and blue colors in parking spot image
                 #print spotName, np.average(np.mean(parking_spot, 0), 0)
 
+                # print 'gray_spot_avg:', gray_spot_avg
+                # cv2.imshow('image', maskedImg)
+                # cv2.waitKey(0)
                 avg = averageColors(parking_spot)
                 spots[spotName] = parking_spot
                 colorResult = withinRange(gray_spot_avg, avg, spotName)
@@ -567,14 +572,14 @@ for image in images['data']:
                     vote += 1
                 if len(sys.argv) > 1 and 'm' not in sys.argv[1]:
                     if machine_learning == False:
-                        vote += 3
+                        vote += 4
                     if darknet == False:
-                        vote += 3
+                        vote += 4
                     # print vote
 
 
                 # if vote > 2:
-                if vote > 2:
+                if vote > 3:
                 # if vote == 1:
                     drawBoundBox(parking_spot, red_color)
                     img = boxemup(img, p_lot[-1]['V'][-1], v_line_obj, red_color)
