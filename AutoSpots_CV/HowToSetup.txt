@@ -9,3 +9,6 @@ Darknet
 CRFRNN
 - put TVG files in AutoSpots_CV
 - copy caffe folder
+
+Rails 
+- Add in binary files or add them to git

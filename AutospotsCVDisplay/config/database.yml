@@ -21,13 +21,13 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  # <<: *default
+  # database: db/production.sqlite3
 
   adapter: mysql2
   encoding: utf8
-  database: 'CVData'
-  username: 'DBAdmin'
-  password: 'password'
-  host: 'cvdata.cm6e4gequlqc.us-west-2.rds.amazonaws.com'
-  port: '3306'
+  database: CVData
+  username: DBAdmin
+  password: password
+  host: cvdata.cm6e4gequlqc.us-west-2.rds.amazonaws.com
+  port: 3306
