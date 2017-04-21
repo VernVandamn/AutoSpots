@@ -6,7 +6,7 @@
 
 		<h4>Aquire image url from parking lot stream</h4>
 		<p>
-			A lot of parking web streams have a static image url you can input that will get the current 
+			A lot of parking web streams have a static image url you can input that will get the current
 			state of the parking lot. That is what we need to link to in order to continually update what
 			parking spots are full or empty.
 		</p>
@@ -20,7 +20,9 @@
 		<p>
 			Using the setup tool move the yellow target to hover over a gray spot that is a good representation of the gray
 			color of the parking lot. Parking lots depending on the materials used to create them can have
-			different hues. Doing this will calibrate the computer vision to this parking lot.
+			different hues. Doing this will calibrate the computer vision to this parking lot. If there
+			is snow covering the lot it is still a good practice to try and find a gray spot because the
+			configuration you set up will last longer than the snow.
 		</p>
 		<div class="tutorial-image">
 			<%= cl_image_tag("Selection_004_k98qa4.png") %>
@@ -29,6 +31,8 @@
 		<p>
 			Above the image the blue button will add a parking strip to the image. This is the bounding box for a whole set of parking spots.	Drag
 			the circles in the corners to the edges of the parking strip you want to create.
+			Right now the code is only setup to work with horizontal parking strips. The
+			blue line should be on top for the computer vision to analyze the correct locations.
 		</p>
 
 		<div class="tutorial-image">
@@ -37,7 +41,8 @@
 		<h4>Add parking spaces</h4>
 		<p>
 			Below the image you can add or remove parking spaces to add additional spots to the parking strip. You can slide the circles along the top and
-			the bottom to adjust the bounds of the parking spot.
+			the bottom to adjust the bounds of the parking spot. It is easier to set up the outside boundries of the pakring strip
+			then add and adjust the parking spaces in between.
 		</p>
 
 		<div class="tutorial-image">
@@ -46,7 +51,7 @@
 		<h4>Enter in name and location</h4>
 		<p>
 			Enter in a unique name and the latitude and longitude of the parking location. You can find the latitude and longitude for your parking spot
-			by clicking the button above those fields. That will take you to a site you can get those coordinates from Google's Maps. 
+			by clicking the button above those fields. That will take you to a site you can get those coordinates from Google's Maps.
 		</p>
 
 		<h4>Click create</h4>
@@ -56,16 +61,16 @@
 
 		<h3>App</h3>
 		<p>
-			Open the app, choose a lot and hit Park Me! 
+			Open the app, choose a lot and hit Park Me!
 		</p>
 		<p>
-			It’s as simple that. Skeptical of actual spot availability? Open the main menu and click on View Parking Lot. From there you can choose a lot from the drop-down menu to view the most recently processed image of that lot. Each open spot will be highlighted in green and each taken spot will be highlighted in red. 
+			It’s as simple that. Skeptical of actual spot availability? Open the main menu and click on View Parking Lot. From there you can choose a lot from the drop-down menu to view the most recently processed image of that lot. Each open spot will be highlighted in green and each taken spot will be highlighted in red.
 		</p>
 		<p>
-			Want to know what your chances are of getting a parking spot in the Merrill Engineering Building parking lot at 2:30PM on a Tuesday? Head to the main menu and click on Statistics. You can select a parking lot and a day to view statistics for. A fully scalable graph will appear for maximum accuracy. 
-		</p>	
+			Want to know what your chances are of getting a parking spot in the Merrill Engineering Building parking lot at 2:30PM on a Tuesday? Head to the main menu and click on Statistics. You can select a parking lot and a day to view statistics for. A fully scalable graph will appear for maximum accuracy.
+		</p>
 		<p>
-			Do you only ever park in one parking lot? Open the Preferences menu by clicking on Preferences in the main menu. There you can select your favorite lot and the app will remember where you like to park, thus allowing you to use the Find Nearest Parking Spot button. 
+			Do you only ever park in one parking lot? Open the Preferences menu by clicking on Preferences in the main menu. There you can select your favorite lot and the app will remember where you like to park, thus allowing you to use the Find Nearest Parking Spot button.
 		</p>
 	</div>
 </div>

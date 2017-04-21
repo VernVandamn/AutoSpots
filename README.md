@@ -1,24 +1,22 @@
-# README
+# Autospots
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Autospots is a computer vision parking detection system. Each of the above folders
+is a different part of the system.
 
-Things you may want to cover:
+The installation instructions for each component is in the component's folder.
 
-* Ruby version
+## AutoSpots_CV
 
-* System dependencies
+This folder contains all the computer vision code for the project. This computer
+vision portion runs on the backend and uploads the computer vision results for the
+parking lots created useing the website.
 
-* Configuration
+## AutospotsCVDisplay
 
-* Database creation
+This folder contains the website used to setup new parking lots from livestreams
+found on the web and view the results from the computer vision.
 
-* Database initialization
+## AutospotsApp
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+This is the android application built with Xamarin that will guide you to the
+parking lots set up on the website.

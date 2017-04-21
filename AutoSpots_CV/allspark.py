@@ -68,7 +68,7 @@ def getParkingInfo():
 			json.dump(coords, jsonFile)
 
 		# Then we need to add the info the the inner object
-		spaceOutput = { 
+		spaceOutput = {
 			'output':		picDir,
 			'json': 		jsonLoc,
 			'name': 		name,
@@ -83,20 +83,25 @@ def getParkingInfo():
 	with open('images.json', 'w') as fp:
 		json.dump(jsonInput, fp)
 
+# This function runs the Autospots computer vision on the images from the website
 def runCV():
 	os.system("python AutoSpots.py -i images.json")
 	print 'Parking has been analyzed'
 
+# This function clears the output folder of old images
 def cleanup():
 	shutil.rmtree('./output/')
 
+# Pushes an update to a existing lot in the database for the app
 def update_lot(image, lotID, spots):
     response = requests.post(baseurl+'update/image/'+str(lotID)+"/", json={'data': image})
     response = requests.get(baseurl+'update/'+str(lotID)+"/"+str(spots)+"/")
 
+# Creates a lot for a lot that was just setup on the website
 def newLot(name,image, spots, lat, long):
     response = requests.post(baseurl+'newlot/', json={'name': name, 'lat': lat, 'long': long, 'spots': spots, 'image': image})
 
+# Upload results to first the app server and then cloudinary for the website
 def uploadResults():
 	print 'Uploading images to server'
 	data = jsonInput['data']
@@ -133,33 +138,34 @@ def uploadResults():
 		# Upload images to Cloudinary
 		# Upload final image
 		respose = up.upload(
-			space['output']+'final.png', 
+			space['output']+'final.png',
 			tags=space['id']+'final',
 			folder=space['id'],
 			public_id='final'
 		)
 		# Upload crfrnn image
 		respose = up.upload(
-			space['output']+'output.png', 
+			space['output']+'output.png',
 			folder=space['id'],
 			public_id='output'
 		)
 		# Upload darknet image
 		respose = up.upload(
-			space['output']+'predictions.jpg', 
+			space['output']+'predictions.jpg',
 			folder=space['id'],
 			public_id='predictions'
 		)
 		spotsDir = space['output']+'spots/'
 		for spot in os.listdir(output_base+space['id']+'/spots'):
 			respose = up.upload(
-				spotsDir+spot, 
+				spotsDir+spot,
 				tags=space['id']+'spot',
 				folder=space['id']+'/spots',
 				public_id=spot[:-4]
 			)
 
-def do_something(sc): 
+# This is the function to repeat the whole analyze and update sequence every so often
+def do_something(sc):
 	# print "Doing stuff..."
 	getParkingInfo()
 	runCV()
@@ -183,7 +189,6 @@ def main():
 	else:
 		# Run Scheduler
 		s = sched.scheduler(time.time, time.sleep)
-
 		s.enter(300, 1, do_something)
 		s.run()
 

@@ -68,6 +68,7 @@ class Line:
         return y
 
 
+# Get an average of all the colors in the image
 def average(image, index):
     sum = 0
     count = 0
@@ -78,6 +79,7 @@ def average(image, index):
                 count = count+1
     return float(sum) / count
 
+# Count all the white areas in the image
 def averagePng(image):
     count = 0
     for row in image:
@@ -87,6 +89,7 @@ def averagePng(image):
 
     return count
 
+# Count all the nonblack pixels in the image
 def notBlack(image):
     count = 0
     for row in image:
@@ -96,6 +99,7 @@ def notBlack(image):
 
     return count
 
+# Average out all the color values for each channel
 def averageColors(image):
     avg = [average(image, 0), average(image, 1), average(image, 2)]
     return avg
@@ -205,36 +209,6 @@ def compareDiffs(avg1, avg2, spotName):
         return False
     return True
 
-#save image from url
-def saveImgUrl(url):
-
-
-    #url = "http://download.thinkbroadband.com/10MB.zip"
-    file_name = url.split('/')[-1]
-    u = urllib2.urlopen(url)
-
-    infile = open(file_name, 'wb')
-    meta = u.info()
-    file_size = int(meta.getheaders("Content-Length")[0])
-    if len(sys.argv) > 1 and 'p' in sys.argv[1]:
-        print "Downloading: %s Bytes: %s" % (file_name, file_size)
-
-    file_size_dl = 0
-    block_sz = 8192
-    while True:
-        buffer = u.read(block_sz)
-        if not buffer:
-            break
-
-        file_size_dl += len(buffer)
-        infile.write(buffer)
-        status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
-        status = status + chr(8)*(len(status)+1)
-        if len(sys.argv) > 1 and 'p' in sys.argv[1]:
-            print status,
-
-    infile.close()
-
 #draw bounding box using lines of specified color around the image
 def drawBoundBox(img,  color):
     line_size = 3
@@ -266,6 +240,7 @@ def cannyedgedetection(spotforcanny,parkingspacelocation): #Detects edges
         return False,edges
     return True,edges
 
+# Draw bouding boxes
 def boxemup(image, left, right, color):
     line_sz = 2
     diff = 5
@@ -295,6 +270,7 @@ def sharpen(spot): #Sharpens the image for better edge detection
     custom = cv2.filter2D(spot, -1, kernel)
     return custom
 
+# Compare parking spot colors to gray highlight anything not gray
 def grayMask(spot):
     boundries = [
             ([103, 86, 65], [145, 133, 128]),
@@ -328,10 +304,6 @@ def grayMask(spot):
 ################################################################################
 ################################################################################
 
-# with open('newParking.json') as data_file:
-# with open('Parking-Lot2.json') as data_file:
-    # data = json.load(data_file)
-
 black_color = (0,0,0)
 red_color = (0,0,255)
 green_color = (0,255,0)
@@ -345,7 +317,6 @@ with open(args["images"]) as images_file:
 
 # This is where you specify the number of images to scan
 # 0 = only one image
-# numImgs = 0
 numImgs = images['count']
 
 # clear out spot_results folder
@@ -468,7 +439,7 @@ for image in images['data']:
             if len(p_lot[-1]['V']) > 0:
                 # reset the image list
                 pltimages = []
-                
+
                 #mask image
                 maskedImg = maskImage(img, p_lot[-1]['V'][-1], v_line_obj)
 
@@ -558,8 +529,8 @@ for image in images['data']:
 
                     plt.savefig(outputDir+'spots/' + spotName)
                     # plt.show()
-                
-                
+
+
                 vote = 0
 
                 if colorResult == False:
@@ -601,15 +572,10 @@ for image in images['data']:
             #draw_line(img, v_line_obj, black_color)
 
     # Print the values to the string to send
-    # if len(sys.argv) > 1 and 'p' in sys.argv[1]:
     print parkinglotbinaryarray
     with open(outputDir+'parkinglotbinaryarray.data', 'w') as plba:
         plba.write(''.join(str(s) for s in parkinglotbinaryarray))
-    # if len(sys.argv) > 1 and 'u' in sys.argv[1]:
-    # serv.sendDataToServer(parkinglotbinaryarray)
-        #save the last output
-        #cv2.imwrite('out1.jpg', img)
-    # if len(sys.argv) > 1 and 'f' in sys.argv[1]:
+    # Write output images to output folder
     cv2.imwrite(outputDir+'final.png', img)
     cv2.imwrite(outputDir+'output.png', crfrnn_output)
     predict = cv2.imread('predictions.jpg')
