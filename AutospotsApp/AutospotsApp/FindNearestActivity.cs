@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -10,18 +9,16 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Locations;
-using System.Net.Sockets;
-using System.Threading.Tasks;
 using Android.Util;
 using System.Threading;
 using System.Net;
-using Java.Util;
 using Newtonsoft.Json;
+using Android.Graphics;
 
 namespace AutospotsApp
 {
     [Activity(Label = "FindNearestActivity")]
-    public class FindNearestActivity : Activity, ILocationListener
+    public class FindNearestActivity : Activity, ILocationListener, IDialogInterfaceOnClickListener
     {
 
         static readonly string TAG = "X:" + typeof(FindNearestActivity).Name;
@@ -33,12 +30,8 @@ namespace AutospotsApp
         int lotIndex;
         LocationDirective response;
         SpotRequest request;
-        //-----------------------
-        //TcpClient client;
-        //NetworkStream stream; //Creats a NetworkStream (used for sending and receiving data)
-        //byte[] datalength = new byte[16]; // creates a new byte with length 4 ( used for receivng data's length)
+        AlertDialog alert;
         bool spotReceived;
-
         WebClient mclient;
         WebClient mClient1;
         Uri requestUrl;
@@ -48,76 +41,139 @@ namespace AutospotsApp
             base.OnCreate(savedInstanceState);
             RequestWindowFeature(WindowFeatures.NoTitle);
             SetContentView(Resource.Layout.Main2);
+            //Load custom font
+            Typeface tf = Typeface.CreateFromAsset(Assets, "transformersmovie.ttf");
+            TextView titleText = FindViewById<TextView>(Resource.Id.TitleTextView);
+            //Set font of Autospots label in top left corner
+            titleText.SetTypeface(tf, TypefaceStyle.Normal);
+            TextView parkMeTitleText = FindViewById<TextView>(Resource.Id.ParkMeTitleTextView);
+            //Set font of Title text
+            parkMeTitleText.SetTypeface(tf, TypefaceStyle.Normal);
             mClient1 = new WebClient();
+            //Download an ID from the server
             mClient1.DownloadDataAsync(new Uri("http://jamesljenk.pythonanywhere.com/getid/"));
             mClient1.DownloadDataCompleted += MClient_DownloadIdDataCompleted;
+            //Assign the status text to a variable so it can be changed later
             statusText = FindViewById<TextView>(Resource.Id.ParkingStatusTextView);
+            //Figure out which lot we're parking in
             lotIndex = Intent.GetIntExtra("lotIndex",-1);
-            //lotIndex = savedInstanceState.GetInt("lotIndex");
+            //If the user hasn't chosen a lot to park in...
             if (lotIndex == -1)
             {
-                statusText.Text = "You have not chosen a default lot. Please go back to the main menu and plan a trip or specify a default lot.";
-                //Toast.MakeText(this, "You have not chosen a default lot. Please go back to the main menu and plan a trip or specify a default lot.",ToastLength.Long);
+                //Display error text
+                statusText.Text = "You have not chosen a default lot. Please go back to the main menu and select \"Find spot in specific lot\" option or specify a default lot in the Preferences menu.";
             }
+            //Parking lot has been chosen
             else
             { 
                 spotReceived = false;
+                //Initialize web client used to download location coordinates
                 mclient = new WebClient();
+                //Start Location services
                 InitializeLocationManager();
             }
+        }
+
+        //Build and display an alert to ask user to turn on GPS setting
+        private void showDisableGPSAlert()
+        {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.SetMessage("GPS is disabled in your device. High accuracy GPS is required to use this feature.")
+                .SetCancelable(false)
+                .SetPositiveButton("Go to Settings to enable GPS", this);
+            alert = alertDialogBuilder.Create();
+            alert.Show();
         }
 
         private void MClient_DownloadIdDataCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
             try
             {
+                //Assign downloaded data to a string
                 string json = Encoding.UTF8.GetString(e.Result);
                 Log.Debug("GETID", "GETID json = " + json);
+                //Deserialize string from JSON
                 UserId resp = JsonConvert.DeserializeObject<UserId>(json);
+                //Assign downloaded ID to global variable
                 userToken = resp.userID;
             }
+            //JSON error catch
             catch (System.Reflection.TargetInvocationException)
             {
                 Toast.MakeText(this, "There was an error retrieving data from the server. Please close the app and try again later.", ToastLength.Long).Show();
             }
         }
 
-        void InitializeLocationManager()
+        bool InitializeLocationManager()
         {
+            //Assign a handle to the location service
             _locationManager = (LocationManager)GetSystemService(LocationService);
-            Criteria criteriaForLocationService = new Criteria
+            //If GPS is turned off...
+            if (!_locationManager.IsProviderEnabled(LocationManager.GpsProvider))
             {
-                Accuracy = Accuracy.Fine
-            };
-            IList<string> acceptableLocationProviders = _locationManager.GetProviders(criteriaForLocationService, true);
-
-            if (acceptableLocationProviders.Any())
-            {
-                _locationProvider = acceptableLocationProviders.First();
+                //Show error
+                showDisableGPSAlert();
+                return false;
             }
+            //GPS is on
             else
             {
-                _locationProvider = string.Empty;
+                //Define fine granularity of GPS
+                Criteria criteriaForLocationService = new Criteria
+                {
+                    Accuracy = Accuracy.Fine
+                };
+                //Get list of acceptable location providers
+                IList<string> acceptableLocationProviders = _locationManager.GetProviders(criteriaForLocationService, true);
+                //If there are any acceptable location providers
+                if (acceptableLocationProviders.Any())
+                {
+                    //Assign the first location provider as the location provider we will use
+                    _locationProvider = acceptableLocationProviders.First();
+                }
+                //There are no acceptable location providers
+                else
+                {
+                    //No acceptable location provider
+                    _locationProvider = string.Empty;
+                }
+                Log.Debug(TAG, "Using " + _locationProvider + ".");
+                //Report that location services are started
+                return true;
             }
-            Log.Debug(TAG, "Using " + _locationProvider + ".");
         }
 
         protected override void OnResume()
         {
-            base.OnResume();
-            if (_locationManager != null && _locationProvider != null)
+            try
             {
-                _locationManager.RequestLocationUpdates(_locationProvider, 5000, 10, this);//(_locationProvider, 0, 0, this);
+                base.OnResume();
+                //If the location manager has been initialized
+                if (_locationManager != null)
+                {
+                    //Assign a new location provider
+                    _locationProvider = _locationManager.GetProviders(new Criteria{Accuracy = Accuracy.Fine}, true).First();
+                    //Request location updates
+                    _locationManager.RequestLocationUpdates(_locationProvider, 5000, 10, this);//(_locationProvider, 0, 0, this);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Debug("FindNearestActivity", e.ToString());
             }
         }
 
         protected override void OnPause()
         {
             base.OnPause();
+            //If we haven't received a spot yet...
             if (!spotReceived)
             {
+                //If location manager has been initialized...
                 if (_locationManager != null)
+                    //Stop location updates
                     _locationManager.RemoveUpdates(this);
+                //Stop background GPS monitoring service
                 StopService(new Intent(this, typeof(NavUpdateService)));
             }
         }
@@ -125,32 +181,42 @@ namespace AutospotsApp
         protected override void OnDestroy()
         {
             base.OnDestroy();
+            //If the No GPS alert has been created...
+            if (alert != null)
+                //Destroy it to avoid memory leaks
+                alert = null;
             Log.Debug("FindNearestActivity", "Destroying this activity");
+            //If location manager has been initialized...
             if (_locationManager != null)
+                //Remove GPS updates
                 _locationManager.RemoveUpdates(this);
+            //Stop background GPS monitoring service
             StopService(new Intent(this,typeof(NavUpdateService)));
         }
 
-
-
         public void OnLocationChanged(Location location)
         {
+            //If we haven't received a spot yet...
             if (!spotReceived)
             {
+                // Assign location to local variable
                 _currentLocation = location;
+                //If location is null...
                 if (_currentLocation == null)
                 {
+                    //Something bad happened and we didn't actually get a location.
                     statusText.Text = "Unable to determine your location. Ensure your location service is enabled and try again in a short while.";
                 }
+                //We received a non-null location
                 else
                 {
+                    //Update status text
                     statusText.Text = GetString(Resource.String.WaitingForSpotText);
-                    //_locationText.Text = string.Format("{0:f6},{1:f6}", _currentLocation.Latitude, _currentLocation.Longitude);
-                    //Address address = await ReverseGeocodeCurrentLocation();
-                    //DisplayAddress(address);
+                    //Extract latitude and longitude of received location
                     double lat = _currentLocation.Latitude;
                     double lon = _currentLocation.Longitude;
                     Log.Debug(TAG, "Got lat=" + lat + ", long=" + lon);
+                    //Send current location to server
                     SendCurLocToServer(lat, lon);
 
                 }
@@ -163,62 +229,78 @@ namespace AutospotsApp
 
         void SendCurLocToServer(double lat,double lon)
         {
-            //Toast.MakeText(this, "Connected", ToastLength.Short).Show();
-            //Send lat,long to server
-            //String s = String.Format("NEAREST_{0}_{1}", lat, lon);
-            //clientSend(s);
+            //Initialize global spot request variable and fill in details
             request = new SpotRequest();
             request.latitude = lat;
             request.longitude = lon;
             request.userID = userToken;
             request.lotID = lotIndex;
-            //string json = request.ToString();
-            //byte[] data = Encoding.ASCII.GetBytes(json);
             requestUrl = new Uri(request.ToString());
+            //Check to make sure web client isn't still sending something
             while (mclient.IsBusy)
             {
                 Thread.Sleep(1000);
             }
             Log.Debug("SpotRequest", "Sending SpotRequest: " + request.ToString());
+            //Request spot from server
             mclient.DownloadDataAsync(requestUrl);
             mclient.DownloadDataCompleted += Mclient_DownloadDataCompleted;
         }
 
         private void Mclient_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e) //Received LocationDirective
         {
-            try { 
+            try
+            {
+                //Received JSONified Location Directive
                 string json = Encoding.UTF8.GetString(e.Result);
-                //string json = "{{\"latitude\": 40.769817, \"longitude\": -111.846035, \"lotID\": 0, \"userID\": 1}}";
-                Log.Debug("ReceiveLocationDirective", "Received json: "+json);
+                Log.Debug("ReceiveLocationDirective", "Received json: " + json);
+                //Deserialize data
                 response = JsonConvert.DeserializeObject<LocationDirective>(json);
                 Log.Debug("JsonConvertResponse", "Convert json: " + response);
-                //if (response.userID != userToken)
-                //{
-                //    Toast.MakeText(this, "Response from server was not meant for this user! Go back and try again.", ToastLength.Long).Show();
-                //    return;
-                //}
-                //else if (response.lotID != lotIndex) // WE ARE ASSUMING LOTINDEX == LocationDirective.lotID
-                //{
-                //    Toast.MakeText(this, "Response from server was for wrong lot! Go back and try again.", ToastLength.Long).Show();
-                //    return;
-                //}
-                //else
-                //{
+                //Check to see we didn't receive someone else's spot
+                if (response.userID != userToken)
+                {
+                    Toast.MakeText(this, "Response from server was not meant for this user! Go back and try again.", ToastLength.Long).Show();
+                    return;
+                }
+                //Check to see if we got the wrong lot
+                else if (response.lotID != lotIndex) // WE ARE ASSUMING LOTINDEX == LocationDirective.lotID
+                {
+                    Toast.MakeText(this, "Response from server was for wrong lot! Go back and try again.", ToastLength.Long).Show();
+                    return;
+                }
+                //Everything looks ok with our parking spot assignment
+                else
+                {
+                    //Flip spot received global flag
                     spotReceived = true;
-                    statusText.Text = GetString(Resource.String.LetsGoText);
-                    StartNavService(response.latitude, response.longitude);
-                    Log.Debug("StartMapIntent", "Starting map intent with lat:" + response.latitude + ", long:" + response.longitude);
-                    var geoUri = Android.Net.Uri.Parse("geo:" + response.latitude + "," + response.longitude + "?z=21");
-                    var mapIntent = new Intent(Intent.ActionView, geoUri);
-                    StartActivity(mapIntent);
-                //}
+                    //Server sends back (0,0) if a lot is full, check if the lot's full
+                    if (response.latitude != 0 && response.longitude != 0)
+                    {
+                        //Lot's not full, start GPS navigation to the spot!
+                        statusText.Text = GetString(Resource.String.LetsGoText);
+                        StartNavService(response.latitude, response.longitude);
+                        Log.Debug("StartMapIntent", "Starting map intent with lat:" + response.latitude + ", long:" + response.longitude);
+                        var geoUri = Android.Net.Uri.Parse("geo:" + response.latitude + "," + response.longitude + "?q="+ response.latitude+","+ response.longitude);
+                        var mapIntent = new Intent(Intent.ActionView, geoUri); //"geo:<lat>,<long>?q=<lat>,<long>"
+                        StartActivity(mapIntent);
+                    }
+                    //Lot is full
+                    else
+                    {
+                        //Break the bad news
+                        statusText.Text = "Looks like this lot is full! Please go back to the main menu and try a different lot.";
+                    }
+                }
             }
+            //Catch JSON error
             catch (System.Reflection.TargetInvocationException)
             {
                 Toast.MakeText(this, "There was an error retrieving data from the server. Please close the app and try again later.", ToastLength.Long).Show();
             }
         }
 
+        //Helper method to start up navigation
         private void StartNavService(double startLat, double startLon)
         {
             Intent navUpIntent = new Intent(this, typeof(NavUpdateService));
@@ -229,87 +311,10 @@ namespace AutospotsApp
             StartService(navUpIntent);
         }
 
-        /*private void clientReceive()
-        {
-            try
-            {
-                stream = client.GetStream(); //Gets The Stream of The Connection
-                if (stream.CanRead)
-                {
-                    // Reads NetworkStream into a byte buffer.
-                    byte[] bytes = new byte[client.ReceiveBufferSize];
-
-                    // Read can return anything from 0 to numBytesToRead. 
-                    // This method blocks until at least one byte is read.
-                    stream.Read(bytes, 0, (int)client.ReceiveBufferSize);
-
-                    // Returns the data received from the host to the console.
-                    string returndata = Encoding.UTF8.GetString(bytes);
-
-                    //string parkinginfo = "There are " + opens + " parking spaces open out of " + total + "!";
-
-                    Application.SynchronizationContext.Post(_ => {
-                        statusText.SetText(GetString(Resource.String.LetsGoText), TextView.BufferType.Normal);
-                        this.StartNavService();
-                    }, null);
-
-                    //Start GPS navigation
-                    Log.Debug(TAG, "Received \'" + returndata+"\' from server!");
-                    if (returndata.Contains("SPOT"))
-                        spotReceived = true;
-
-                    returndata = returndata.Replace('\0',' ').Trim();
-                    string[] info = returndata.Split('_');
-                    string lon = info[1];
-                    string lat = info[2];
-
-                    var geoUri = Android.Net.Uri.Parse("geo:" +lat+","+lon+"?z=23");
-                    var mapIntent = new Intent(Intent.ActionView, geoUri);
-                    StartActivity(mapIntent);
-                }
-                else
-                {
-                    Console.WriteLine("You cannot read data from this stream.");
-                    Toast.MakeText(this, "Can't connect to server", ToastLength.Short).Show();
-                    client.Close();
-
-                    // Closing the tcpClient instance does not close the network stream.
-                    stream.Close();
-                    return;
-                }
-                stream.Close();
-            }
-            catch (Exception ex)
-            {
-                //Toast.MakeText(this, ex.Message, ToastLength.Short).Show();
-                Log.Debug(TAG, ex.ToString());
-            }
-        }
-
-        public void clientSend(string msg)
-        {
-            try
-            {
-                stream = client.GetStream(); //Gets The Stream of The Connection
-                byte[] data; // creates a new byte without mentioning the size of it cuz its a byte used for sending
-                data = Encoding.Default.GetBytes(msg); // put the msg in the byte ( it automaticly uses the size of the msg )
-                int length = data.Length; // Gets the length of the byte data
-                byte[] datalength = new byte[4]; // Creates a new byte with length of 4
-                datalength = BitConverter.GetBytes(length); //put the length in a byte to send it
-                stream.Write(datalength, 0, 4); // sends the data's length
-                stream.Write(data, 0, data.Length); //Sends the real data
-            }
-            catch (Exception ex)
-            {
-                Toast.MakeText(this, ex.Message, ToastLength.Short).Show();
-            }
-        }*/
-
         public void OnProviderDisabled(string provider)
         {
-            Toast.MakeText(this, GetString(Resource.String.LocationDisabledToastText), ToastLength.Long).Show();
-            Intent i = new Intent(Android.Provider.Settings.ActionLocationSourceSettings);
-            StartActivity(i);
+            //Prompt user to turn GPS back on
+            showDisableGPSAlert();
         }
 
         public void OnProviderEnabled(string provider)
@@ -320,6 +325,13 @@ namespace AutospotsApp
         public void OnStatusChanged(string provider, [GeneratedEnum] Availability status, Bundle extras)
         {
             
+        }
+
+        //Opens GPS settings when alert button is pressed
+        void IDialogInterfaceOnClickListener.OnClick(IDialogInterface dialog, int which)
+        {
+            Intent callGPSSettingIntent = new Intent(Android.Provider.Settings.ActionLocationSourceSettings);
+            StartActivity(callGPSSettingIntent);
         }
     }
 }

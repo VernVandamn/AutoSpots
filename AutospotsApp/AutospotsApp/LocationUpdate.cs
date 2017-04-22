@@ -1,17 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-
 namespace AutospotsApp
 {
+    //JSON class for sending user's current location to the server.
+    //User's location is used to determine if user is close enough to be assigned a spot
     class LocationUpdate
     {
         public int userID { get; set; }
@@ -20,7 +10,7 @@ namespace AutospotsApp
         public int lotID { get; set; }
 
         public override string ToString()
-        { //'/spot/coords/<string:lat>/<string:long>/<int: lotID>'
+        {
             return "http://jamesljenk.pythonanywhere.com/spot/coords/" + latitude + "/" + longitude + "/" + lotID + "/"+userID + "/";
         }
     }
