@@ -8,6 +8,7 @@ using Android;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("AutospotsApp")]
+[assembly: Application(Icon = "@drawable/Iconxxhdpi")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]

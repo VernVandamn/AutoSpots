@@ -32,13 +32,7 @@ namespace AutospotsApp
 		{
 			
 			// aapt resource value: 0x7f050000
-			public const int SelectBuildingArray = 2131034112;
-			
-			// aapt resource value: 0x7f050001
-			public const int SelectParkingLotArray = 2131034113;
-			
-			// aapt resource value: 0x7f050002
-			public const int StatsArray = 2131034114;
+			public const int StatsDayArray = 2131034112;
 			
 			static Array()
 			{
@@ -67,10 +61,31 @@ namespace AutospotsApp
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int Icon = 2130837504;
+			public const int AutospotsIcon = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int smallmenu2 = 2130837505;
+			public const int AutospotsIcon24x24 = 2130837505;
+			
+			// aapt resource value: 0x7f020002
+			public const int Icon = 2130837506;
+			
+			// aapt resource value: 0x7f020003
+			public const int Iconhdpi = 2130837507;
+			
+			// aapt resource value: 0x7f020004
+			public const int Iconmdpi = 2130837508;
+			
+			// aapt resource value: 0x7f020005
+			public const int Iconxhdpi = 2130837509;
+			
+			// aapt resource value: 0x7f020006
+			public const int Iconxxhdpi = 2130837510;
+			
+			// aapt resource value: 0x7f020007
+			public const int smallmenu2 = 2130837511;
+			
+			// aapt resource value: 0x7f020008
+			public const int streets1 = 2130837512;
 			
 			static Drawable()
 			{
@@ -85,26 +100,29 @@ namespace AutospotsApp
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f060003
-			public const int MainMenuButton = 2131099651;
+			// aapt resource value: 0x7f060002
+			public const int LotPickSpinner = 2131099650;
+			
+			// aapt resource value: 0x7f060004
+			public const int MainMenuButton = 2131099652;
 			
 			// aapt resource value: 0x7f060000
 			public const int MainTitleTextView = 2131099648;
 			
-			// aapt resource value: 0x7f060002
-			public const int ParkMeButton = 2131099650;
-			
-			// aapt resource value: 0x7f060005
-			public const int ParkMeTitleTextView = 2131099653;
+			// aapt resource value: 0x7f060003
+			public const int ParkMeButton = 2131099651;
 			
 			// aapt resource value: 0x7f060006
-			public const int ParkingStatusTextView = 2131099654;
+			public const int ParkMeTitleTextView = 2131099654;
+			
+			// aapt resource value: 0x7f060007
+			public const int ParkingStatusTextView = 2131099655;
 			
 			// aapt resource value: 0x7f060001
 			public const int SubTitleTextView = 2131099649;
 			
-			// aapt resource value: 0x7f060004
-			public const int TitleTextView = 2131099652;
+			// aapt resource value: 0x7f060005
+			public const int TitleTextView = 2131099653;
 			
 			static Id()
 			{
@@ -144,11 +162,17 @@ namespace AutospotsApp
 			// aapt resource value: 0x7f040013
 			public const int CantLocateText = 2130968595;
 			
+			// aapt resource value: 0x7f040015
+			public const int ForeNotificationText = 2130968597;
+			
 			// aapt resource value: 0x7f040007
 			public const int InLotButtonText = 2130968583;
 			
 			// aapt resource value: 0x7f040012
 			public const int LetsGoText = 2130968594;
+			
+			// aapt resource value: 0x7f040014
+			public const int LocationDisabledToastText = 2130968596;
 			
 			// aapt resource value: 0x7f040000
 			public const int MainTitleText = 2130968576;
@@ -177,11 +201,11 @@ namespace AutospotsApp
 			// aapt resource value: 0x7f04000b
 			public const int PreferencesButtonText = 2130968587;
 			
-			// aapt resource value: 0x7f040014
-			public const int SelectABuildingText = 2130968596;
-			
 			// aapt resource value: 0x7f040016
-			public const int SelectAParkingLotText = 2130968598;
+			public const int SelectABuildingText = 2130968598;
+			
+			// aapt resource value: 0x7f040018
+			public const int SelectAParkingLotText = 2130968600;
 			
 			// aapt resource value: 0x7f04000e
 			public const int StatSpinnerPrompt = 2130968590;
@@ -204,8 +228,8 @@ namespace AutospotsApp
 			// aapt resource value: 0x7f040011
 			public const int WaitingForSpotText = 2130968593;
 			
-			// aapt resource value: 0x7f040015
-			public const int or = 2130968597;
+			// aapt resource value: 0x7f040017
+			public const int or = 2130968599;
 			
 			static String()
 			{
