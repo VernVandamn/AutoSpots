@@ -68,7 +68,7 @@ def getParkingInfo():
 			json.dump(coords, jsonFile)
 
 		# Then we need to add the info the the inner object
-		spaceOutput = {
+		spaceOutput = { 
 			'output':		picDir,
 			'json': 		jsonLoc,
 			'name': 		name,
@@ -137,41 +137,34 @@ def uploadResults():
 
 		# Upload images to Cloudinary
 		# Upload final image
+		'''
 		respose = up.upload(
-			space['output']+'final.png',
+			space['output']+'final.png', 
 			tags=space['id']+'final',
 			folder=space['id'],
 			public_id='final'
 		)
 		# Upload crfrnn image
 		respose = up.upload(
-			space['output']+'output.png',
+			space['output']+'output.png', 
 			folder=space['id'],
 			public_id='output'
 		)
 		# Upload darknet image
 		respose = up.upload(
-			space['output']+'predictions.jpg',
+			space['output']+'predictions.jpg', 
 			folder=space['id'],
 			public_id='predictions'
 		)
 		spotsDir = space['output']+'spots/'
 		for spot in os.listdir(output_base+space['id']+'/spots'):
 			respose = up.upload(
-				spotsDir+spot,
+				spotsDir+spot, 
 				tags=space['id']+'spot',
 				folder=space['id']+'/spots',
 				public_id=spot[:-4]
 			)
-
-# This is the function to repeat the whole analyze and update sequence every so often
-def do_something(sc):
-	# print "Doing stuff..."
-	getParkingInfo()
-	runCV()
-	uploadResults()
-	print jsonInput
-	s.enter(300, 1, do_something)
+		'''
 
 def main():
 	# Set up to force an update with a input argument
@@ -179,6 +172,19 @@ def main():
 	ap = argparse.ArgumentParser()
 	ap.add_argument("-f", "--force", help="Force update to server", action="store_true")
 	args = ap.parse_args()
+
+	s = sched.scheduler(time.time, time.sleep)
+
+# This is the function to repeat the whole analyze and update sequence every so often
+	def automation(): 
+		# print "Doing stuff..."
+		getParkingInfo()
+		runCV()
+		uploadResults()
+		print time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
+		# print jsonInput
+		s.enter(1800, 1, automation, ())
+
 
 	# load the image
 	if args.force:
@@ -188,8 +194,7 @@ def main():
 		uploadResults()
 	else:
 		# Run Scheduler
-		s = sched.scheduler(time.time, time.sleep)
-		s.enter(300, 1, do_something)
+		s.enter(10, 1, automation, ())
 		s.run()
 
 if __name__ == "__main__":
