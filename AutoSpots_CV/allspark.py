@@ -106,7 +106,8 @@ def newLot(name,image, spots, lat, long):
 # Upload results to first the app server and then cloudinary for the website
 def uploadResults():
 	print 'Uploading images to server'
-	data = jsonInput['data']
+	with open('images.json', 'r') as json_data:
+		data = json.load(json_data)['data']
 
 	# Get the names and id's of the current list of lots to either update or create new
 	response = requests.get(baseurl+'/lots/')
@@ -127,7 +128,7 @@ def uploadResults():
 		with open(space['output']+'parkinglotbinaryarray.data', 'rb') as pldata:
 			spots = pldata.readline()
 		with open(space['output']+'final.png', "rb") as image_file:
-		    encoded_string = base64.encodestring(image_file.read())
+			encoded_string = base64.encodestring(image_file.read())
 
 		if new:
 			name = space['name']
@@ -139,34 +140,32 @@ def uploadResults():
 
 		# Upload images to Cloudinary
 		# Upload final image
-		# '''
-		respose = up.upload(
+		response = up.upload(
 			space['output']+'final.png', 
 			tags=space['id']+'final',
 			folder=space['id'],
 			public_id='final'
 		)
 		# Upload crfrnn image
-		respose = up.upload(
+		response = up.upload(
 			space['output']+'output.png', 
 			folder=space['id'],
 			public_id='output'
 		)
 		# Upload darknet image
-		respose = up.upload(
+		response = up.upload(
 			space['output']+'predictions.jpg', 
 			folder=space['id'],
 			public_id='predictions'
 		)
 		spotsDir = space['output']+'spots/'
 		for spot in os.listdir(output_base+space['id']+'/spots'):
-			respose = up.upload(
+			response = up.upload(
 				spotsDir+spot, 
 				tags=space['id']+'spot',
 				folder=space['id']+'/spots',
 				public_id=spot[:-4]
 			)
-		# '''
 
 def main():
 	# Set up to force an update with a input argument
