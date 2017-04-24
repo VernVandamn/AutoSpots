@@ -25,6 +25,8 @@ def getParkingInfo():
 	# This will return a json object of all the parking spaces set up on the website
 	parkingSpaces = requests.get('http://www.autospots.org/parking_spaces.json').json()
 
+	# reset the lot data everytime we pull it from the website
+	jsonInput = { 'data': [] };
 	jsonInput['count'] = len(parkingSpaces)
 
 	# Do the following for every set up parking lot
@@ -137,7 +139,7 @@ def uploadResults():
 
 		# Upload images to Cloudinary
 		# Upload final image
-		'''
+		# '''
 		respose = up.upload(
 			space['output']+'final.png', 
 			tags=space['id']+'final',
@@ -164,7 +166,7 @@ def uploadResults():
 				folder=space['id']+'/spots',
 				public_id=spot[:-4]
 			)
-		'''
+		# '''
 
 def main():
 	# Set up to force an update with a input argument
@@ -183,7 +185,7 @@ def main():
 		uploadResults()
 		print time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
 		# print jsonInput
-		s.enter(1800, 1, automation, ())
+		s.enter(300, 1, automation, ())
 
 
 	# load the image
