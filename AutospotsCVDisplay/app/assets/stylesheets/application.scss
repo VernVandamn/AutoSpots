@@ -26,6 +26,21 @@
   font-style: normal;
 }
 
+.show-back {
+  text-align: center;
+}
+
+.ekko-lightbox-nav-overlay a {
+  text-decoration: none;
+  // color: #fff;
+  color: #4286f4;
+  opacity: 1;
+}
+
+.ekko-lightbox-nav-overlay a:hover {
+  background-color: rgba(0,0,0,0);
+}
+
 #linktogps {
   padding-top: 20px;
   padding-bottom: 20px;

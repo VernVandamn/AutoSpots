@@ -11,23 +11,25 @@
     </div>
   <% end %>
 
+  <h4 style="text-align: center;">All fields are required</h4>
+
   <div class='form-horizontal'>
-    <div class="form-group field">
+    <div class="form-group field has-error" id="fots">
       <%= f.label :name, 'Parking Lot Name', class: 'col-sm-2' %>
       <%= f.text_field :name, class: 'form-control' %>
     </div>
 
     <div id='linktogps'>
-      <%= link_to 'Find latitude and longitude for your address', 'https://www.gps-coordinates.net/gps-coordinates-converter', target: :_blank, class: 'btn btn-default' %>
+      <%= link_to 'Find latitude and longitude for your address', 'https://www.gps-coordinates.net/gps-coordinates-converter', target: :_blank, class: 'btn btn-default', title: "Get longitude and latitude from gps-coordinates.net" %>
     </div>
 
     <div class="addPadding">
-      <div class="form-group field makeHorizontal">
+      <div class="form-group field makeHorizontal has-error">
         <%= f.label :latitude, 'Latitude', class: 'col-sm-6' %>
         <%= f.text_field :latitude, class: 'form-control' %>
       </div>
 
-      <div class="form-group field makeHorizontal">
+      <div class="form-group field makeHorizontal has-error">
         <%= f.label :longitude, 'Longitude', class: 'col-sm-6' %>
         <%= f.text_field :longitude, class: 'form-control' %>
       </div>
