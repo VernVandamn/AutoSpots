@@ -5,13 +5,13 @@
 ready = ->
 	$ ->
 		$("tr[data-link]").click ->
-			window.location.replace($(this).data("link"));
+			window.location.href = $(this).data("link");
 
-		$("#fots").on "change", ->
-			if !$.trim($('.field').val())
-				$('#fots').removeClass 'has-error'
-			else
-				$('#fots').addClass 'has-error'
+		# $("#fots").on "change", ->
+			# if !$.trim($('.field').val())
+				# $('#fots').removeClass 'has-error'
+			# else
+				# $('#fots').addClass 'has-error'
 
 
 
