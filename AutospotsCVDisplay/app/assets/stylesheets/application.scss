@@ -93,7 +93,12 @@
 
 #logo:hover {
   color: #fff;
+  background-color: #222;
   text-decoration: none;
+}
+
+#logo a:hover {
+  opacity: 0;
 }
 
 h1 {
