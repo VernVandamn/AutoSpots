@@ -8,11 +8,20 @@ import sched, time
 import requests
 import base64
 
+# robert.p.corbett cloudinary account
+# cloudinary.config(
+	# cloud_name= "ddzdneuxe",
+	# api_key= "555971697581325",
+	# api_secret= "6PjnLcArSUuziXJyz65DyDnWzls"
+# )
+
+# 5chool3mail cloudinary account
 cloudinary.config(
-	cloud_name= "ddzdneuxe",
-	api_key= "555971697581325",
-	api_secret= "6PjnLcArSUuziXJyz65DyDnWzls"
+	cloud_name = 'dlbxm4yb2',  
+  api_key = '581447581712579',  
+  api_secret = 'aChXs7UdrkFxKoAiyCkH5-O7sSM'
 )
+
 
 output_base = './output/'
 jsonInput = { 'data': [] };

@@ -74,7 +74,7 @@ $('#btnStartOver').on('click', function(){
 
   var newurl = document.getElementById("newImageURL").value;
   if( newurl == "" ) {
-    newurl = 'https://worldcam.live/img/webcams/540/wolbrom3.jpg'
+    newurl = 'http://res.cloudinary.com/ddzdneuxe/image/upload/v1493201814/SetupDefaultPic_h9zdua.jpg'
   } 
 
   console.log(newurl);
@@ -106,7 +106,8 @@ var canvas = this.__canvas = new fabric.Canvas('c', {
 fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
 // Create the background image
-fabric.Image.fromURL('https://worldcam.live/img/webcams/540/wolbrom3.jpg', function (oImg) {
+// fabric.Image.fromURL('http://res.cloudinary.com/ddzdneuxe/image/upload/v1493201814/SetupDefaultPic_h9zdua.jpg', function (oImg) {
+fabric.Image.fromURL('http://res.cloudinary.com/dlbxm4yb2/image/upload/v1493201814/SetupDefaultPic_h9zdua_w8sa4y.jpg', function (oImg) {
     oImg.set({ 'left': oImg.left + (oImg.width / 2), 'top': oImg.top + (oImg.height / 2)});
     oImg.selectable = false;
     canvas.setWidth( oImg.width );
@@ -115,7 +116,7 @@ fabric.Image.fromURL('https://worldcam.live/img/webcams/540/wolbrom3.jpg', funct
     canvas.add(oImg);
     oImg.sendToBack();
     // Add the gray spot selector after the image has loaded
-    graySpot();
+    // graySpot();
 });
 
 updateUrlOutput();

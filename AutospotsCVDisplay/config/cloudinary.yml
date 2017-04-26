@@ -1,19 +1,39 @@
+# ---
+# development:
+  # cloud_name: ddzdneuxe
+  # api_key: '555971697581325'
+  # api_secret: 6PjnLcArSUuziXJyz65DyDnWzls
+  # enhance_image_tag: false
+  # static_image_support: false
+# production:
+  # cloud_name: ddzdneuxe
+  # api_key: '555971697581325'
+  # api_secret: 6PjnLcArSUuziXJyz65DyDnWzls
+  # enhance_image_tag: false
+  # static_image_support: true
+# test:
+  # cloud_name: ddzdneuxe
+  # api_key: '555971697581325'
+  # api_secret: 6PjnLcArSUuziXJyz65DyDnWzls
+  # enhance_image_tag: false
+  # static_image_support: false
+
 ---
 development:
-  cloud_name: ddzdneuxe
-  api_key: '555971697581325'
-  api_secret: 6PjnLcArSUuziXJyz65DyDnWzls
+  cloud_name: dlbxm4yb2
+  api_key: '581447581712579'
+  api_secret: aChXs7UdrkFxKoAiyCkH5-O7sSM
   enhance_image_tag: false
   static_image_support: false
 production:
-  cloud_name: ddzdneuxe
-  api_key: '555971697581325'
-  api_secret: 6PjnLcArSUuziXJyz65DyDnWzls
+  cloud_name: dlbxm4yb2
+  api_key: '581447581712579'
+  api_secret: aChXs7UdrkFxKoAiyCkH5-O7sSM
   enhance_image_tag: false
   static_image_support: true
 test:
-  cloud_name: ddzdneuxe
-  api_key: '555971697581325'
-  api_secret: 6PjnLcArSUuziXJyz65DyDnWzls
+  cloud_name: dlbxm4yb2
+  api_key: '581447581712579'
+  api_secret: aChXs7UdrkFxKoAiyCkH5-O7sSM
   enhance_image_tag: false
   static_image_support: false
