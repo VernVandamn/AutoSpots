@@ -28,7 +28,7 @@ from matplotlib import pyplot as plt
 spot_dir = 'Spots'
 spots = {}
 pltimages = []
-titles = ['Canny Edge Detection', 'Gray Mask', 'CRF as RNN', 'Darknet']
+titles = ['Original', 'Edge Detection', 'Gray Mask', 'CRF as RNN', 'Darknet']
 
 #class definition for a Point
 class Point:
@@ -456,6 +456,8 @@ for image in images['data']:
                         find_max_point(p_lot[-1]['V'][-1], v_line_obj)
                 )
 
+                pltimages.append(parking_spot)
+
                 #averaging values of red, green and blue colors in parking spot image
                 #print spotName, np.average(np.mean(parking_spot, 0), 0)
 
@@ -522,10 +524,30 @@ for image in images['data']:
                     # cv2.waitKey(0)
                     # cv2.destroyWindow('CV Results')
 
-                    for i in range(len(pltimages)):
-                        plt.subplot(2,2,i+1),plt.imshow(pltimages[i])
-                        plt.title(titles[i])
-                        plt.xticks([]),plt.yticks([])
+                    # for i in range(len(pltimages)):
+                        # plt.subplot(2,2,i+1),plt.imshow(pltimages[i])
+                        # plt.title(titles[i])
+                        # plt.xticks([]),plt.yticks([])
+
+                    plt.subplot2grid((2,4), (0,0), colspan=2, rowspan=2), plt.imshow(pltimages[0])
+                    plt.title(titles[0])
+                    plt.xticks([]),plt.yticks([])
+
+                    plt.subplot2grid((2,4), (0,2)), plt.imshow(pltimages[1])
+                    plt.title(titles[1])
+                    plt.xticks([]),plt.yticks([])
+
+                    plt.subplot2grid((2,4), (0,3)), plt.imshow(pltimages[2])
+                    plt.title(titles[2])
+                    plt.xticks([]),plt.yticks([])
+
+                    plt.subplot2grid((2,4), (1,2)), plt.imshow(pltimages[3])
+                    plt.title(titles[3])
+                    plt.xticks([]),plt.yticks([])
+
+                    plt.subplot2grid((2,4), (1,3)), plt.imshow(pltimages[4])
+                    plt.title(titles[4])
+                    plt.xticks([]),plt.yticks([])
 
                     plt.savefig(outputDir+'spots/' + spotName)
                     # plt.show()
